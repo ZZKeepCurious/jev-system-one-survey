@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>总览 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="总览 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<div class="doc-head"><div class="kicker">技术调研 · 2026-10-30</div><h1>System One 决策模型技术调研</h1></div>
+<p>这是一份面向<strong>工程决策</strong>的技术调研，不是论文综述。要回答的是：这类模型到底是什么、怎么训、怎么评、什么场景该用、什么场景不该用、坑在哪、上线要花多少钱。</p>
+<blockquote>
+<p>正文 14 章 + 附录 A–D，约 27 万字，52 张图，115 条参考文献，37
+个开源实现的范式归类。 证据核验至 2026-10-26（完整核验
+2026-10-08）。</p>
+<p>在线阅读（按章分页、带章目录与公式渲染）：https://zzkeepcurious.github.io/jev-system-one-survey/</p>
+</blockquote>
+<p><strong>一句话结论</strong>：Jev
+不是一个新的生成模型类别，而是一层“决策读出层”——对调用方声明的选项集合，单次前向直接读出带类型的概率分布，不生成任何文本。技术内核是把“校准”写进目标的严格适当评分规则；冻结的通用
+LLM 经读出协议即可达到同型能力。</p>
+<h2 id="english-abstract">English abstract</h2>
+<p>A technical survey of System One / typed-decision models (Jev,
+released 2026-09): what the paradigm actually is, how it is trained, how
+it is evaluated, when it pays off, and where it breaks.</p>
+<p>Jev is not a new generative model class but a <strong>decision
+readout layer</strong> — a single forward pass returns a typed
+probability distribution over caller-declared options, with no text
+generation. The technical core is a strictly proper scoring rule with
+calibration written into the objective; a frozen general-purpose LLM can
+reach the same capability given the right readout protocol.</p>
+<p>Scope: 14 chapters + appendices A–D, ~270k characters, 52 figures,
+115 references, 37 open-source implementations classified into five
+training postures (P0 zero-shot readout through P4 post-hoc
+calibration). Evidence verified through 2026-10-26. The document is in
+Chinese; this abstract and the repo description are the only English on
+the front page.</p>
+<h2 id="三条可以先拿走的结论">三条可以先拿走的结论</h2>
+<p><strong>1. “该不该上决策模型范式”和“该不该买 Jev
+产品”是两个独立决策。</strong></p>
+<p>前者有大量公开证据支撑，后者只是商业选型。技术上已基本可以确定：开源模型零训练即可追平，微调后可进一步超越闭源
+Jev。专用架构 + RLCD 不构成护城河，“开箱即用 +
+接口契约”才是厂商的真实价值所在。</p>
+<p><strong>2.
+成本与延迟的优势属于范式，准确率的优势不属于接口。</strong></p>
+<p>同模型对照读出快 5.21 倍，输入约 $0.042/MTok、输出免费。但对 15 类
+Typed Decision Models 系统的独立审计显示：typed 接口相对同 backbone 的
+label-logprob 读出，没有独立的精度收益。省下的是算力，不是正确率。</p>
+<p><strong>3.
+校准是这类范式最核心的优势，也是最需要在本地验证的性质。</strong></p>
+<p>整体 ECE 合格不等于概率可逐点消费；尾部过度自信真实存在（某 31B
+模型在 87% 的题上给出 ≥0.999 的概率）。而“拿通用模型原始 logit
+当概率”的典型后果是 Brier 分数很差——只有经评分规则训练的读出头，才能把
+logits 变成可消费的概率。</p>
+<p>另外两条见正文：级联是当前主流落地形态，已公开的生产场景无一单独交权给决策模型；安全面已从输入侧扩展到程序消费侧。</p>
+<h2 id="实现谱系速查">实现谱系速查</h2>
+<p>按训练姿态归入五类：<strong>P0</strong>
+零训练读出、<strong>P1</strong> 监督头 / 轻量微调、<strong>P2</strong>
+数据中心化、<strong>P3</strong> 评分规则 RL、<strong>P4</strong>
+后处理校准。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>范式</th>
+<th>读出 / 架构</th>
+<th>校准手段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TheoLeeCJ/SemIf-OpenJev</td>
+<td>P0 (+P4)</td>
+<td>冻结 Qwen3.5-4B，单 token logit 读出</td>
+<td>按负载独立温度（1.23 / 2.50 / 1.71）</td>
+</tr>
+<tr>
+<td>Yinsongxu/LLM2Jev</td>
+<td>P0</td>
+<td>prefill-only，三后端分级打分</td>
+<td>无；原生零训练读出</td>
+</tr>
+<tr>
+<td>nokia-applied-research/AnyJev</td>
+<td>P0 (+P4，闭式头)</td>
+<td>截断基座 + 闭式读出头</td>
+<td>L1 温度缩放 / L2 闭式拟合；ECE 0.03–0.05</td>
+</tr>
+<tr>
+<td>ekzhang/openjev-sglang</td>
+<td>P0（服务层）</td>
+<td>prefill-only + radix 缓存加速</td>
+<td>—</td>
+</tr>
+<tr>
+<td>jaredpalmer/kev</td>
+<td>P1 (+P2,+P4)</td>
+<td>Qwen3.5 + LoRA r16 + pointer 头</td>
+<td>按检查点独立温度（2.35 / 2.41 / 2.19 / 1.32）</td>
+</tr>
+<tr>
+<td>TianyuCodings/NanoJev</td>
+<td>P1</td>
+<td>Qwen3-0.6B + 三决策头</td>
+<td>校准折减，未报告 ECE</td>
+</tr>
+<tr>
+<td>wfzyx/von</td>
+<td>P1 (+P4)</td>
+<td>ModernBERT-large + Option-Marker</td>
+<td>条件输入温度；密封测试 ECE 0.107</td>
+</tr>
+<tr>
+<td>NandhaKishorM/laya</td>
+<td>P3 (+P4)</td>
+<td>ModernBERT-large + 决策头</td>
+<td>分桶温度 + 直方图分箱；ECE 0.213→0.081</td>
+</tr>
+<tr>
+<td>ZimmyGao/openjev-rlcd</td>
+<td>P3（两阶段）</td>
+<td>Qwen3-1.7B reasoning</td>
+<td>温度缩放 T=1.4</td>
+</tr>
+<tr>
+<td>appliedmachinelearning-lab/jev-benchmarking</td>
+<td>未训练（独立评测）</td>
+<td>对标 2609.37647</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<p>全部 37 个仓库的范式组合、数据轴、校准参数见 <a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch06.html">§6.2.2</a>。</p>
+<h2 id="目录">目录</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>章</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch01.html">1
+摘要与核心论点</a></td>
+<td>背景、五条核心判断、快速决策</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch02.html">2
+问题定义与基本概念</a></td>
+<td>为什么“生成”是决策的错误抽象、操作定义、术语</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch03.html">3
+校准机制与数学原理</a></td>
+<td>严格适当评分规则、朴素方案为何失败、温度缩放</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch04.html">4
+官方体系与公开信息的边界</a></td>
+<td>三原语到四原语的 API 形态、可外部验证的计算语义</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch05.html">5
+架构与实现形态</a></td>
+<td>官方逆向重建、六条开源路线、架构差异与开放问题</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch06.html">6
+训练方法与数据</a></td>
+<td>P0–P4 五类训练、成本规模、37 仓库映射、数据卫生</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch07.html">7
+评测与验证</a></td>
+<td>基准解剖、五个指标、概率公理评测、最低评估协议</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch08.html">8
+应用与落地</a></td>
+<td>已公开场景、置信度级联、影子评估、成本模型、选型决策树</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch09.html">9
+失败模式与安全</a></td>
+<td>上下文翻转、选项语义、训练域瓶颈、输入侧攻击、防御清单</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch10.html">10
+共识、争议与开放问题</a></td>
+<td>四条共识、六个争议焦点、证据未闭合的研究问题</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch11.html">11
+历史谱系</a></td>
+<td>从 Brier 1950 到 Jev 发布后的生态涌现</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch12.html">12
+实践指南</a></td>
+<td>评估协议、阈值与成本建模、上线清单、与相邻范式辨析</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch13.html">13
+研究前沿与发展趋势</a></td>
+<td>活跃方向、演化趋势、弱信号</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/ch14.html">14
+结论与展望</a></td>
+<td>技术本质、核心洞察、谱系演化、未决问题</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/refs.html">参考文献</a></td>
+<td>115 条，按来源分层标注</td>
+</tr>
+<tr>
+<td><a
+href="https://zzkeepcurious.github.io/jev-system-one-survey/appendix.html">附录
+A–D</a></td>
+<td>数学推导、术语表、速查卡、检索策略与精读清单</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="证据标准">证据标准</h2>
+<ul>
+<li><strong>数据来源</strong>：arXiv 预印本、GitHub
+开源实现、官方技术文档三类载体</li>
+<li><strong>时间窗</strong>：主检索 2026-09-15 至 10-05，扩展前沿窗至
+10-17，证据核验至 10-26</li>
+<li><strong>纳入流程</strong>：首轮去重 88 篇候选 → 摘要筛选排除 15 篇 →
+73 篇进候选池（其中 41 篇为新发现）→ 11 篇进入正文精读证据池</li>
+<li><strong>来源分层</strong>：官方 / 逆向 / 转引 / 实测 /
+自报，逐条标注，强度分 A/B/C</li>
+<li><strong>未能核验处如实保留</strong>，不做补白；厂商自报数字单独标记</li>
+</ul>
+<h2 id="适用与不适用">适用与不适用</h2>
+<p><strong>适用</strong>：需要判断“某类决策该不该交给模型”的工程师；要为新系统做技术选型、算成本、列风险的人；在写评估方案、想知道最低可接受协议是什么的人。</p>
+<p><strong>不适用</strong>：找论文综述式文献计量的人；找可直接跳过的结论摘要的人——这份文档的结论都附了证据边界，剥离边界后就不可用。</p>
+<h2 id="引用与许可">引用与许可</h2>
+<p>引用格式：</p>
+<pre><code>System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型，v1.0，2026-10。
+https://zzkeepcurious.github.io/jev-system-one-survey/</code></pre>
+<p>许可：本文与全部图表采用 <a
+href="https://creativecommons.org/licenses/by/4.0/">CC BY
+4.0</a>（完整文本见 <a
+href="LICENSE">LICENSE</a>），可自由转载、摘编、商用，只需注明作者
+<strong>ZZKeepCurious</strong>
+并附上原文链接。若发现事实错误或引文问题，欢迎在仓库 Issues 中指出。</p>
+
+</div>
+<nav class="pager"><a href="ch01.html"><span class="lbl">开始阅读</span>1 摘要与核心论点</a><a class="next" href="appendix.html"><span class="lbl">附录</span>附录 A–D</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="ch01.html">1–14 章正文</a></li><li><a href="refs.html">参考文献</a></li><li><a href="appendix.html">附录 A–D</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

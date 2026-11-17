@@ -1,0 +1,2201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6、训练方法与数据：范式分类与数据组织【参考】 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/ch06.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6、训练方法与数据：范式分类与数据组织【参考】 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/ch06.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】" aria-current="page"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<blockquote>
+<p>相当于综述论文当中的“框架”~~~</p>
+<p>要将一个现成 LLM 变成 TDM 决策模型的具体做法是什么：</p>
+<ul>
+<li><p>各自更新什么参数、用什么损失/奖励、数据从哪来、校准在哪一步做；</p></li>
+<li><p>仅关注<strong>训练流程、数据配方与工程选择；</strong></p></li>
+</ul>
+</blockquote>
+<h2
+id="61从冻结读出到评分规则-rl-的五类训练方法">6.1、从冻结读出到评分规则
+RL 的五类训练方法</h2>
+<p>公开复现生态内训练方法看似分散，可通过三个核心问题统一归类：</p>
+<ul>
+<li><p>是否更新模型参数？</p></li>
+<li><p>使用何种损失 / 奖励信号？</p></li>
+<li><p>训练数据来源是什么？</p></li>
+</ul>
+<p>基于这三个维度，可以把所有实现路线划分成五档范式：<strong>P0
+成本最低，P4
+为独立的后处理工序。如下所示，实际上大多数的开源项目的工程实现，多为组合范式，并非单一范式支撑。</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>P0 零训练读出</th>
+<th>P1 监督头 / 轻量微调</th>
+<th>P2 数据中心化</th>
+<th>P3 评分规则 RL（RLCD 家族）</th>
+<th>P4 后处理校准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概括</td>
+<td>冻结基座，仅修改读出协议<br></td>
+<td>LoRA 替换或新增专用头，CE / 软 CE 监督</td>
+<td>资源优先投入数据构造与过滤，常作为 P1/P3 前置</td>
+<td>以严格适当评分规则构造奖励做强化学习</td>
+<td>冻结模型，在留出集拟合少量标量参数</td>
+</tr>
+<tr>
+<td>参数更新</td>
+<td>否（冻结基座）</td>
+<td>少量（LoRA/adapter/ 专用头）</td>
+<td>一般不更新参数<br>（一般作为 P1/P3 前置）</td>
+<td>更新模型本体 / LoRA</td>
+<td>否</td>
+</tr>
+<tr>
+<td>训练信号</td>
+<td>无（前向即推理）；<br>可选负载温度</td>
+<td>CE / 软 CE；可附加 Brier 正则</td>
+<td>对比对、蒸馏、replay 样本</td>
+<td>严格适当评分规则（Brier/spherical/log/RPS）作为奖励；GRPO/PPO/REINFORCE</td>
+<td>-</td>
+</tr>
+<tr>
+<td>数据来源</td>
+<td>只需评测集；<br>审计三件套</td>
+<td>教师 argmax 标签或软分布标签</td>
+<td>多教师交叉核对；公开集 replay；教师合成标注</td>
+<td>可验证二元结果，<strong>不需要置信标注</strong></td>
+<td>数百条留出校准集，与训练集同分布</td>
+</tr>
+<tr>
+<td><strong>优缺点</strong></td>
+<td>优点：零训练成本；能力上限跟随基座；基座可快速替换；审计友好<br>缺点：原生概率通常未校准（SemIf
+原文标注未校准）；对选项顺序敏感；推理延迟随基座线性增长</td>
+<td>优点：算力成本可控（Kev 4B 约 $1）；单卡可训练；推理延迟 10ms
+量级；软标签训练自带基础校准<br>缺点：单纯 CE
+不保证概率校准，几乎都需要叠加 P4
+后校准；判别上限受教师质量与数据集约束；PACT
+证明仅改动损失项容易损害稳定性</td>
+<td>优点：直接决定判别任务的性能上限；对比对、证书结构可被 PACT
+损失复用，数据层与算法层连续<br>缺点：会完整继承教师偏差；合成数据管线实现细节大多不开源</td>
+<td>优点：直接优化概率校准目标；理论上收敛到诚实概率；无需昂贵的置信标注<br>缺点：RL
+训练不稳定（System-One collapse、score-function 噪声 7–12×
+pathwise）；<strong>纯 P3 独立成功案例极少（Laya 原文说明需要搭配
+P1）</strong>；<strong>不适用于本质随机（aleatoric）任务</strong></td>
+<td>优点：成本极低、快速部署；不改动基座能力；<strong>可叠加在 P0/P1/P3
+之后</strong><br>缺点：强依赖留出集分布；分布偏移场景容易失效；<strong>部分题型会出现校准反向恶化（Score
+任务）</strong></td>
+</tr>
+<tr>
+<td>典型成本</td>
+<td>0</td>
+<td>单卡小时级</td>
+<td>管线人力与算力成本</td>
+<td>RL 算力，方差大、稳定性差</td>
+<td>分钟级</td>
+</tr>
+</tbody>
+</table></div>
+<p>【如下为 P0–P4 训练范式坐标系】</p>
+<p><img src="figures/fig-17.png" alt="fig-17" /></p>
+<ul>
+<li><p>横轴为算力 /
+数据成本（序数定性），纵轴为参数更新深度（序数定性）；</p></li>
+<li><p>坐标仅用于定性归类，无量纲；</p></li>
+</ul>
+<blockquote>
+<p>通常 P0 → 效果不足再叠加 P1+P2+P4 → 需要内禀校准再引入 P3；</p>
+<p>P4 后处理校准与 P0–P3 正交，可叠加在任何一档之上；</p>
+</blockquote>
+<hr />
+<h3 id="611p0零训练读出frozen-readout">6.1.1、P0：零训练读出（frozen
+readout）</h3>
+<ul>
+<li><p>流程：选取现成因果大模型基座 → 将决策问题序列化，约束答案落在单
+token 空间（字母标记 A/B/C 或候选拼接 prefill 打分）→ 在答案位置 logits
+上取出对应选项分量做 softmax
+→（可选）在业务负载上拟合温度系数。</p></li>
+<li><p>全程不更新任何模型参数。</p></li>
+</ul>
+<hr />
+<p>关键算法：</p>
+<ul>
+<li><p><strong>单 token logit 读出（SemIf 范式）</strong>：</p>
+<ul>
+<li><p>prompt 约束模型仅输出单个字母，取首生成 token 位置 logits
+向量，提取对应选项 token 分量做 softmax；</p></li>
+<li><p>强制校验选项必须为单
+token、分词边界合法，非法候选直接拒绝；</p></li>
+</ul>
+<blockquote>
+<p>【<a
+href="https://github.com/TheoLeeCJ/SemIf-OpenJev">github.com/TheoLeeCJ/SemIf-OpenJev</a>】。</p>
+</blockquote></li>
+<li><p><strong>prefill-only staged 候选评分</strong>：所有候选共享 state
+前缀，先对真实候选构建 Radix 缓存并复用，冷请求也可复用前缀表征【<a
+href="https://github.com/Yinsongxu/LLM2Jev">github.com/Yinsongxu/LLM2Jev</a>】。</p></li>
+<li><p><strong>双选项顺序平均</strong>：同一 state
+下使用两种候选顺序推理，结果取平均，低成本同时提升准确率与顺序鲁棒性【<a
+href="https://github.com/kshetrajna12/reflex">github.com/kshetrajna12/reflex</a>】。</p></li>
+<li><p><strong>分级去偏（AnyJev L0/L1/L2）</strong>：</p>
+<ul>
+<li><p>L0 = 每个候选位置循环 K
+次推理，对数空间聚合、去除标签先验，零标签消除位置偏置；</p></li>
+<li><p>L1 = L0 + 温度缩放；</p></li>
+<li><p>L2 = 在中间层隐状态闭式求解读出头（100–300
+标签闭式求解，非梯度训练）；</p></li>
+</ul>
+<blockquote>
+<p>论文 2610.00831， <a
+href="https://github.com/nokia-applied-research/AnyJev">github.com/nokia-applied-research/AnyJev</a></p>
+<p><img src="figures/fig-18.png" alt="fig-18" /></p>
+</blockquote></li>
+</ul>
+<hr />
+<p>代表性工作（论文与仓库并列）：</p>
+<ul>
+<li><p>SemIf-OpenJev（冻结 Qwen3.5-4B）：验证 “只读候选
+logit、不做自回归生成” 无需训练；读出路径耗时 1.023s，对比自回归 JSON
+生成 5.332s（RTX3090，21 条二值判据）【<a
+href="https://github.com/TheoLeeCJ/SemIf-OpenJev">github.com/TheoLeeCJ/SemIf-OpenJev</a>】；</p></li>
+<li><p>LLM2Jev（Qwen3.5-4B，SGLang/Transformers/MLX 三后端）：JevBench
+公开集 231 项 76.2%，P50 延迟 48ms；对照官方 Jev 1.13.0 P50 652ms【论文
+2610.02076 + <a
+href="https://github.com/Yinsongxu/LLM2Jev">github.com/Yinsongxu/LLM2Jev</a>】；</p></li>
+<li><p>reflex（冻结 Qwen3.5-4B）：把 “是否需要训练” 作为假设验证；</p>
+<ul>
+<li><p>实测 LoRA 混合微调、27B
+教师蒸馏仅在分布内提升性能，长模糊输入场景下泛化能力下降，最终上线冻结读出方案；</p></li>
+<li><p>JevBench public hard ECE 0.081；MMLU1200 题温度校准后 ECE 由
+0.090 降至 0.039</p></li>
+</ul>
+<blockquote>
+<p><a
+href="https://github.com/kshetrajna12/reflex">github.com/kshetrajna12/reflex</a></p>
+</blockquote></li>
+<li><p>jev-visual：将范式拓展至多模态，共享 prefill、fork 缓存图像
+state，无训练、无内置校准声明</p>
+<blockquote>
+<p><a
+href="https://github.com/hr98w/jev-visual">github.com/hr98w/jev-visual</a></p>
+</blockquote></li>
+</ul>
+<p>如下为基于当前资料梳理的P0 读出协议谱系：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>读出形态</th>
+<th>实现方式</th>
+<th>去偏手段</th>
+<th>代表项目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>单 token 字母 logits</td>
+<td>Prompt 约束输出单个字母，取首 token 选项分量 softmax</td>
+<td>单 token + 分词合法性校验</td>
+<td>SemIf、jevk5（蒸馏后）</td>
+</tr>
+<tr>
+<td>prefill-only staged 评分</td>
+<td>候选共享 state 前缀，Radix 缓存复用</td>
+<td>staged candidate scoring</td>
+<td>LLM2Jev、openjev-sglang</td>
+</tr>
+<tr>
+<td>双选项顺序平均</td>
+<td>同一输入两组候选顺序推理，结果取平均</td>
+<td>顺序平均</td>
+<td>reflex</td>
+</tr>
+<tr>
+<td>截断层 + 闭式头</td>
+<td>截断至中间隐状态，闭式解读出头</td>
+<td>L0 旋转去先验 / L2 闭式头</td>
+<td>AnyJev L0/L1/L2</td>
+</tr>
+<tr>
+<td>多模态 fork 缓存</td>
+<td>共享 prefill，分支缓存图像 state</td>
+<td>无原生去偏</td>
+<td>jev-visual、LLM2Jev 多模态</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p>优缺点与适用场景：</p>
+<ul>
+<li><p>优点：零训练成本；性能上限跟随基座能力；基座可随时替换；审计友好（SemIf
+固定版本、prompt SHA256、原始 logits 随结果输出）。</p></li>
+<li><p>缺点：原始读出概率通常未校准（SemIf README
+明确标注返回概率是候选条件概率，需要业务侧校准）；天然对选项顺序敏感；延迟随基座规模线性上升。</p></li>
+<li><p>适用：快速验证方案、低校准要求的路由场景、在已有大模型部署上低成本附加决策能力；</p>
+<ul>
+<li>reflex
+的结论具备规范意义：它是通过受控对照证明，在其测试分布上微调反而损害泛化，确立了<strong>优先跑零训练基线，再判断是否投入训练</strong>的工程范式【<a
+href="https://github.com/kshetrajna12/reflex">github.com/kshetrajna12/reflex</a>】；</li>
+</ul></li>
+</ul>
+<hr />
+<p>争议点：零训练读出是否 “够用”</p>
+<ul>
+<li><p>SemIf、reflex 认为冻结读出已经接近官方 Jev
+水平、微调容易损害泛化；另一派（LLM2Jev）则报告了 4B
+基座零训练读出经后处理后 ECE 可达 0.057【2610.02076】；</p></li>
+<li><p><strong>分歧根源在校准定义与测试负载</strong>：</p>
+<ul>
+<li><p>SemIf 输出的是<strong>未校准条件分数，</strong>而 LLM2Jev 的低
+ECE 结果是在自有负载、叠加后处理得到；</p></li>
+<li><p>当切换到异源 / 困难负载时，Nimble 在 Score 题型上出现了 ECE
+反弹、Laya 对于高棉文高置信错判 ——
+这预示着零训练概率不能直接作为置信度；</p></li>
+</ul></li>
+<li><p>共识：<strong>P0
+适合想法验证与路由，一旦要将概率用于自动化决策，必须叠加 P4
+业务侧校准</strong>；</p></li>
+</ul>
+<hr />
+<p>关于 AnyJev
+方案：其去偏是<strong>按标签量阶梯投入的方</strong>案：</p>
+<ul>
+<li><p>L2 在中间隐状态闭式求解读出头（100–300
+标签闭式求解，开销低于一次前向）。实测 LocalLLaMA typed-decisions
+基准：Qwen3-4B（24/36 截断）0.786、Qwen3-32B（52/64
+截断）0.798，高于官方 Jev 的 0.727【论文 2610.00831 + <a
+href="https://github.com/nokia-applied-research/AnyJev">github.com/nokia-applied-research/AnyJev</a>】；</p></li>
+<li><p><strong>工程启发：</strong>冷启动决策端点时，可以<strong>随可用标签量逐步增加投入</strong>：L0
+零标签消除位置先验 → L1 <strong>百级标签温度缩放</strong> → L2
+闭式头，不需要一开始就训练基座；</p></li>
+</ul>
+<hr />
+<h3 id="612p1监督头--轻量微调sft">6.1.2、P1：监督头 /
+轻量微调（SFT）</h3>
+<ul>
+<li><p>流程：准备 (state, question, 选项集，标签) 样本 →
+<strong>冻结基座 + LoRA / 替换专用头（pointer head / 候选头 /slot
+softmax）</strong>→ 交叉熵或软交叉熵训练（可增加 Brier 正则）→
+留出集选最优 checkpoint →（几乎总是搭配 P4 温度拟合）。</p></li>
+<li><p>核心设计原则：<strong>按输出统计结构设计读出头</strong></p>
+<ul>
+<li><p>如 NanoJev 将决策头拆分为三类，和官方 Jev Choice/Score/Noul
+三原语对齐：</p></li>
+<li><p>Choice：2–255 候选，共享打分标量 + set attention +
+softmax</p></li>
+<li><p>Boolean：单命题，sigmoid 输出真概率</p></li>
+<li><p>Ordered Score：2–10 档有序评分，期望加权支持非整数档位</p></li>
+</ul>
+<blockquote>
+<p>github.com/TianyuCodings/NanoJev</p>
+</blockquote></li>
+<li><p>将 proper scoring 写进 SFT
+损失，也在置信度相关工作当中有所体现：</p>
+<ul>
+<li><p>ConfTuner（论文 2508.18847）：改造了 Brier 损失用于 verbalized
+confidence，<span class="math inline">\(\ell(q,y)=\sum_i
+q_i(y-i/N)^2\)</span>，属于把校准纳入监督损失、而非依赖后处理的最轻方案；</p></li>
+<li><p>PACT（论文 2609.35865）：则对单 token typed-decision
+的目标进行改进，直接替换 Nimble 推理后端，将总损失设置为 <span
+class="math inline">\(L=L_{CE}+0.5L_{CF}+0.5L_{PC}+0.2L_{NR}+0.3L_{EMD}\)</span>，其中反事实
+pair margin <span
+class="math inline">\(L_{CF}\)</span>、证据缺席无偏约束 <span
+class="math inline">\(L_{NR}\)</span>是核心，论文实验移除<span
+class="math inline">\(L_{NR}\)</span>后 flip rate 由 8.0% 上升至
+17.6%；</p></li>
+</ul>
+<blockquote>
+<p>结论：PACT 不提升主指标准确率（84.6 vs Nimble
+85.2），收益在于顺序偏置、有序 rubric 误差、种子稳定性；</p>
+</blockquote></li>
+</ul>
+<hr />
+<p>P1 代表单元汇总：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>读出 / 头结构</th>
+<th>损失函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>kev</td>
+<td>Qwen3.5 + LoRA r16 + pointer head</td>
+<td>正确答案交叉熵，基座冻结<br></td>
+</tr>
+<tr>
+<td>decider</td>
+<td>Qwen3.5 各尺寸 + 答案槽隐向量投影</td>
+<td>交叉熵微调</td>
+</tr>
+<tr>
+<td>openthai</td>
+<td>Qwen3.5-0.8B，移除 vision encoder，LM 头替换 256 路 slot
+softmax</td>
+<td>CPT 预训练 → 决策 SFT → 后校准</td>
+</tr>
+<tr>
+<td>NanoJev</td>
+<td>Qwen3-0.6B，三分支决策头：Choice softmax / Boolean sigmoid / Score
+期望加权</td>
+<td>标准交叉熵，备 Brier/paired-reward 变体</td>
+</tr>
+<tr>
+<td>PlayJev</td>
+<td>Qwen3.5-0.8B-Base 全量微调，像素→动作概率</td>
+<td>行为克隆 SFT（1epoch lr2e-5）+3 轮 DAgger</td>
+</tr>
+<tr>
+<td>von</td>
+<td>ModernBERT-large + Option-Marker 头，选项间零注意力泄漏</td>
+<td>listwise softmax CE + Brier</td>
+</tr>
+<tr>
+<td>agent-jev</td>
+<td>Qwen3-0.6B 移除 LM 头，置换等变候选头</td>
+<td>软交叉熵 + 0.1× 候选求和 Brier</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p>P1 的两条重要工程教训：</p>
+<ul>
+<li><p><strong>多问打包在 Qwen3.5/3.8 上失效（kev
+事后回顾）</strong>：</p>
+<ul>
+<li><p>理想方案将 state + 多问题拼成单序列，block-causal mask
+隔离问题；但 Qwen3.5/3.8 内 Gated DeltaNet 循环线性注意力会无视
+mask、跨分支信息泄漏；</p></li>
+<li><p>工程回退方案：<strong>每个问题独立成行、state KV
+只计算一次并复用；该方案和 Jev 逆向形态概率差 &lt;
+4e-6</strong>【官方</p></li>
+</ul>
+<blockquote>
+<p>仓库 <a
+href="https://github.com/jaredpalmer/kev">github.com/jaredpalmer/kev</a>，所有在
+Qwen3.5/3.8 做多分支并行决策必须阅读！！！</p>
+</blockquote></li>
+<li><p><strong>必须先证明微调优于零训练基线再投入训练（decider）</strong>：</p>
+<ul>
+<li><p>decider 使用现成 instruct 权重 + 仅拟合温度的零梯度基线，在
+Decision Index 上排 #2/#8，而训练后的 4B/2B/35B
+专训模型反而低于基线；</p></li>
+<li><p>项目指出：<code>the base model sets most of the score</code></p></li>
+</ul>
+<blockquote>
+<ul>
+<li><a
+href="https://github.com/Mapika/decider">github.com/Mapika/decider</a></li>
+</ul>
+</blockquote>
+<ul>
+<li>这个教训基本和 reflex 结论互相印证：<strong>P1
+的增益不是天然存在，必须对照“冻结基座 + 读出 +
+温度”基线验证；</strong></li>
+</ul></li>
+</ul>
+<hr />
+<p>优缺点与适用：</p>
+<ul>
+<li><p>优点：成本可控（kev 4B H100 训练约 $1）、单卡可训练，延迟可做到
+10ms 级别，软标签训练自带部分校准属性；</p></li>
+<li><p>缺点：</p>
+<ul>
+<li><p>性能上限由教师与数据覆盖决定；</p></li>
+<li><p>单纯 CE 不保证校准，因此几乎所有 P1 方案都搭配 P4；</p></li>
+<li><p>PACT 对照显示纯 CE
+训练稳定性差，附加结构损失才可以修复；</p></li>
+</ul></li>
+<li><p>适用：业务分布稳定、计划自建小决策模型的团队；规范流程为先跑 P0
+基线，验证微调正向收益再训练。</p></li>
+</ul>
+<hr />
+<h3
+id="613p2数据中心化data-centric-curation">6.1.3、P2：数据中心化（data-centric
+curation）</h3>
+<ul>
+<li><p>P2
+不是特定损失函数，而是<strong>预算优先投入数据构造，而非网络结构</strong>的工程立场。</p>
+<ul>
+<li><p>绝大多数 P1、P3 项目都将其作为前置工序。</p></li>
+<li><p>它把生态里核心 know-how（数据构造方案）显性化，也是
+decision-head-rlcd 受控实验 “泛化来自数据而非算法”
+之后，社区形成的共识。</p></li>
+</ul></li>
+<li><p>流程：构造对比样本对 → 多教师交叉标注 → 公开集 replay → 合成 /
+教师标注 → 过滤查重 → 按 case 划分训练 / 验证集。</p></li>
+<li><p>目前的方案汇总：</p></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>数据工序</th>
+<th>规模</th>
+<th>标注与来源说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nimble</td>
+<td>对比式四步法：<br> - 修改焦点事实翻转标签；<br> -
+删除证据后答案不可知；<br> - 过滤、去重；</td>
+<td>2676 训练 / 324 留出；Choice 856/146、Noul 888/114、Score
+932/64</td>
+<td>全部模型自标，无人工复核</td>
+</tr>
+<tr>
+<td>jevk5</td>
+<td>双教师蒸馏（Qwen3.6-27B + GPT-6 Luna）交叉核验；<br> 公开集
+replay</td>
+<td>17408 教师题 + 30052 replay 样本，26 种公开划分</td>
+<td>replay 仅使用训练划分，对 test/val 做 8 词查重</td>
+</tr>
+<tr>
+<td>decider</td>
+<td>公开集混合 + Qwen3.5-27B 本地教师标注</td>
+<td>~95 公开集 + 形状增强</td>
+<td>27B 教师标注与通用标注一致性仅 72%</td>
+</tr>
+<tr>
+<td>metask-jev</td>
+<td>教师软标签合成 + 等价视图增强，同一 state 多视图共享软标签</td>
+<td>配方未公开；<br> 13 子集宏平均 79.6%</td>
+<td>管线骨架公开，详细合成方案 withheld</td>
+</tr>
+<tr>
+<td>PACT</td>
+<td>复用 Nimble 对比对 + 证书结构，转化为无需新增标注的损失</td>
+<td>2676 记录 /1338 pair /34 source family；<br> holdout 324/162
+pair</td>
+<td>不新增标注，消费已有对比数据集</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><p>Nimble
+对比式整编的机制：目标是迫使模型学习判别证据，而不是表面文本捷径</p></li>
+<li><p>首先在同一段 state 内修改≤8
+个词的焦点事实，构造标签翻转样本对；</p></li>
+<li><p>然后删除任意一条证据，答案应当变为不可知，给每个 pair
+附带机器可校验 certificate；</p></li>
+<li><p>普通 CE 独立看待单样本，无法利用 pair 和 certificate
+结构；</p></li>
+</ul>
+<blockquote>
+<p>类似的，PACT 正是把该结构转化为<span
+class="math inline">\(L_{CF}\)</span>（pair margin）、<span
+class="math inline">\(L_{NR}\)</span>（证据缺席约束），P2 数据结构和 P1
+损失函数在这里衔接。</p>
+</blockquote>
+<ul>
+<li><p><strong>优缺点与定位：</strong></p>
+<ul>
+<li><p>优点：直接决定判别上限；只要可以获取教师模型就可以落地；对比对、证书结构可以被
+PACT 这类损失复用，数据与算法衔接。</p></li>
+<li><p>缺点：教师偏差会完整继承；agent-jev
+备注：榜单提升不等于业务效果提升；decider 自曝教师标注不一致；Nimble
+全自标，存在模型系统性错误重复风险；合成管线是各家核心壁垒，很多 builder
+不开放。</p></li>
+<li><p><strong>定位：P2 不是可选项，是 P1/P3
+的前置必要环节。</strong></p></li>
+</ul></li>
+</ul>
+<hr />
+<h3
+id="614p3适当评分规则强化学习rlcd-家族">6.1.4、P3：适当评分规则强化学习（RLCD
+家族）</h3>
+<blockquote>
+<p>这里需要先强调：</p>
+<ul>
+<li><p>P3 是官方 Jev 采用路线（RLCD = Reinforcement Learning for
+Calibrated Decisions），但官方只公开了训练目标，完整方案是闭源的，且
+RLCD 仅是 TypeSafe 的产品命名；</p></li>
+<li><p>与之同源的学术方案包括：</p></li>
+<li><p>RLCR（Brier 惩罚 GRPO，论文 2507.16806）；</p></li>
+<li><p>Rewarding Doubt（对数评分 PPO，论文 2503.02623）；</p></li>
+<li><p>相应的开源实现包括 Laya、OpenJev-RLCD、decision-head-rlcd
+尽管都自称
+RLCD，但也仅仅是共享严格适当评分的数学内核，在具体的奖励构成、数据组织以及训练细节上均有差异。</p></li>
+</ul>
+</blockquote>
+<ul>
+<li><p>公开的复现流程：模型输入 (state, question) 输出分布q →
+使用严格适当评分规则（Brier / 球面 /log/RPS），基于可验证真值y计算奖励 →
+策略梯度更新（GRPO/PPO/REINFORCE）→ 收敛后叠加温度缩放。</p>
+<blockquote>
+<p>之前数学基础3.2节已经证明了：严格适当评分规则的期望最小化不动点就是真实概率。</p>
+</blockquote></li>
+<li><p>RLCD 家族方案汇总表如下：</p></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th><strong>单元</strong></th>
+<th><strong>奖励组成</strong></th>
+<th><strong>RL 算法</strong></th>
+<th><strong>数据/规模</strong></th>
+<th><strong>公开程度</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Jev 官方（闭源）</strong></td>
+<td>官方声明以严格适当评分规则做校准决策训练</td>
+<td>未公开</td>
+<td>官方称全合成数据</td>
+<td><strong>目标公开、配方未公开</strong></td>
+</tr>
+<tr>
+<td><strong>Laya</strong></td>
+<td><span class="math inline">\(Reward =
+(S_{\log}+0.5\,S_{\mathrm{sph}}-1.0\,S_{\mathrm{rps}})\)</span>（log/球面/RPS
+三适当评分）；<br> logit 层高斯探索、每组 G=8、σ 1.0→0.3<br></td>
+<td>GRPO 式组基线 <span class="math inline">\(A_i=R_i-\bar
+R\)</span><br><span class="math inline">\(L=-\mathrm{mean}(A\log
+p)\)</span><br></td>
+<td>Kaggle 免费 2×T4 上 DDP</td>
+<td>奖励公式与 σ 调度，详细说明见：<a
+href="https://dev.to/nandakishor\_m\_6cc0adfde9f/i-built-non-autoregressive-decision-models-a-year-ago-then-a-frontier-lab-called-it-a-18me">https://dev.to/nandakishor\_m\_6cc0adfde9f/i-built-non-autoregressive-decision-models-a-year-ago-then-a-frontier-lab-called-it-a-18me</a></td>
+</tr>
+<tr>
+<td><strong>OpenJev-RLCD</strong></td>
+<td>shifted Brier <span
+class="math inline">\(J(u,y)=2u_y-|u|^2\)</span>；<br> 两阶段：stage1
+pathwise 梯度训读出，stage2 REINFORCE</td>
+<td>score-function，c=0.3，leave-one-out 基线，KL anchor β=0.04<br></td>
+<td>Qwen3-1.7B；ChaosNLI/MMLU-Pro/GSM8K-Verify；每任务 400 步×3
+seeds</td>
+<td>论文：2609.38850 + github.com/ZimmyGao/openjev-rlcd</td>
+</tr>
+<tr>
+<td><strong>agent-jev（监督式近邻）</strong></td>
+<td>软 CE + 0.1× 候选求和 Brier，Brier 作为 SFT 正则，非 RL</td>
+<td>监督微调</td>
+<td>Typed Decisions</td>
+<td>github.com/malevrigns/agent-jev</td>
+</tr>
+<tr>
+<td><strong>decision-head-rlcd</strong></td>
+<td>RLCD：对选项字母 logits 加高斯噪声作动作、leave-one-over-8
+作基线</td>
+<td>RLCD one-pass</td>
+<td>Qwen3.5-4B + <strong>4.9M LoRA(r8)</strong>，32000 条 typed
+decisions，lr 5e-5 / 2000 步；<br> 三 seed 固定算法、只变数据覆盖度</td>
+<td>github.com/Astro-Han/decision-head-rlcd</td>
+</tr>
+<tr>
+<td><strong>RLCR（学术版）</strong></td>
+<td><span
+class="math inline">\(R_{RLCR}=\mathbb{1}[y=y^*]-(q-\mathbb{1}[y=y^*])^2\)</span>（Brier
+惩罚）</td>
+<td>GRPO</td>
+<td>Qwen2.5-7B / HotpotQA</td>
+<td>论文：2507.16806</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><strong>【深入解析与原理】</strong></p>
+<ul>
+<li><p><strong>基于严格恰当打分规则（proper scoring
+rule）的校准强化路线（RLCD/RLCR）</strong>，它和普通 0/1 二元奖励
+RLVR/GRPO
+构成一组核心对照：<strong>二者都使用可验证的答案正确性作为监督信号，但优化目标完全不同，直接决定模型是
+“学会答对” 还是 “学会诚实报出真实胜率”</strong>。</p>
+<ul>
+<li><p><strong>恰当打分规则（proper scoring
+rule）</strong>：只有当模型输出的置信概率等于这件事真实发生频率时，期望奖励才达到最优；谎报高置信、刻意保守都拿不到最优分；</p></li>
+<li><p>经典：对数分（log score，无界）、Brier
+分（平方误差，有界）、球面分；</p></li>
+<li><p><strong>0/1 二元奖励不是恰当打分规则</strong>——
+它只奖励最终对错、不惩罚过度自信，天然鼓励模型押极端概率【2507.16806，RLCR】</p></li>
+<li><p><strong>两种不确定性</strong></p></li>
+<li><p>认知不确定性（epistemic）：模型知识不足、推理链条有缺口；可以通过多路径推理、增加
+rationale 消除，适合 P3 校准路线;</p></li>
+<li><p>偶然不确定性（aleatoric）：任务本身存在标注分歧、答案不唯一；上限由标注噪声决定，此时再做
+RL 校准收益有限，<strong>最优目标退化为普通交叉熵 CE
+监督;</strong></p></li>
+</ul></li>
+<li><p>P3 路线的核心论据及其实规则选型：</p>
+<ul>
+<li><p>核心论据：<strong>P3
+不追求显著拉高准确率，而是在准确率持平前提下，大幅提升可控自动放行比例，把置信度从
+“后处理补丁” 变成模型内禀属性</strong>。</p></li>
+<li><p>在选择打分规则上，【2503.02623】Rewarding Doubt 选用对数打分（log
+score）：</p></li>
+</ul>
+<blockquote>
+<p>《<strong>Rewarding Doubt: A Reinforcement Learning Approach to
+Calibrated Confidence Expression of Large Language Models</strong>》</p>
+<ul>
+<li><p>论文：</p></li>
+<li><p><a
+href="https://arxiv.org/pdf/2503.02623">https://arxiv.org/pdf/2503.02623</a></p></li>
+<li><p><a
+href="https://github.com/pasta99/RewardingDoubt">https://github.com/pasta99/RewardingDoubt</a></p></li>
+<li><p>提出了一种新的强化学习方法，通过将信心估计建模为一个赌博游戏，激励模型在训练过程中学习校准其信心估计。具体来说，模型在给出答案的同时预测一个信心分数，奖励函数根据答案的正确性和预测的信心来计算奖励；</p></li>
+<li><p>奖励函数的形式即为对数分数，论文也通过数学证明，当模型预测的信心
+<span class="math inline">\(\hat{p}\)</span> 与实际正确性概率 <span
+class="math inline">\(p^∗\)</span>
+相等时，奖励函数达到最大值，从而优化了完美校准；</p></li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>对数分是严格
+proper，但无界</strong>，也就是说<strong>模型可以通过输出接近 0
+的置信拿到很好的期望分数、同时放弃答对，存在明确 reward hacking
+漏洞</strong>；</li>
+</ul>
+<blockquote>
+<ul>
+<li><p><strong>Proper（恰当）</strong>：当真实的信念分布就是 <span
+class="math inline">\(p^*\)</span>
+时，<strong>期望得分最优</strong>的策略就是如实输出 <span
+class="math inline">\(p^*\)</span>。 简单来讲：如果模型内心真实概率是
+<span
+class="math inline">\(p^*\)</span>，它不会靠撒谎、篡改概率拿到更高分数，也就是激励对齐
+——<strong>说真话收益最高；</strong></p></li>
+<li><p><strong>Strictly
+Proper（严格恰当）</strong>：更强一些，也就是<strong>只有输出等于真实分布</strong><span
+class="math inline">\(p^*\)</span><strong>的时候，才能拿到最优期望得分</strong>——
+任何偏离真实信念的概率，期望得分一定变差，不存在多个不同概率都能拿到同样最高分；</p></li>
+<li><p>这是 P3
+路线的核心刚需：我们要训练模型<strong>校准不确定性</strong>，而不只是选对答案；只有严格
+proper 的奖励，才能从数学上保证：<strong>最优策略 =
+诚实输出自身真实置信度；</strong></p></li>
+<li><p>例子：普通的 0-1 奖励（答对 + 1，答错 0，也就是 GRPO/RLVR
+常用二元奖励）<strong>不是 proper</strong></p></li>
+<li><p>一个事件真实胜率 0.6，模型输出 p=0.9、赌它是
+1，期望收益更高；</p></li>
+<li><p>模型有很强动机<strong>过度自信、虚报置信</strong>，这就是为什么普通
+RL 容易校准崩坏、ECE 飙升。</p></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>所谓无界，即得分本身的取值范围没有上下界（或者单侧无界），可以趋向负无穷
+/ 正无穷；</p>
+<ul>
+<li><p>对数得分的二元形式为：$R(a, \hat{p}, j) = \begin{cases}
+\log(\hat{p}), &amp; \text{if } j(a) = 1 , (\text{correct}) \ \log(1 -
+\hat{p}), &amp; \text{if } j(a) = 0 , (\text{incorrect})
+\end{cases}$</p></li>
+<li><p>当模型给真实标签分配的概率 <span class="math inline">\(p \to
+0\)</span>，<span class="math inline">\(\log(p)\to-\infty\)</span> ——
+这就是<strong>严格 proper，但无界；</strong></p></li>
+<li><p>对数分的两条性质打包：</p></li>
+<li><p><strong>严格恰当 strictly proper</strong>：期望得分 <span
+class="math inline">\(\mathbb E_{y\sim p^*}[S(p,y)]\)</span> 在 <span
+class="math inline">\(p=p^*\)</span>
+处唯一取最大值；适合做不确定性校准的奖励，理论最优。</p></li>
+<li><p><strong>无界
+unbounded</strong>：一旦模型对正确项给出极小概率，损失（负的得分）爆炸，数值上会出现巨大梯度，训练不稳定、方差极高<strong>【这也是上边说的“RLCD
+/ 基于 proper 评分规则的 RL
+方差大、稳定性差”的根源！】</strong></p></li>
+</ul>
+</blockquote>
+<ul>
+<li><p>后续工程选型（RLCD、RLCR）优先换成 Brier、球面这类<strong>有界
+proper score</strong>，在诚实校准和任务正确率之间做约束平衡；</p></li>
+<li><p>【扩展】和 Brier 得分做对照：</p></li>
+</ul>
+<blockquote>
+<p>Brier 得分（布里尔分）：<span
+class="math inline">\(S(p,y)=-(y-p)^2\)</span></p>
+<ul>
+<li><p>严格恰当</p></li>
+<li><p><strong>有界</strong>：二元场景得分区间 <span
+class="math inline">\([-1,0]\)</span>，不会爆炸</p></li>
+<li><p>代价：Brier
+是二次的，尾部低概率区域的梯度强度弱于对数分，对极端不确定性的区分能力弱于对数得分</p></li>
+</ul>
+</blockquote></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>得分规则</th>
+<th>Strictly Proper</th>
+<th>有界 / 无界</th>
+<th>核心取舍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>对数得分 Log Score</td>
+<td>是</td>
+<td>无界</td>
+<td>理论最优激励；尾部梯度爆炸、RL 训练震荡难收敛</td>
+</tr>
+<tr>
+<td>Brier 得分</td>
+<td>是</td>
+<td>有界</td>
+<td>激励稳健、工程友好；对极小概率事件区分力度偏弱</td>
+</tr>
+<tr>
+<td>0/1 二元奖励 (GRPO)</td>
+<td>不是</td>
+<td>有界</td>
+<td>只优化准确率，鼓励虚报置信，校准效果差</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>严格 proper = 数学上激励模型不要吹牛、如实报概率；</p>
+<p>无界 = 一旦猜错且极度不自信，惩罚会无限大，训练很难稳住;</p>
+</blockquote>
+<ul>
+<li>【2507.16806】RLCR 则在二元正确性奖励之外叠加 Brier
+校准项，属于<strong>有界 proper
+score，进一步实验修正了</strong>一个流传很广的片面认知：</li>
+</ul>
+<blockquote>
+<p><strong>“0/1 奖励 RL 一定会恶化校准” 只在分布外 OOD
+平均意义上成立</strong>；在同分布 in-domain 场景，RLVR 也有可能小幅降低
+ECE；</p>
+<ul>
+<li><strong>RLCR 是这批方案里唯一在 OOD
+同时保住准确率、显著改善校准的方案；</strong></li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>【2609.38850】</strong>OpenJev-RLCD
+指出当前的置信度校准当中的两条主流路线存在局限性，并解释了为什么流行的多样本验证
+RL（RLVR/GRPO）会破坏校准、鼓励矛盾推理，提出了一个“Calibrate-then-Reinforce（先校准，再强化）”的两阶段的稳定
+RLCD 工程流程；</li>
+</ul>
+<blockquote>
+<p>现有 GRPO/RLVR
+用混合打分，数学上自带奖励虚假分歧的项，造成过度自信；如果换成理想的单推理
+Brier
+打分直接端到端训练，模型又会走捷径抛弃推理、直接输出保守分布（System‑One
+坍缩）；为此本文提出先冻结推理、校准读出头，再放开推理做 RL 的两阶段
+RLCD 方案；消融实验（命题 1、图
+1）验证了失效机理，主表格在数学、MMLU-Pro、GSM8K
+上验证，这套方案可以得到既会推理、置信又诚实的模型，大幅提升选择性预测指标。</p>
+</blockquote>
+<ul>
+<li><p>当前两条主流路线的局限</p></li>
+<li><p><strong>SFT + 事后温度缩放（Temperature Scaling）</strong>
+监督微调之后，单独用温度参数抹平置信分布。</p></li>
+<li><p>缺点：属于事后补丁，没有从推理过程本身学习不确定性；分布偏移、分布外场景很容易失效。</p></li>
+<li><p><strong>基于可验证奖励的 RL（GRPO / RLVR / STaR）</strong>
+奖励只有二元：答案对 = 1，错 = 0，在同一个 prompt
+上采样多条推理，对样本集合打分。</p></li>
+<li><p>核心结论：这种<strong>对混合样本分布打分（mixture
+objective）</strong>，数学上自带一个方差奖励项：<strong>它会奖励多条推理互相矛盾、结论不一致
+—— 模型学会 “故意猜得不一样”
+拿奖励，推理质量崩坏，越训越盲目自信！</strong></p></li>
+<li><p>论文用方差恒等式证明：RLVR
+本质就是这个混合目标，只是去掉了显式多样性项：</p></li>
+</ul>
+<blockquote>
+<p>如果用“多条推理先混起来、再打分”（混合目标，GRPO/RLVR
+的做法），总收益天然可以拆成两块：</p>
+<ol type="1">
+<li><p>第一块：每条推理单独打分的平均分（这部分是我们本来想要的）</p></li>
+<li><p>第二块：<strong>方差奖励</strong>——
+只要不同推理给出的答案分布不一样，就能白拿额外收益</p></li>
+</ol>
+<p>也就是说，对一批推理样本先平均再打分，等价于：给平均表现打分，外加一笔
+“鼓励大家互相唱反调” 的奖励，随机乱猜分歧也能赚奖励 ——
+这将导致策略只要随机给出不一样的结论，就能拿到这笔加分！</p>
+</blockquote>
+<p><img src="figures/fig-19.png" alt="fig-19" /></p>
+<p>这解释了典型现象：<strong>二元奖励抹除了不同推理路径之间分歧的奖励项，</strong>模型梯度会单向推向
+one-hot 极端分布，也就是过度自信；</p>
+<blockquote>
+<p>通俗理解：只要猜对就拿满分，模型没有任何动力去说
+“我把握不大”；它会快速学会赌一个答案、报很高置信；</p>
+</blockquote>
+<ul>
+<li><p><strong>核心理论与核心失效模式</strong>（对两种不同的打分范式进行了分析）：</p></li>
+<li><p>范式 A：混合样本打分（GRPO/RLVR）【论文命题 1】</p></li>
+<li><p>对同一个问题，采样多条推理 <span
+class="math inline">\(r_1,r_2,...\)</span>，把所有推理后的答案分布混合成一个混合分布再打分：<span
+class="math inline">\(J(\mathbb{E}_r[u(r)]) = \mathbb{E}_r[J(u(r))] +
+\mathrm{Var}_r(u)\)</span></p></li>
+<li><p>左边：混合目标（GRPO/RLVR
+实际优化的目标：先把多条推理的分布取平均，再打分）</p></li>
+<li><p>右边第一项：每条推理单独打分的均值（我们想要的单推理目标）</p></li>
+<li><p>右边第二项：方差
+bonus，<strong>对推理之间的分歧进行奖励</strong></p></li>
+<li><p>额外多出的方差项 <span
+class="math inline">\(\mathrm{Var}_r(u)\)</span>给出的奖励，不区分分歧来源：</p></li>
+<li><p>只要不同推理的结论不一样，就能拿到额外奖励；</p></li>
+<li><p><strong>不需要这个分歧是合理的，随机瞎猜制造分歧也能获得奖励：</strong></p></li>
+<li><p>合理分歧：信息不足、多条推理走不同合法逻辑路径；</p></li>
+<li><p>虚假分歧：模型随机抖动、无依据猜不同答案；</p></li>
+<li><p>这样，优化混合目标的策略最优解不是诚实后验（
+“每条推理都诚实给出真实后验”），而是主动制造分歧、不一致，最终表现就是<strong>过度自信、校准崩坏</strong>；</p></li>
+</ul>
+<blockquote>
+<p>结论：<strong>混合打分范式本身在数学上内置了一个偏向矛盾推理的激励，这是
+GRPO/RLVR 校准差的根源，不是调参、数据问题</strong></p>
+</blockquote>
+<ul>
+<li>范式 B：单条推理独立打分（RLCD）【及其失效模式】</li>
+</ul>
+<p><strong>每一条独立推理链 r 单独读出它自己承诺的答案分布</strong><span
+class="math inline">\(u(r)\)</span><strong>，单独用严格恰当得分规则（strictly
+proper scoring rule，论文主要用 Brier
+得分）打分</strong>，不混合多个样本。</p>
+<ul>
+<li><p>恰当得分规则的性质：只有当模型输出的概率等于真实后验概率时，期望得分最优；天然鼓励校准。</p></li>
+<li><p>理论最优：对每一条推理，<span class="math inline">\(u(r)\)</span>
+= 该推理条件下真实正确概率。</p></li>
+<li><p><strong>直接裸端到端进行单推理优化有两个工程失败模式：</strong></p></li>
+</ul>
+<blockquote>
+<p>论文进行了 System‑One
+坍缩实验，在MMLU-Pro上，为每条单独的推理进行Brier打分，端到端联合优化推理生成头
++ 概率读出头；每个 prompt 采样 4 条推理，设置了两组对照：有无 KL
+anchor（KL 约束，约束策略不要远离 SFT 参考模型）</p>
+<p><img src="figures/fig-20.png" alt="fig-20" /></p>
+<p>解读：在没有 KL 锚定项（KL anchor）的情况下，每个问题对应的 4
+条推理链，在约 100
+步训练后会变得完全一样、内容空洞（左图：不同推理之间u的方差）；而读出头学会了模糊避险（hedge）。
+加入 KL 锚定项后，模型能够持续做推理，并在推理完成之后再学会模糊避险。
+无 KL 锚定的实验在坍缩发生后，于第 150 步提前终止</p>
+<ul>
+<li><p><strong>No KL anchor（无 KL 正则）</strong></p></li>
+<li><p>~100 训练步：方差快速掉到接近
+0，推理链全部变得简短、无实质推导（System‑One 坍缩：抛弃慢思考 System
+Two 链式推理，退回直觉捷径）；</p></li>
+<li><p>同步：读出头快速学会 hedge，输出保守平坦分布拿到很好的 Brier
+分数；</p></li>
+<li><p>本质捷径：<strong>模型发现不需要做推理，直接输出一个保守分散分布，就能拿到最优奖励</strong>。Brier
+得分好看，但推理是空壳，属于伪校准。实验 150 步提前终止。</p></li>
+<li><p><strong>With KL anchor（带 KL 正则）</strong></p></li>
+<li><p>方差维持在合理区间，推理保持多样性、保留推理步骤；</p></li>
+<li><p>hedge 后置：先完成推理，再由读出头表达不确定性，这是 RLCD
+期望行为。</p></li>
+</ul>
+</blockquote>
+<ul>
+<li><p>策略梯度方差巨大，训练震荡、不稳定；</p></li>
+<li><p>模型直接学
+“放弃推理”，不写思考过程，靠简单分布拿稳定奖励【坍缩、未校准】；</p></li>
+<li><p>哪怕目标函数选对（per-rationale + proper scoring
+rule），直接端到端联合训练推理和读出头，依然存在另一个严重捷径：<strong>丢弃推理，直接用平坦分布刷
+Brier 指标；</strong></p></li>
+<li><p>KL anchor 可以抑制这个捷径，但 KL
+是一把双刃剑：太强会锁死策略，推理无法优化；太弱抑制不住坍缩；</p></li>
+</ul>
+<blockquote>
+<p>因此论文提出了分阶段训练配方 Calibrate-then-Reinforce；</p>
+</blockquote>
+<ul>
+<li>论文提出了一个两阶段的训练方法：Stage1
+先用恰当打分规则把读出头校准到位；Stage2 再低权重 RL 微调（论文配置
+c=0.3，β=0.04 的 KL 约束），用 KL 锚守住原有推理能力，防止坍缩；</li>
+</ul>
+<blockquote>
+<p><strong>阶段 1：监督校准阶段（固定推理学习置信输出）</strong></p>
+<p>模型生成推理 rationale 之后，训练它读出的后验概率分布符合 Brier
+最优；</p>
+<ul>
+<li><p>推理生成策略<strong>冻结不动</strong>，只训练后面的概率读出头
+readout；</p></li>
+<li><p>损失：Brier 恰当得分；</p></li>
+</ul>
+<p>目的：教会模型<strong>在一段推理写完之后，怎么诚实表达自己的不确定性</strong>，先把
+“决策头” 校准好，避免 RL 阶段直接崩坏。</p>
+<ul>
+<li><p>教会模型：<strong>给定一段固定推理文本之后，如何输出匹配这段推理不确定性的诚实概率分布；</strong></p></li>
+<li><p>为什么可以防坍缩：推理侧被锁死，模型没有办法删掉推理；它只能在已有推理的基础上学习
+hedge；</p></li>
+</ul>
+<p><strong>阶段 2：RL 强化阶段（优化推理本身）</strong></p>
+<p>放开推理策略，继续用同一个 Brier
+得分作为奖励（per-rationale，不混合多条样本），去优化推理生成过程；</p>
+<ul>
+<li><p>必须搭配 KL anchor
+正则（约束策略不要跑太远，进一步辅助防止坍缩）；</p></li>
+<li><p>优化目标：生成更高质量推理，同时在推理之后维持良好校准；</p></li>
+</ul>
+<p>目的：让模型学会生成<strong>既能提高正确率、同时又保持置信可信</strong>的推理链，而不是只追求猜对。</p>
+</blockquote>
+<p>方案设计的基本思路：<strong><code>先固定推理，把 “什么是合理的不确定性表达” 教给读出头；再去优化推理，此时模型已经知道 hedge 是依附推理的输出，而不是替代推理的捷径</code></strong><code>。</code></p>
+<blockquote>
+<p>关键设计：奖励不是
+“猜对”，而是<strong>推理之后给出的概率分布本身的统计诚实度</strong>。</p>
+</blockquote>
+<ul>
+<li><p>通过在 MMLU-Pro（多选知识）、GSM8K（数学推理）
+对照实验进行了验证与消融评估：</p></li>
+<li><p>普通准确率掩盖了置信失效问题，论文核心评价指标是<strong>风险 -
+覆盖曲线 AUC（risk–coverage
+AUC）（在5%的放行错误上限Cov@5%）</strong>：</p></li>
+</ul>
+<blockquote>
+<ul>
+<li><p>覆盖度
+coverage：模型敢自动放行多少样本（置信高于阈值）；</p></li>
+<li><p>风险 risk：放行样本里的错误率；</p></li>
+<li><p>好模型：在很低的错误上限下，尽可能放行更多题目；</p></li>
+</ul>
+</blockquote>
+<ul>
+<li>核心结果：</li>
+</ul>
+<p><img src="figures/fig-21.png" alt="fig-21" /></p>
+<ul>
+<li><p>整体准确率：RLCD 与 GRPO、SFT
+基线持平或小幅占优，不会为了校准牺牲正确率；</p></li>
+<li><p>核心指标风险 - 覆盖 AUC：RLCD 显著高于所有基线；</p></li>
+</ul>
+<p><img src="figures/fig-22.png" alt="fig-22" /></p>
+<ul>
+<li><p>GSM8K 定点测试（放行错误率上限 ≤ 5%）：</p></li>
+<li><p>GRPO+KL+TS（0/1 正确性奖励）：Acc
+91.8，Cov@5%=19.4%；为勉强校准，后处理温度要拉到 T≈7</p></li>
+<li><p>RLCD 两阶段：Acc 92.2（统计上和 GRPO
+接近，没有显著提升），Cov@5%=81.1%；训练结束本身已经接近校准，T=1.4</p></li>
+</ul>
+<blockquote>
+<p>前提：必须规避图 24 的坍缩。如果直接跑无 KL 端到端
+RLCD，表格里这个优势完全消失，模型只会输出空洞推理 + 保守分布，OOD
+下风险会失控。</p>
+</blockquote>
+<ul>
+<li>消融实验来对打分、训练方式、KL锚点以及评分函数进行消融：</li>
+</ul>
+<blockquote>
+<ul>
+<li><p>打分范式：mixture objective /per-rationale objective（验证命题
+1）</p></li>
+<li><p>训练方式：端到端联合训练 / Calibrate-then-Reinforce
+两阶段</p></li>
+<li><p>是否带 KL anchor</p></li>
+<li><p>是否使用恰当得分 Brier，或二元答对奖励</p></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>原文结论:</p>
+<ul>
+<li>核心函数权重（core-function weight）。<strong>表
+4：如果不做阶段拆分，只要给得分函数项分配正向权重，效果就会变差</strong>，这和梯度稀释（gradient-dilution）的诊断结论吻合。</li>
+</ul>
+<p><img src="figures/fig-23.png" alt="fig-23" /></p>
+<ul>
+<li><p>只预热读出头是不够的：读出头先训 200 步、再做 200
+步强化（两者都从头开始训练），最终性能和只训练读出头的基线持平；表 2
+里看到的收益，必须建立在<strong>读出头已经充分收敛</strong>的前提下。</p></li>
+<li><p><strong>由谁来给推理链打分（Who scores the
+rationale）</strong>：用一份冻结、已经校准好的独立读出头副本打分，而不用策略自身的读出头打分（目的是防止两者互相适配、共谋
+co-adaptation），在 GSM8K-Verify 上效果反而更差（随机种子 17：Brier 上升
+0.021，AURC 上升
+0.030）；表现为推理变短，并且策略自带的读出头变得过度自信。</p></li>
+<li><p><strong>阶段 2 不加 KL 锚定项（No KL anchor in stage
+2）</strong>：大约 330
+步之后推理发生退化<strong>（模型不再书写推理标记，反复重复结论凑够长度上限）</strong>；基于读出头的奖励本身看不到推理链的格式、结构，因此
+KL 锚是必需的;</p></li>
+<li><p><strong>显式概率 RLCD（Explicit-probability
+RLCD）</strong>：对于没有推理链、直接输出概率打分的模型（直接打分器），带显式分布的
+RLCD，其期望梯度等价于 Brier 损失；在 CLINC150、ChaosNLI
+数据集上，它始终无法超越交叉熵（CLINC150 准确率 94.6% vs
+96.3%）；同一模型上跑 RLVR 则会坍缩到单一主流类别（mode
+collapse）。</p></li>
+</ul>
+</blockquote>
+<ul>
+<li><p>同时实验暴露直接联合优化的致命工程问题：</p></li>
+<li><p>policy gradient（score-function 梯度）噪声极大，RMS 是 pathwise
+梯度的 7–12 倍，噪声主导训练【原文】；</p></li>
+</ul>
+<blockquote>
+<p><strong>梯度分解公式（原文 3.1 Estimator）</strong> <span
+class="math inline">\(\widehat{\nabla}=\frac{1}{M}\sum_{i=1}^{M}\nabla_{\theta}R_{i}+\frac{1}{M}\sum_{i=1}^{M}\Big(R_{i}-\frac{1}{M-1}\sum_{j\neq
+i}R_{j}\Big)\nabla_{\theta}\log\pi_{\theta}(r_{i}\mid x)\)</span></p>
+<ul>
+<li><p>第一项：<strong>pathwise 梯度</strong>：对 readout
+概率分布的可微梯度，低噪声；</p></li>
+<li><p>第二项：<strong>score-function / REINFORCE policy
+gradient</strong>：对推理生成策略 <span
+class="math inline">\(\pi(r|x)\)</span> 的梯度，高方差噪声项。</p></li>
+</ul>
+</blockquote>
+<p><img src="figures/fig-24.png" alt="fig-24" /></p>
+<ul>
+<li><p>不加 KL 锚定（KL anchor）时，100–330 步出现 <strong>System-One
+collapse（系统一坍缩）</strong>：<strong>模型发现
+“不写推理过程、直接输出空 rationale 再猜答案”
+更容易拿到奖励，推理链条直接退化，变成无脑打分器，放弃思考【原文图1】；</strong></p>
+<ul>
+<li>标注分歧的特殊实验：</li>
+</ul>
+<p>论文在ChaosNLI数据集上，通过实验证明：当任务本身的不确定性来自标注分歧（没有客观标准答案，标注者之间互相不一致）：</p>
+<ul>
+<li><p>RLCD 目标在数学上无法超越交叉熵；</p></li>
+<li><p>模型会自主学到：继续推理不会降低不确定性，主动停止推理，不再继续消耗算力做无效思考；</p></li>
+</ul>
+<blockquote>
+<p>On a task whose uncertainty is annotator disagreement, the same
+objective provably cannot beat cross-entropy and, left alone, discovers
+that it should stop reasoning.</p>
+<p><strong>任务本身就不存在能被推理消除的真值时，恰当得分规则引导模型主动停止推理，是
+RLCD 想要的、符合理论预言的正常行为！</strong></p>
+</blockquote>
+<ul>
+<li><p><strong>原文的边界问题：</strong></p></li>
+<li><p>RLCD
+不能凭空消除任务本身固有的不确定性；它只能<strong>如实表达当前推理下的不确定性</strong>。标注分歧场景，它会停止推理，而不是强行猜一个确定答案。</p></li>
+<li><p>两阶段方案比 GRPO 工程更复杂：需要分开维护校准阶段、RL
+阶段，调参面更大；KL 强度、Brier
+权重、阶段切换时机都是敏感超参。</p></li>
+<li><p><strong>不是所有场景都优先 RLCD：如果你只追求最高 top1
+准确率、不需要置信和人机分流，GRPO 更简单，速度更快。</strong></p></li>
+<li><p>分布外（OOD）性能依赖推理本身；如果推理在 OOD 下直接失效，RLCD
+只能表达 “我不确定”，不能凭空产出正确答案。</p></li>
+<li><p>本文仅在 Qwen3-1.7B
+小模型上验证；大模型上的行为是否一致，尚未验证。</p></li>
+<li><p><strong>对这些方法的对比简表与论文核心结论：</strong></p></li>
+<li><p>结论 1：不能不拆分阶段，不能直接联合加权（core-function
+weight）</p></li>
+<li><p>机理：当推理生成头 + 读出头一起优化时，Brier
+奖励对读出头的优化更简单、回报更快；梯度会优先流向读出头去刷平坦避险分布，推理支路的梯度被稀释、几乎学不到东西。</p></li>
+<li><p>本质：<strong>联合优化是天然不稳定的，不是调一个 loss
+权重就能修好的</strong>；这就是为什么论文不推荐简单加权，必须强制分阶段。</p></li>
+<li><p>结论 2：不是简单 “先训一会儿读出头，再 RL”
+就行，读出头必须充分收敛</p></li>
+</ul>
+<blockquote>
+<p>浅预热（各 200 步）只能追到 “只训读出头” 的水平，拿不到表 2
+里的超额收益。</p>
+</blockquote>
+<ul>
+<li><p>很多人会猜想：两阶段只是一个简单热身，稍微启动读出头就可以切
+RL，论文消融否定了这个猜想。</p></li>
+<li><p>配方硬性约束：<strong>阶段 1 必须把读出头训练到收敛，让它稳定掌握
+“给定一条推理，该输出什么样的诚实分布” 之后，再放开推理做 RL</strong>。
+如果读出头还没学明白 hedge 的规则就提前切强化，后续 RL
+没法把推理推向高质量、校准一致的方向，增益消失。</p></li>
+<li><p>结论 3：打分器不能换成独立冻结读出头（反直觉消融）</p></li>
+</ul>
+<blockquote>
+<p>设想的安全方案：单独训一个校准好、固定不动的读出头，拿它给策略的推理打分，避免策略推理和自己的读出头互相串通共谋（co-adaptation）。
+实验结果：效果变差，推理变短、策略自身读出头重新过度自信。</p>
+</blockquote>
+<ul>
+<li><p>论文原本的假设是：独立打分器更客观，防止共谋捷径；</p></li>
+<li><p>失败原因：<strong>打分读出头和策略推理的分布存在偏移，</strong>策略生成的推理风格，和独立冻结读出头见过的推理分布不匹配；打分信号对策略是
+“外来、异构” 的，无法引导推理和置信配套对齐。</p></li>
+<li><p>最终工程选择：<strong>用策略自己配套的读出头来给它自己的推理打分</strong>（也就是论文主方案），接受存在轻微共谋风险，但收益更高。</p></li>
+<li><p>结论 4：哪怕已经做了两阶段，阶段 2 依然离不开 KL anchor</p></li>
+</ul>
+<blockquote>
+<p>就算读出头已经收敛，放开推理做 RL 的时候，如果去掉 KL 约束，330
+步左右推理退化：不再写思考标记，循环复述结论凑长度。</p>
+</blockquote>
+<ul>
+<li><p>关键点：<strong>Brier
+奖励只评估最终输出的概率分布，它不看推理文本长什么样、有没有真的推导</strong>。奖励函数本身对推理格式、思考步骤是盲的。</p></li>
+<li><p>对比图 24：图 24 是无
+KL、不分阶段快速坍缩；这里是分阶段了、读出头收敛了，但阶段 2 去掉
+KL，依然会出现另一种退化捷径 —— 维持长度但内容循环空洞。</p></li>
+</ul>
+<blockquote>
+<p>推论：KL 在这里的作用不是只防早期坍缩，而是在 RL
+阶段持续约束语言生成行为，强制模型维持推理格式、有效思考结构。</p>
+</blockquote>
+<ul>
+<li>结论 5：RLCD 的价值，依赖<strong>推理链
+rationale</strong>这个载体；无推理直接输出概率的版本竞争力弱</li>
+</ul>
+<blockquote>
+<p>去掉思维链，让模型直接输出类别概率（explicit-probability
+RLCD）：数学上梯度等价 Brier 损失； 在 CLINC150、ChaosNLI
+这类分类任务上，准确率低于普通交叉熵； 同时 RLVR
+在这个无推理设置下直接模式坍缩。</p>
+</blockquote>
+<ul>
+<li><p>论文消融划定了 RLCD 的适用边界： RLCD
+不是一个通用替代交叉熵的分类损失；它的核心增益来自<strong>“先生成推理，再基于这条推理表达不确定性”</strong>这套结构；</p></li>
+<li><p><strong>如果任务本身不需要链式推理、只是简单分类，直接交叉熵更稳更好。</strong></p></li>
+<li><p>附带对照：RLVR
+在这种无推理场景下更拉胯，直接坍缩到高频类别</p></li>
+</ul></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>方法</th>
+<th>打分范式</th>
+<th>奖励核心</th>
+<th>天然倾向/失效模式</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GRPO / RLVR</td>
+<td>多条推理混合分布打分</td>
+<td>答案二元对错</td>
+<td>奖励虚假分歧，过度自信，校准崩坏；<br> 校准崩坏，选择性预测很差</td>
+<td>追求纯准确率、不依赖置信</td>
+</tr>
+<tr>
+<td>SFT + 温度缩放</td>
+<td>单样本，交叉熵训练，事后修正</td>
+<td>拟合标注</td>
+<td>OOD、复杂推理下校准失效，不确定性不是推理内生</td>
+<td>简单分类、不需要强自动放行<br></td>
+</tr>
+<tr>
+<td>裸端到端 RLCD（per-rationale，无约束）</td>
+<td>单条推理独立 Brier 打分</td>
+<td>恰当得分（Brier）</td>
+<td>两类失效模式：System‑One 坍缩，推理空洞、伪校准</td>
+<td>几乎不可直接使用</td>
+</tr>
+<tr>
+<td>本文 Calibrate-then-Reinforce RLCD</td>
+<td>单条推理独立 Brier 打分，两阶段</td>
+<td>Brier 恰当得分</td>
+<td>置信和真实风险对齐；但工程复杂，超参敏感；无法消除任务固有不确定性，需要先校准预热</td>
+<td>人机分流、自动审批、风控 Agent，要求可信置信</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>【总结】P3 路线依赖<strong>严格恰当得分规则（strictly proper scoring
+rule）</strong>构造奖励，保证最优策略为如实输出置信分布。</p>
+<p>典型代表对数得分满足严格恰当性：仅当模型输出和内在真实信念一致时，期望奖励最大；但其代价是<strong>无界</strong>：当模型给真实标签分配趋近于
+0
+的概率时，奖励趋向负无穷，梯度剧烈爆炸，这也是该范式训练方差大、稳定性难控制的底层数学原因。</p>
+<p>工程上常用 Brier
+这类有界严格恰当得分做折中，换取训练稳定性，但牺牲了低概率区间的分辨能力。</p>
+</blockquote>
+<hr />
+<p><strong>边界问题：</strong></p>
+<ul>
+<li><p>边界 1：当不确定性是标注本身分歧（aleatoric），P3 路线失效</p>
+<ul>
+<li>OpenJev-RLCD ChaosNLI
+实验：数据集样本本身没有唯一标准答案，标注者天然不一致。 此时
+per-rationale 恰当打分目标的理论期望等价 Brier 梯度，性能上限和普通 CE
+几乎持平（JSD 0.075 vs CE
+0.074）；模型最优策略就是<strong>关掉推理增益、不再做多路径思考</strong>。</li>
+</ul>
+<blockquote>
+<p>论文的配套实验：同一个 Stage1 校准好的 checkpoint 继续续训</p>
+<ul>
+<li><p>0/1 GRPO：破坏已有的校准，温度从 1.4 反弹到 3.8，Brier、AURC
+同步变差</p></li>
+<li><p>RLCD proper-score RL：+1.8 准确率、−0.035 Brier</p></li>
+</ul>
+<p>再次实证：二元奖励不是恰当打分规则，它的优化目标和 “诚实概率”
+本身冲突。</p>
+</blockquote>
+<ul>
+<li><p><strong>指导价值 —— 先区分不确定性来源：</strong></p></li>
+<li><p>epistemic（模型不知道，推理能补齐）→ 适合 P3 RLCD/RLCR</p></li>
+<li><p>aleatoric（标注分歧、问题歧义）→ 直接用 CE 监督，不要上 P3
+RL，投入没有收益</p></li>
+</ul></li>
+<li><p>边界 2：开源复现项目 Laya、decision-head-rlcd 暴露的落地短板</p>
+<ul>
+<li><p>Laya 项目（<a
+href="https://github.com/NandhaKishorM/laya">github.com/NandhaKishorM/laya</a>）是
+P3 路线一个典型的 “边界案例”，它证明纯 RLCD 不是绝对有效的，依然依赖 P1
+轻量微调：</p></li>
+<li><p>原始 RLCD 零样本能力弱：typed-decisions
+0.362/0.352，甚至低于多数类基线 0.461；项目自述 “Fine-tuning is where
+most of the value is”；RLCD 主训练之后，必须追加 P1
+式任务头微调。</p></li>
+<li><p>微调后指标：Acc 77.0% / Brier 0.062 /raw ECE 0.213；温度校准后
+ECE 降到 0.081；但是软分布匹配指标 0.471，显著弱于 Jev 0.580。</p></li>
+<li><p>高基数分类短板：Banking77，Laya 0.425 vs Jev 0.870；根源是 Option
+Scorer 头的候选 token 预算限制，高类别任务空间下表达不足。</p></li>
+<li><p>分布外跨语言风险：英文 checkpoint 直接跑高棉文任务，raw
+acc≈0，但置信度依然输出 0.952；项目原文原话：<strong>confidence gating
+cannot save you</strong>——
+置信门控不能解决分布漂移，它只能在训练分布内生效</p></li>
+</ul>
+<blockquote>
+<p>配套工程解法是前置轻量 router（&lt;0.5ms）分流到对应语种
+checkpoint，而不是指望置信本身泛化。</p>
+</blockquote>
+<ul>
+<li><p>decision-head-rlcd（<a
+href="https://github.com/Astro-Han/decision-head-rlcd">github.com/Astro-Han/decision-head-rlcd</a>）进一步揭示数据结构的隐性约束：固定基座、算法、超参，只改变留出集和训练数据结构。</p></li>
+<li><p>同分布留出集：0.955</p></li>
+<li><p>缺失长策略结构的留出集：0.32，甚至低于未训练基线 0.47；Brier
+同步恶化（0.342→0.378）</p></li>
+</ul>
+<blockquote>
+<p>结论：<strong>窄分布、结构单一的数据训练出来的校准头，对未见过的推理结构是负债；准确率涨了，但更容易过度自信</strong>。</p>
+</blockquote></li>
+</ul>
+<hr />
+<p><strong>优缺点与适用边界：</strong></p>
+<ul>
+<li><p>优势</p>
+<ul>
+<li>目标直接对准概率校准，不是 ECE/Brier
+这类代理指标；理论最优就是诚实概率分布</li>
+</ul>
+<blockquote>
+<p>同时对齐排序准确率 +
+概率校准，是部署侧风控、自动放行、拒绝机制最需要的能力；</p>
+</blockquote>
+<ul>
+<li>不需要人工标注置信度，仅依赖可验证的二元结果
+y，适配自动验证闭环</li>
+</ul>
+<blockquote>
+<p>摆脱昂贵的置信标注，只用可验证二元反馈，适配大量自动化评测、工具校验场景；</p>
+</blockquote>
+<ul>
+<li>产出内禀置信，而不是推理结束之后用温度缩放、Platt
+缩放这类事后补丁</li>
+</ul>
+<blockquote>
+<p>学习到的是原生决策分布，不是事后修正，在分布偏移场景下鲁棒性通常优于固定后处理</p>
+</blockquote></li>
+<li><p>硬约束（也是目前生态里纯 P3 成功案例偏少的原因）</p>
+<ul>
+<li><p>RL 训练不稳定：<strong>System-One 坍缩、policy
+梯度方差巨大，必须两阶段 + KL 约束</strong></p></li>
+<li><p>奖励函数、超参组合各家实现差异大，很多细节属于未公开工程黑箱</p></li>
+<li><p><strong>存在严格适用域：只适合 epistemic
+不确定性、依赖多路径推理的决策任务；标注分歧主导场景收益枯竭</strong></p></li>
+<li><p>几乎没有独立自闭环的案例：Laya、OpenJev-RLCD 都必须和 P1（微调 /
+换头）组合使用</p></li>
+</ul></li>
+<li><p><strong>局限、不适合的场景</strong></p>
+<ul>
+<li><p>仅追求简单选择题正确率、不在乎置信度好坏：直接 GRPO（0-1
+奖励）性价比更高；</p></li>
+<li><p>预算极小、不能跑 RL：优先 P0 零训练读出或者 P4
+温度校准；</p></li>
+<li><p>反馈噪声很高、二元标签本身不可靠：PSR
+会把标签噪声直接编码进概率，校准反而崩坏；</p></li>
+<li><p>对长链条多步决策、不可验证开放式输出：PSR 奖励难以构造，P3
+基本不可用；</p></li>
+</ul></li>
+</ul>
+<hr />
+<h3
+id="615p4后处理校准post-hoc-calibration">6.1.5、P4：后处理校准（post-hoc
+calibration）</h3>
+<p>P4
+属于模型训练完成之后独立追加的校准工序：冻结模型全部权重，仅在预留的校准集上拟合少量标量参数（绝大多数是温度
+T，也有分桶温度、线性条件温度、独立置信头），于推理部署阶段作用于模型输出。</p>
+<p>典型如温度缩放是对 logits 做单调变换，<strong>不会改变 argmax
+选出的候选，因此不会颠覆模型原有决策结果；但其能力边界同样清晰</strong>：仅当模型本身对候选的排序大体可靠时，校准才能生效，一旦测试分布相对校准集发生漂移，就需要重新拟合参数。正如
+Reflex
+项目【<strong>github.com/kshetrajna12/reflex</strong>】总结的核心教训：温度缩放只能修正过度自信问题，本身无法提升模型的判别能力。</p>
+<blockquote>
+<p>温暖缩放：<span class="math inline">\(\text{new}_{logit} =
+\frac{\text{logit}}{T}\)</span></p>
+<ul>
+<li><p><span class="math inline">\(T&gt;1\)</span>：logit
+被拉平，置信度被压低，缓解过度自信（绝大多数 Jev 项目的场景）</p></li>
+<li><p><span class="math inline">\(T&lt;1\)</span>：logit
+被锐化，置信度拉高，容易变得更自信（也就是后面 Laya
+移植踩坑的情况）</p></li>
+<li><p>关键数学性质：除以同一个正数 T，<strong>各个选项 logit
+的相对大小不变 → argmax 选出的最优选项不变</strong></p></li>
+<li><p>安全底线：校准不会把原本选对的答案换成错的；</p></li>
+<li><p><strong>能力上限：</strong></p></li>
+<li><p>如果模型本身判别排序就乱了，温度救不了；</p></li>
+<li><p>分布一变（测试集和校准集分布不一样），ECE
+直接失效，要重新拟合温度；</p></li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>本质：校准是对“置信度
+level”的事后修正，不能修复判别力——温度压平分布但不改变谁对谁错。</strong></p>
+</blockquote>
+<hr />
+<p>在整套 P0–P4 谱系中，P4 与内生校准路线 P3 形成清晰互补：</p>
+<ul>
+<li><p>P3
+依托严格恰当打分规则在强化学习阶段把校准目标内化到模型权重，追求
+“训练完毕即自带良好校准”；</p></li>
+<li><p>而 P4 是通用的后置补丁，可叠加在 P0–P3
+任意一条路线之上，二者并非互斥方案；</p></li>
+</ul>
+<hr />
+<p>Jev
+生态各项目形成了一套梯度化的后处理校准实践，核心差异集中在校准粒度的选择，但本质都在做温度缩放，汇总实测方案如下：</p>
+<ul>
+<li><p>Nimble 采用全局单一温度 <span
+class="math inline">\(T=2.179\)</span>，遵循双集协议：第一集合用于温度寻优，第二集合采用预先注册的准则完成验证；整体异源集
+ECE 由 0.128 降至 0.066，但该方案存在明显缺陷，Score
+题型上校准误差反向上升，由 0.105 增至 0.177，项目 09‑24
+新版因此默认回退至 <span class="math inline">\(T=1.0\)</span>【<a
+href="https://github.com/bespokelabsai/nimble">github.com/bespokelabsai/nimble</a>】。</p></li>
+<li><p>Laya
+采用多维度分桶策略：依据选项数量分组拟合独立温度，叠加直方图分箱校准与拒答门控；原始
+Typed‑Decisions 任务 ECE 从 0.213 降至温度校准后的 0.081，另一组 0.466
+同样收敛至 0.081【<a
+href="https://github.com/NandhaKishorM/laya">github.com/NandhaKishorM/laya</a>】。</p></li>
+<li><p>SemIf 采用折外（out‑of‑fold）分负载独立温度：Authored 负载 <span
+class="math inline">\(T=1.23\)</span>、WANLI 负载 <span
+class="math inline">\(T=2.50\)</span>、Every 负载 <span
+class="math inline">\(T=1.71\)</span>；WANLI 任务 ECE 由 0.208 下降至
+0.069，其余两组校准前后置信区间重叠，改善不显著【<a
+href="https://github.com/TheoLeeCJ/SemIf-OpenJev">github.com/TheoLeeCJ/SemIf-OpenJev</a>】。</p></li>
+<li><p>agent‑jev 按原语类型拆分温度，Choice、Score、Noul
+三类原语各维护一个独立标量，仅基于 120 条校准样本拟合，Typed Decisions
+任务最终 ECE 为 0.1687【<a
+href="https://github.com/malevrigns/agent-jev">github.com/malevrigns/agent-jev</a>】。</p></li>
+<li><p>kev 为每个模型检查点单独拟合温度：0.8B 版本 <span
+class="math inline">\(T=2.35\)</span>、4B <span
+class="math inline">\(T=2.41\)</span>、9B <span
+class="math inline">\(T=2.19\)</span>、27B <span
+class="math inline">\(T=1.32\)</span>；校准后整体误差由 0.103 降至
+0.041，高置信（≥0.9）样本中的答错占比由 8.2% 压缩至 2.4%【<a
+href="https://github.com/jaredpalmer/kev">github.com/jaredpalmer/kev</a>】。</p></li>
+<li><p>jevk5 设置双温度机制：字母打分温度与 knockout
+淘汰温度，后者专门缓解选项数 &gt; 16
+的组合淘汰流程带来的失校准；两个参数均在 MASSIVE 数据集的 500
+条样本上拟合，全程不改动 argmax；v0.3 4B 参数为 1.22/0.93，9B v0.3.3 为
+1.316/1.05【<a
+href="https://github.com/allebee/jevk5">github.com/allebee/jevk5</a>】。</p></li>
+<li><p>von 使用条件化动态温度，温度值由输入特征实时计算：<span
+class="math inline">\(T=\text{bias}+w_H
+H_\text{norm}+w_\text{len}\log_{10}(\text{tokens})/4+w_K(K/8)\)</span>，输出钳位至
+<span class="math inline">\([0.3,12]\)</span>；整套校准流程可在 CPU
+上分钟级完成重拟合，Sealed 任务 ECE 稳定在
+0.107；作者同时注明，该校准分布贴合 JevBench，跨域泛化能力有限【<a
+href="https://github.com/wfzyx/von">github.com/wfzyx/von</a>】。</p></li>
+<li><p>verdict‑2.0
+跳出单一温度范式，采用双通道设计：分布头向专家组软标签对齐，搭配独立专用置信头，在折外预测特征空间上训练；置信头
+ECE 低至 0.0144，分布头 Brier 得分为 0.0636【<a
+href="https://github.com/Heman10x-NGU/openJev-verdict-2.0">github.com/Heman10x-NGU/openJev-verdict-2.0</a>】。</p></li>
+</ul>
+<p>从这些方案中可以提炼一条稳定规律：全局统一温度难以适配异构任务负载，Nimble
+的结果就是典型佐证 ——
+全局调优虽然优化整体指标，却会造成部分子任务校准恶化。社区方案沿着粒度持续细化：<strong>从全局单一温度，走向按负载、原语、选项数量、模型尺寸分组，再到基于输入特征的条件动态温度，直至解耦式独立置信头</strong>。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>粒度层级</th>
+<th>代表项目</th>
+<th>做法</th>
+<th>痛点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>全局单一温度</td>
+<td>Nimble</td>
+<td>整个模型、所有题型共用一个 T</td>
+<td>异构任务不兼容：整体 ECE 变好，但部分题型（Score
+题型）校准反向恶化（原文
+0.105→0.177），<strong>这是最核心反面证据，说明全局 T
+不够灵活</strong></td>
+</tr>
+<tr>
+<td>按负载 / 原语分组</td>
+<td>SemIf、agent-jev</td>
+<td>SemIf：不同任务负载单独 T；<br>agent-jev：Choice/Score/Noul
+三类原语各自一个 T</td>
+<td>粒度变细，适配不同任务的置信分布；<br>但分组越多，每组可用校准样本变少，过拟合风险上升</td>
+</tr>
+<tr>
+<td>按选项数量 / 淘汰阶段分组</td>
+<td>Laya、jevk5</td>
+<td>Laya：按选项数分桶拟合 T；<br>jevk5：普通字母打分一套 T，&gt;16
+选项淘汰分支额外一套 knockout T</td>
+<td>适配 K 变化带来的分布偏移<br>（Jev 最核心痛点：选项数量 K
+变化，置信分布天然漂移）</td>
+</tr>
+<tr>
+<td>条件化温度（输入特征动态 T）</td>
+<td>von</td>
+<td>T 不是固定常数，是 tokens 长度、选项数
+K、隐藏层范数的线性函数，实时算出 T</td>
+<td>理论上最灵活；<br>代价：拟合参数变多，跨域迁移差，作者自注只在
+JevBench 有效</td>
+</tr>
+<tr>
+<td>脱离温度缩放：独立置信头</td>
+<td>verdict-2.0</td>
+<td>不再修改 logit，单独训练一个 confidence head
+预测正确率，和原始分布头解耦</td>
+<td>跳出温度单调变换的限制；<br>但已经从 “简单标量校准” 往轻量 P1
+方向靠近了，边界很微妙</td>
+</tr>
+<tr>
+<td>按模型尺寸</td>
+<td>kev</td>
+<td>0.8B/4B/9B/27B 每个检查点单独拟合 T</td>
+<td>基座越大，最优 T 不一样，大模型本身置信行为不同</td>
+</tr>
+</tbody>
+</table></div>
+<p>同时可以观察到，所有能够提供可复核 ECE 指标的公开 Jev 项目，均配套了
+P4
+后处理校准；<strong>方案之间的区别，本质是温度拟合的精细程度取舍</strong>。</p>
+<hr />
+<p>另外，汇总目前的项目来看，P4的后处理路线存在两个需要辨析的工程陷阱/问题：</p>
+<ul>
+<li><p>第一个问题：细粒度分桶温度存在过拟合风险，甚至反向破坏校准。</p>
+<ul>
+<li><p>【实例】Laya 移植至 MLX / CoreML 版本时发现，选项数≥11
+的分桶拟合得到温度低至 0.1006，该取值会将 logits
+锐化约十倍，把不确定性较高的二分类样本强行推至接近 0/1
+的极端置信，制造虚假确定性。移植版本因此增加运行时约束，将所有分桶温度钳制在
+<span class="math inline">\([0.5,5.0]\)</span>，原始拟合值保留为
+<code>temperature_raw</code>，一旦触发钳位自动抛出运行告警【<a
+href="https://github.com/mizorewww/laya-mlx">github.com/mizorewww/laya-mlx</a>】；</p></li>
+<li><p>这个案例说明校准粒度并非越细越好，“<strong>分桶越细、越要防某桶过拟合到离谱</strong>”，因为细分桶样本变少后极易拟合出病态参数，必须配套运行时防护机制。</p></li>
+</ul></li>
+<li><p>第二个问题：校准目标本身存在内在冲突：对齐专家软分布，和对齐样本二元正误标签，二者无法同时最优。</p>
+<ul>
+<li><p>【实例】verdict‑2.0 项目观察到，专家组标注的平均 top 概率仅为
+0.659；若以匹配软分布为目标，模型输出置信会贴近专家分歧，面向 “是否答对”
+的 ECE 指标随之变差；若刻意锐化置信去压低
+ECE，预测分布又会偏离专家组共识、Brier
+指标恶化。该项目的解决思路是双头解耦：<strong>分布头（Distribution
+Head）负责拟合专家软标签，对齐专家标注的概率分布、优化
+Brier；独立置信头（Confidence
+Head）直接面向预测正确性学习，输出预测是否正确的置信度、压低
+ECE</strong>。</p></li>
+<li><p>这一案例点明一个底层前提：开展校准前必须明确定义目标 ——
+我们需要校准到专家的信念分布，还是校准到最终的二元对错标签，<strong>单调的温度缩放无法同时满足两类目标</strong>。</p></li>
+</ul></li>
+</ul>
+<hr />
+<p>最后，需要指出，P4 的产出不只是一个 ECE
+指标，更是支撑选择性分类与级联调度的置信曲线，这对实际生产应用当中的级联方案落地更具有价值与意义。</p>
+<blockquote>
+<p>【实例】</p>
+<ul>
+<li><p>verdict‑2.0 给出了量化结果：覆盖 80% 样本时准确率 83.44%，50%
+覆盖度下准确率 91.40%，30% 覆盖度下准确率 95.17%【<a
+href="https://github.com/Heman10x-NGU/openJev-verdict-2.0">github.com/Heman10x-NGU/openJev-verdict-2.0</a>，截止1008】；然后使用“选择性分类+人工分流闸门”的级联方案保证落地：</p></li>
+<li><p>依靠Confidence
+Head的置信度做筛选：只自动处理置信度高的样本，低置信的交给人审；</p></li>
+<li><p>覆盖量越低（只留最有把握的一部分自动处理），准确率越高，<strong>方便业务做“人机协同”，可控、可落地；</strong></p></li>
+<li><p>von 的实测结果同样印证该逻辑，当 Choice 分支置信阈值设为
+0.80，仅保留 25% 高置信样本，对应准确率可达 92.4%（剩下 75% 准确率只有
+59%，要升级）【<a
+href="https://github.com/wfzyx/von">github.com/wfzyx/von</a>】</p></li>
+</ul>
+<p><strong>这套置信分流机制构成了部署系统的基础策略：高置信样本自动放行，低置信样本触发升级复核，交由更强模型或者人工介入判断。</strong></p>
+</blockquote>
+<hr />
+<h2 id="62项目范式映射与速查">6.2、项目范式映射与速查</h2>
+<blockquote>
+<p>基于前文定义的 P0–P4
+五档范式坐标系，对开源决策模型复现项目的训练成本、实现方案、数据组织做汇总、归类与归纳；所有提到的指标以项目自报为准，证据等级、不可比警告、闭源声明统一标注。</p>
+</blockquote>
+<h3 id="621训练成本与规模汇总">6.2.1、训练成本与规模汇总</h3>
+<p>下表汇总全部执行<strong>参数更新</strong>的开源项目训练规。注意，这里的硬件与评分、训练时间等均是各个项目独立给出，统计标准并不一致，不具备相互比较的条件，仅做查询参考。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>基座参数量</th>
+<th>改动方式</th>
+<th>数据规模</th>
+<th>步数 / 轮次</th>
+<th>硬件</th>
+<th>成本说明</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ConfTuner</td>
+<td>Llama-3.1-8B-Instruct</td>
+<td>全量 SFT</td>
+<td>HotpotQA，2000 条</td>
+<td>2k 步收敛</td>
+<td>4×A40</td>
+<td>4 分钟</td>
+<td>论文：2508.18847</td>
+</tr>
+<tr>
+<td>verdict-2.0</td>
+<td>ModernBERT-base 149.6M</td>
+<td>全量</td>
+<td>typed-decisions</td>
+<td>未公开</td>
+<td>GTX 1660 Ti 6GB</td>
+<td>8.8 小时</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2FHeman10x-NGU%2FopenJev-verdict-2.0&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/Heman10x-NGU/openJev-verdict-2.0</a></td>
+</tr>
+<tr>
+<td>nimble</td>
+<td>Qwen3.5-9B</td>
+<td>LoRA r16</td>
+<td>2676 条</td>
+<td>1 epoch</td>
+<td>H100</td>
+<td>单日完成</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2Fbespokelabsai%2Fnimble&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/bespokelabsai/nimble</a></td>
+</tr>
+<tr>
+<td>kev-4B</td>
+<td>Qwen3.5-4B</td>
+<td>LoRA r16 + pointer 头</td>
+<td>12576 条</td>
+<td>2 epoch</td>
+<td>H100</td>
+<td>约 1 美元</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2Fjaredpalmer%2Fkev&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/jaredpalmer/kev</a></td>
+</tr>
+<tr>
+<td>decision-head-rlcd</td>
+<td>Qwen3.5-4B</td>
+<td>4.9M LoRA r8</td>
+<td>32000 条</td>
+<td>2000 步</td>
+<td>1×H200</td>
+<td>42 美元 / 9 GPU 小时</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2FAstro-Han%2Fdecision-head-rlcd&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/Astro-Han/decision-head-rlcd</a></td>
+</tr>
+<tr>
+<td>OpenJev-RLCD</td>
+<td>Qwen3-1.7B</td>
+<td>全量</td>
+<td>3 个任务集</td>
+<td>400× 两阶段 ×3 种子</td>
+<td>1×RTX 6000 Ada（48GB）</td>
+<td>每 400 步耗时 1–1.5h</td>
+<td>arXiv:2609.38850</td>
+</tr>
+<tr>
+<td>openthai</td>
+<td>Qwen3.5-0.8B</td>
+<td>CPT+SFT + 换头</td>
+<td>5B 泰语文本 + 60 万合成决策题</td>
+<td>CPT 约 1 天 / SFT 约 0.5 天</td>
+<td>1×H100</td>
+<td>合计约 1.5 天</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2Fiapp-technology%2Fopenthai-systemone&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/iapp-technology/openthai-systemone</a></td>
+</tr>
+<tr>
+<td>PlayJev</td>
+<td>Qwen3.5-0.8B-Base</td>
+<td>全量微调</td>
+<td>2166984 帧</td>
+<td>SFT + 3 轮 DAgger</td>
+<td>1×H200</td>
+<td>约 19 小时</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2FOmniJev%2FPlayJev&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/OmniJev/PlayJev</a></td>
+</tr>
+<tr>
+<td>laya</td>
+<td>ModernBERT-large 421M</td>
+<td>RLCD 全量、评分规则奖励（无需置信标签）</td>
+<td>完整训练循环</td>
+<td>—</td>
+<td>Kaggle 2×T4</td>
+<td>免费额度内跑完</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2FNandhaKishorM%2Flaya&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/NandhaKishorM/laya</a></td>
+</tr>
+<tr>
+<td>von</td>
+<td>ModernBERT-large 395M</td>
+<td>全量微调</td>
+<td>~290k 平衡决策语料</td>
+<td>先监督微调、后续 RL</td>
+<td>未公开</td>
+<td>—</td>
+<td><a
+href="https://link.wtturl.cn/?target=https%3A%2F%2Fgithub.com%2Fwfzyx%2Fvon&amp;scene=im&amp;aid=497858&amp;lang=zh">github.com/wfzyx/von</a></td>
+</tr>
+</tbody>
+</table></div>
+<p>汇总来看：</p>
+<ul>
+<li><p>P1 监督路线已经把决策模型训练下压到单卡分钟级～小时级，kev-4B
+甚至做到训练成本约 1 美元；</p></li>
+<li><p>P3（RLCD）的额外开销，核心瓶颈是强化学习训练方差大、稳定性差，而非绝对算力门槛（Laya
+在免费 T4 集群完成训练、OpenJev-RLCD 仅需单卡 48GB 显存）；</p></li>
+<li><p>真正的落地壁垒不在训练算力本身，而属于 P2 数据中心化环节：包括
+jevk5 的 30052 条 replay 样本查重、Nimble 对比样本对构造、decider 依赖
+27B 大模型做教师标注这类数据组织成本。</p></li>
+</ul>
+<p>基于上述这些成本基线，下面将进一步将众多开源实现映射至完整的P0-P4范式体系当中。</p>
+<hr />
+<h3
+id="622范式映射对目前调查的37个仓库的归类">6.2.2、范式映射：对目前调查的37个仓库的归类</h3>
+<p>本节将 37 个仓库按照训练姿态归入前文提出的 P0–P4
+范式体系，整体区分两类：<strong>训练类（存在参数更新动作）与未训练类（纯读出、服务封装、评测、集成层代码）.</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>范式组合</th>
+<th>数据轴（标签来源）</th>
+<th>读出 / 架构方案</th>
+<th>校准手段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TheoLeeCJ/SemIf-OpenJev</td>
+<td>P0(+P4)</td>
+<td>—</td>
+<td>冻结 Qwen3.5-4B，单 token logit 读出</td>
+<td>按负载独立温度（1.23/2.50/1.71）</td>
+</tr>
+<tr>
+<td>Yinsongxu/LLM2Jev</td>
+<td>P0</td>
+<td>—</td>
+<td>prefill-only，三后端分级打分</td>
+<td>无；原生零训练读出</td>
+</tr>
+<tr>
+<td>kshetrajna12/reflex</td>
+<td>P0 (+P4)；<br>附带 P1 训练脚本，但发布权重冻结</td>
+<td>脚本依赖 8 个公开集 + 蒸馏数据</td>
+<td>冻结 Qwen3.5-4B + 双顺序平均消偏</td>
+<td>全局单温度；MMLU ECE 0.090→0.039</td>
+</tr>
+<tr>
+<td>nokia-applied-research/AnyJev</td>
+<td>P0 (+P4；L2 闭式头)</td>
+<td>L1 百级、L2 100–300 标签<br></td>
+<td>截断基座 + 闭式读出头</td>
+<td>L1 温度缩放 / L2 闭式拟合；聚合 ECE 0.03–0.05</td>
+</tr>
+<tr>
+<td>hr98w/jev-visual</td>
+<td>P0</td>
+<td>—</td>
+<td>冻结 VLM 共享 prefill、分支打分</td>
+<td>无校准声明</td>
+</tr>
+<tr>
+<td>ekzhang/openjev-sglang</td>
+<td>P0（服务层）</td>
+<td>—</td>
+<td>prefill-only + radix 缓存加速</td>
+<td>—</td>
+</tr>
+<tr>
+<td>razorback16/openjev</td>
+<td>P0（服务 / 读出层）</td>
+<td>—</td>
+<td>DiffusionGemma 26B-A4B 画布读出</td>
+<td>README 明确未做校准</td>
+</tr>
+<tr>
+<td>receptron/laya</td>
+<td>未训练（ONNX 导出）</td>
+<td>—</td>
+<td>ModernBERT+Laya 头导出单 ONNX 图</td>
+<td>继承上游校准参数</td>
+</tr>
+<tr>
+<td>mizorewww/laya-mlx / laya-coreml</td>
+<td>未训练（推理权重适配）</td>
+<td>—</td>
+<td>Apple Silicon / ANE 推理适配</td>
+<td>钳制温度区间 [0.5,5.0]</td>
+</tr>
+<tr>
+<td>abhishek085/open-spark-jev</td>
+<td>未训练（服务运行时）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>jaredpalmer/kev</td>
+<td>P1(+P2,+P4)</td>
+<td>decision-v7：10k+896+1680</td>
+<td>Qwen3.5 + LoRA r16 + pointer 头</td>
+<td>按检查点独立温度（2.35/2.41/2.19/1.32）</td>
+</tr>
+<tr>
+<td>bespokelabsai/nimble</td>
+<td>P1(+P2,+P4)</td>
+<td>对比样本集 2676/324</td>
+<td>Qwen3.5-9B + LoRA r16</td>
+<td>T=2.179（新版 T=1.0）</td>
+</tr>
+<tr>
+<td>allebee/jevk5</td>
+<td>P1(+P2,+P4)</td>
+<td>双教师标注 17408 + replay 30052</td>
+<td>Qwen3.5-4B/9B + SemIf 字母读出</td>
+<td>双温度（字母分支 + 淘汰分支独立）</td>
+</tr>
+<tr>
+<td>Mapika/decider</td>
+<td>P1(+P2)</td>
+<td>~95 公开数据集 + 本地 27B 教师</td>
+<td>Qwen3.5 各尺寸，答案槽投影</td>
+<td>对话版温度公式 T(n)=10.124−1.633lnn，n为选项数量</td>
+</tr>
+<tr>
+<td>malevrigns/agent-jev</td>
+<td>P1(+P2,+P4)</td>
+<td>教师软标签；Typed Decisions 1200 例</td>
+<td>Qwen3-0.6B 移除 LM 头 + 置换等变候选头</td>
+<td>分原语独立温度；ECE 0.1687</td>
+</tr>
+<tr>
+<td>metask-ai/metask-jev</td>
+<td>P1(+P2)</td>
+<td>教师软标签合成 + 视图增强（配方未公开）</td>
+<td>Qwen3.5-4B candidate-logit</td>
+<td>软标签自带，内部配方未披露</td>
+</tr>
+<tr>
+<td>iapp-technology/openthai-systemone</td>
+<td>P1(+P4)</td>
+<td>5B 泰语 CPT + 60 万合成题</td>
+<td>Qwen3.5-0.8B，替换 256 路 slot softmax</td>
+<td>calib.yaml 后校准</td>
+</tr>
+<tr>
+<td>TianyuCodings/NanoJev</td>
+<td>P1</td>
+<td>18760 决策题 + 896 专家交互样本</td>
+<td>Qwen3-0.6B + 三决策头</td>
+<td>校准折减，未报告 ECE</td>
+</tr>
+<tr>
+<td>OmniJev/PlayJev</td>
+<td>P1(+P2)</td>
+<td>2166984 帧搜索教师轨迹 + DAgger</td>
+<td>Qwen3.5-0.8B 全量微调，纯像素输入</td>
+<td>—</td>
+</tr>
+<tr>
+<td>wfzyx/von</td>
+<td>P1(+P4)</td>
+<td>~290k 平衡决策语料</td>
+<td>ModernBERT-large + Option-Marker</td>
+<td>条件输入温度；密封测试 ECE 0.107</td>
+</tr>
+<tr>
+<td>Heman10x-NGU/openJev-verdict-2.0</td>
+<td>P1（自报 RLCD 式校准训练）</td>
+<td>typed-decisions 2000 留出集</td>
+<td>ModernBERT-base + GLiClass 双通道置信头</td>
+<td>ECE 0.0144</td>
+</tr>
+<tr>
+<td>NandhaKishorM/laya</td>
+<td>P3(+P4)</td>
+<td>评分规则奖励，无置信标签</td>
+<td>ModernBERT-large + 决策头</td>
+<td>分桶温度 + 直方图分箱；ECE 0.213→0.081</td>
+</tr>
+<tr>
+<td>Astro-Han/decision-head-rlcd</td>
+<td>P3（消融实验）</td>
+<td>32000 条合成 typed decisions</td>
+<td>Qwen3.5-4B + 4.9M LoRA r8</td>
+<td>Brier 0.342→0.378，无后校准</td>
+</tr>
+<tr>
+<td>ZimmyGao/openjev-rlcd</td>
+<td>P3（两阶段）</td>
+<td>ChaosNLI/MMLU-Pro/GSM8K-Verify</td>
+<td>Qwen3-1.7B reasoning</td>
+<td>温度缩放 T=1.4</td>
+</tr>
+<tr>
+<td>0xNatoshi/jev-codex-router</td>
+<td>未训练（Agent 路由）</td>
+<td>—</td>
+<td>调度 Jev / 本地模型</td>
+<td>—</td>
+</tr>
+<tr>
+<td>docxology/daf-jev</td>
+<td>未训练（Agent 集成）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>kerpopule/hermes-jev-skills</td>
+<td>未训练（Agent 集成）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>simonw/llm-typesafe</td>
+<td>未训练（零权重 API 适配）</td>
+<td>—</td>
+<td>远程 API 封装</td>
+<td>—</td>
+</tr>
+<tr>
+<td>OpenByteInc/QuantDinger</td>
+<td>未训练（上层应用）</td>
+<td>—</td>
+<td>Jev 云 API 调用</td>
+<td>—</td>
+</tr>
+<tr>
+<td>sumleo/RLCDAlignBench</td>
+<td>未训练（评测）</td>
+<td>—</td>
+<td>零样本 Jev 检测器</td>
+<td>—</td>
+</tr>
+<tr>
+<td>appliedmachinelearning-lab/jev-benchmarking</td>
+<td>未训练（独立评测）</td>
+<td>—</td>
+<td>对标 2609.37647</td>
+<td>—</td>
+</tr>
+<tr>
+<td>bydeng01/scientific-decision-eval</td>
+<td>未训练（独立评测）</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>dhruvmehra/jevbench / fstandhartinger/jevbench</td>
+<td>未训练（基准本体）</td>
+<td>—</td>
+<td>JevBench 数据集与评测脚本</td>
+<td>—</td>
+</tr>
+<tr>
+<td>imaddde867/jev-position-test</td>
+<td>未训练（独立评测）</td>
+<td>—</td>
+<td>位置偏置探测实验</td>
+<td>—</td>
+</tr>
+<tr>
+<td>lytang63/OmniMed-Jev</td>
+<td>未公开（论文配套仓，无代码数据）</td>
+<td>未公开</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<ul>
+<li><p>所有仓库数据抓取为10月8日；</p></li>
+<li><p>共 13 个仓库归类为未训练 / 未公开（评测 6 个、运行时适配 5
+个、Agent / 应用集成多数、OmniMed 空仓），不纳入训练配方对比。</p></li>
+<li><p>同上节内容，因数据采自各个项目自报，统计标准不一致，因此整体不具备跨项目的可比性：</p></li>
+<li><p>typed-decisions 2000 测试集下 agent-jev、Laya
+指标可对比；</p></li>
+<li><p>但和 Nimble、jevk5 在 JevBench hard
+上的数值不能直接比较；</p></li>
+</ul>
+</blockquote>
+<hr />
+<h2
+id="63各范式训练数据组织对照与来源划分">6.3、各范式训练数据组织对照与来源划分</h2>
+<p>从仓库映射可见，各个范式的核心差异落地在数据构造策略上，这里专门对比各范式的数据组织规范。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>范式</th>
+<th>数据形态</th>
+<th>标签来源</th>
+<th>核心组织要点</th>
+<th>代表项目</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>P0 零训练读出</td>
+<td>仅评测集，无需训练集</td>
+<td>—<br></td>
+<td>选项字母序列化拼接；<br>审计三件套（固定版本 + prompt SHA256 + 原始
+logit 留存）；</td>
+<td>SemIf、AnyJev、LLM2Jev</td>
+</tr>
+<tr>
+<td>P1 监督微调</td>
+<td><code>(state, question, option set)</code> → 目标分布</td>
+<td>教师 argmax / 软标签</td>
+<td>按 case 切分；<br>选项置换增强，抑制位置偏置；</td>
+<td>kev、agent-jev、von、decider</td>
+</tr>
+<tr>
+<td>P2 数据中心化</td>
+<td>对比样本对 / 多视图样本 /replay 混合集</td>
+<td>多教师交叉校验、公开集回放</td>
+<td>构造<strong>“输入微小改动、标签翻转”</strong>困难对；<br>同一状态多等价视图共享软标签；<br>jevk5
+教师样本 : replay 样本≈1:1.7；</td>
+<td>Nimble、jevk5、metask、decider</td>
+</tr>
+<tr>
+<td>P3 评分规则 RL</td>
+<td><code>(state, question)</code> + 可验证真值 y</td>
+<td>可自动判定对错的结果标签，不需要置信标注</td>
+<td>任务结构覆盖决定泛化边界；<br>全合成难度课程是核心难点；</td>
+<td>Laya、OpenJev-RLCD、RLCR</td>
+</tr>
+<tr>
+<td>P4 后处理校准</td>
+<td>少量留出校准样本</td>
+<td>和训练集同分布</td>
+<td>dev/calibration/test
+严格互斥；<br>温度仅在校准集拟合，分布漂移后重校准；</td>
+<td>agent-jev、jevk5、Laya、Nimble</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="631数据来源划分">6.3.1、数据来源划分</h3>
+<p>按和真实业务分布的远近排序，数据来源可以划分为递进的5个来源：</p>
+<ol type="1">
+<li><p><strong>公开集 Replay</strong>：jevk5 的 30052 条来自 26
+套公开训练划分、kev 的 10k 样本取自 10
+个公开数据集；<strong>成本最低，但上限被公开题库分布锁死；</strong></p></li>
+<li><p><strong>对比整编</strong>：Nimble 的 2676 训练 / 324
+校准样本，体量小、全部是标签翻转困难对，用单样本质量换取样本规模；</p></li>
+<li><p><strong>教师蒸馏标注</strong>：decider 本地 27B 教师、jevk5
+双教师标注、metask
+软标签；<strong>可以规模化生产，但会继承教师模型本身偏差（decider
+自报教师一致性仅 72%）；</strong></p></li>
+<li><p><strong>全合成生成</strong>：openthai 60 万 OpenAI
+合成题、PlayJev
+搜索程序生成轨迹帧；<strong>理论上可以无限扩域，但容易复刻生成模型自带系统性偏差；</strong></p></li>
+<li><p><strong>可验证真值（P3 专属）</strong>：GSM8K-Verify、ChaosNLI
+这类数据，不需要人工标注置信度，只需要一个确定性判分函数，<strong>这也是
+P3 路线相比 P1 最大的数据优势</strong>；</p></li>
+</ol>
+<hr />
+<h3 id="632数据卫生底线">6.3.2、数据“卫生”底线</h3>
+<p>数据质量直接决定了模型效果上限，这里自 agent-jev、Nimble、jevk5
+等项目提炼了几条数据卫生底线，<strong>可以作为决策模型训练的基线规范</strong>：</p>
+<blockquote>
+<p>溯源：<a
+href="https://github.com/malevrigns/agent-jev">github.com/malevrigns/agent-jev</a>、<a
+href="https://github.com/bespokelabsai/nimble">github.com/bespokelabsai/nimble</a>、<a
+href="https://github.com/allebee/jevk5">github.com/allebee/jevk5</a></p>
+</blockquote>
+<ul>
+<li><p><strong>规范1</strong>：数据集按 case
+切分，而非按单条问题切分；同一个 case
+衍生多道问题必须落在同一划分，防止标签泄露；</p></li>
+<li><p><strong>规范2</strong>：dev /calibration/test
+三集合严格互斥，测试集仅在最终验收阶段一次性打开；</p></li>
+<li><p><strong>规范3</strong>：检查点选择、超参筛选，必须在触碰测试集之前完成；例如
+agent-jev 在 1200 个 case 中划出 120 dev+120 calibration，基于 dev 软 CE
+选定 step-600；Nimble 采用双集温度协议：第一集选温度，第二集验证“log
+loss 下降且 Brier 不恶化”；</p></li>
+<li><p><strong>规范4</strong>：温度、缩放系数等后处理参数，仅在校准集拟合，禁止在测试集调参；</p></li>
+<li><p><strong>规范5</strong>：Replay 样本仅取用公开集训练划分，如 jevk5
+对评测集 val/test 做精确匹配 + 8-gram
+查重，杜绝评测数据污染训练；</p></li>
+<li><p><strong>规范6</strong>：报告结果需附带 case 级 bootstrap 95%
+置信区间，也就是<strong>在评测每个候选样例（case）的时候，用自助抽样法给出指标的统计不确定性范围</strong>；</p>
+<ul>
+<li><p>agent-jev
+在该开源决策生态中，唯一公开汇报基于样例级自助抽样（case-level
+bootstrap）的 95%
+置信区间：<strong><code>相对 Laya 提升 +2.25pp，95% CI [+0.65, +3.90]</code></strong>；</p></li>
+<li><p>在本综述证据规范下，不附带置信区间的单点 2
+个点左右的精度提升，无法排除随机噪声，不视作可靠改进；</p></li>
+</ul></li>
+</ul>
+<hr />
+<h2 id="64总结">6.4、总结</h2>
+<p>基于上述的范式归纳、训练成本、项目归类以及数据策略的分析，这里尝试提炼跨范式通用规律、工程选型路径与闭源信息边界。</p>
+<h3 id="641三条跨范式稳定结论">6.4.1、三条跨范式稳定结论</h3>
+<ul>
+<li><p><strong>范式组合优于单一范式</strong></p>
+<ul>
+<li><p>当前开源效果靠前的方案（agent-jev、jevk5、Nimble、kev）统一采用
+<code>P1+P2(+P4)</code> 组合；纯 P3 路线仅有 Laya
+一例，且文档明确说明基座零样本接近随机，全部决策能力来自微调；</p></li>
+<li><p>推论：P3
+本身不足以独立产出可用决策模型，它更适合作为<strong>内禀校准机制底座</strong>；落地通常仍需要
+P1 补齐判别能力、P4 做细粒度校准修正；</p></li>
+</ul></li>
+<li><p><strong>数据工序的优先级高于算法与架构</strong></p>
+<ul>
+<li>decision-head-rlcd
+做了固定基座、固定算法、仅改变数据结构覆盖度的消融：同设置下分布内指标
+0.955，缺失 long_policy 结构子集直接掉到 0.32 ——
+泛化边界由训练数据覆盖的结构空间决定，而非损失函数选 CE 还是 RLCD；</li>
+</ul>
+<blockquote>
+<p><strong>github.com/Astro-Han/decision-head-rlcd</strong></p>
+</blockquote>
+<ul>
+<li><p>同为 Qwen3.5-4B，metask（软标签 + 视图增强）、jevk5（双教师 +
+replay）显著优于朴素监督微调，差异根源就是数据加工管线；</p></li>
+<li><p>PACT
+对照实验也反向佐证了：<strong>固定数据、只替换损失结构，主指标几乎无提升，仅鲁棒性小幅改善；</strong></p></li>
+</ul></li>
+<li><p><strong>校准是独立工序，不是训练天然产物</strong></p>
+<ul>
+<li><p>所有可复核 ECE 的项目，都配套独立 P4
+校准环节；差异只在校准精细度：单全局温度 → 分原语温度 →
+分桶直方图校准；</p></li>
+<li><p>OpenJev-RLCD 是唯一的轻微反例：不依赖P4校准，仅靠两阶段
+proper-scoring 训练就把目标温度压低到 T=1.4（对比 GRPO/RFT 通常
+T≈7），这尽管说明了在校准目标融入到训练时，可以降低后校准压力，但<strong>尚不能证明可以完全消除对
+P4 校准依赖的必要性。</strong></p></li>
+</ul></li>
+</ul>
+<hr />
+<h3
+id="642资源导向选型路径成本由低至高">6.4.2、资源导向选型路径（成本由低至高）</h3>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>团队资源条件</th>
+<th>推荐范式组合</th>
+<th>参考基线</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>现成基座，几百条标注预算</td>
+<td>P0 → P4：零训练读出 + 温度拟合</td>
+<td>SemIf / reflex / AnyJev</td>
+</tr>
+<tr>
+<td>单卡资源、固定任务分布、可调用教师模型</td>
+<td>P1 + P2 + P4：LoRA 微调 + 对比 / 教师数据 + 校准</td>
+<td>kev / Nimble / jevk5</td>
+</tr>
+<tr>
+<td>拥有可自动验证的真值，希望把校准内化进模型</td>
+<td>P1 冷启动 → P3 两阶段训练 → P4 收尾</td>
+<td>OpenJev-RLCD / Laya</td>
+</tr>
+<tr>
+<td>仅需要上层路由、置信度打分，不打算训练</td>
+<td>P0 + P4 足够</td>
+<td>AnyJev L1 / decider-chat</td>
+</tr>
+</tbody>
+</table></div>
+<p>整体上，总结来看自建决策模型的推荐迭代顺序为（成本递增）：<strong><code>P0 基线验证 → 效果不足再上 P1+P2+P4 → 确有内禀校准诉求，再引入 P3；</code></strong></p>
+<hr />
+<h3 id="643小结">6.4.3、小结</h3>
+<p>首先，截止调研日期止（10月8日），必须承认或声明的是这些项目与论文自身也存在一些未公开的细节：</p>
+<ul>
+<li><p>Jev 原生
+RLCD：官方文档只披露顶层目标：基于严格恰当评分规则做校准决策训练，输出决策与可信概率，不生成自由文本；损失形式、奖励聚合、KL
+约束强度、数据配方全部闭源。</p></li>
+<li><p>开源生态里所有 RLCD
+实现（Laya、OpenJev-RLCD、decision-head-rlcd、RLCR/Rewarding
+Doubt）都是独立复现，<strong>不等于官方内部实现</strong>；OpenJev-RLCD
+仓库也明确声明：不代表对 Jev 内部训练逻辑的断言。</p></li>
+<li><p>Laya 复合奖励式 <span
+class="math inline">\(\boldsymbol{S_{log}+0.5S_{sph}-1.0S_{rps}}\)</span>、高斯探索
+<span class="math inline">\(\sigma:1.0\rightarrow0.3\)</span>、G=8 ——
+这些技术细节并未如实包含在项目仓库，而是独立的blog所发布，仓库本身可核验内容仅为：proper-scoring
+reward + GRPO 风格策略梯度，typed-decisions 原始 ECE 0.213、温度校准后
+0.081；</p></li>
+<li><p>metask-jev、decider
+核心数据构造器：具体细节并未发布，<strong>对外只开放管线骨架与推理代码</strong>；</p></li>
+</ul>
+<p>但以下总结依然是具有价值的：</p>
+<ul>
+<li><p>P0 验证了<strong>“直接读取 logit 打分”</strong>
+不需要训练，但概率天然失准，性能高度依赖基座特性；</p></li>
+<li><p>P1 借助低成本 LoRA /
+换头快速构建判别能力，但上线前必须对照冻结基线验证增益；</p></li>
+<li><p>P2
+数据管线是决定模型上限的核心壁垒，也是多数项目不开放的核心资产；</p></li>
+<li><p>P3 是唯一把
+<strong>“诚实概率输出”</strong>嵌入训练动力学的路线，但开源复现证明它需要两阶段启动，在随机不确定性任务上受限，通常仍要搭配
+P1、P4；</p></li>
+<li><p>P4
+几乎是所有成熟方案的收尾独立工序，<strong>校准粒度直接决定置信度是否可信；</strong></p></li>
+</ul>
+<p>另外，需要注意的是，训练方法基本决定了实际应用的上线形态，会对后续的应用落地与选型造成影响（影子评估、级联路由方案）；训练方法的选择也会引入一些校准失效的失败模式，这些将在后续展开讨论。</p>
+<hr />
+<p><a id="ch07"></a></p>
+
+</div>
+<nav class="pager"><a href="ch05.html"><span class="lbl">上一页</span>5、架构与实现形态：官方逆向与开源方案</a><a class="next" href="ch07.html"><span class="lbl">下一页</span>7、评测与验证：基准解剖、指标体系与评估协议</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#62项目范式映射与速查">6.2、项目范式映射与速查</a></li><li><a href="#64总结">6.4、总结</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

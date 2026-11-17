@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>附录&amp;辅助材料 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/appendix.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="附录&amp;辅助材料 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/appendix.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料" aria-current="page"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<h2 id="附录-a-数学附录">附录 A 数学附录</h2>
+<blockquote>
+<p>本附录补充正文第 3
+章未展开的证明细节与公式推导，符号体系与正文完全一致；正文已给出的结论仅呈现关键推导步骤与核心直觉。</p>
+</blockquote>
+<h3 id="a1-符号约定">A.1 符号约定</h3>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(q=(q_1,\dots,q_K)\)</span></td>
+<td>模型输出的选项概率分布，满足 <span class="math inline">\(q_k\ge0,\
+\sum_k q_k=1\)</span></td>
+</tr>
+<tr>
+<td><span class="math inline">\(p=(p_1,\dots,p_K)\)</span></td>
+<td>真实条件概率分布（对模型不可观测）</td>
+</tr>
+<tr>
+<td><span class="math inline">\(y=(y_1,\dots,y_K)\)</span></td>
+<td>one-hot 形式的真实标签，<span class="math inline">\(y_k=1\)</span>
+当且仅当选项 k 为正确项</td>
+</tr>
+<tr>
+<td>K</td>
+<td>选项总数</td>
+</tr>
+<tr>
+<td><span class="math inline">\(S(q,y)\)</span></td>
+<td>严格适当评分规则；<span class="math inline">\(S(q,c)\)</span>
+为二元场景下的形式（<span
+class="math inline">\(c\in\{0,1\}\)</span>）</td>
+</tr>
+<tr>
+<td><span class="math inline">\(z_k\)</span></td>
+<td>对应选项 token 的原始对数几率（logits）</td>
+</tr>
+<tr>
+<td>T</td>
+<td>温度参数，满足 <span
+class="math inline">\(p_k=\mathrm{softmax}(z/T)_k\)</span></td>
+</tr>
+<tr>
+<td>G</td>
+<td>GRPO 中同一提示下的采样输出数量</td>
+</tr>
+<tr>
+<td>λ</td>
+<td>RLCR 奖励中正确性项的权重系数</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3 id="a2-brier-得分的严格适当性">A.2 Brier 得分的严格适当性</h3>
+<p>二元场景下，Brier 得分定义为 <span
+class="math inline">\(S(q,c)=(q-c)^2\)</span>（最小化约定；等价于最大化负
+Brier 得分）。对服从伯努利分布 <span
+class="math inline">\(c\sim\mathrm{Bernoulli}(p)\)</span> 的结果取期望：
+<span class="math inline">\(\mathbb{E}_c[(\hat
+q-c)^2]=(q-p)^2+p(1-p)\)</span> 其中第二项 <span
+class="math inline">\(p(1-p)\)</span> 与报告概率 q 无关；第一项为关于 q
+的严格凸平方距离，当且仅当 <span class="math inline">\(q=p\)</span>
+时取最小值 0。因此期望 Brier 得分的唯一最小值对应如实报告 <span
+class="math inline">\(q=p\)</span>。</p>
+<p>推广至多分类场景（<span
+class="math inline">\(y\sim\mathrm{Categorical}(p)\)</span>），期望
+Brier 得分可分解为：</p>
+<p><span
+class="math inline">\(\mathbb{E}_y[\mathrm{BS}(q,y)]=\underbrace{\sum_k(q_k-p_k)^2}_{\text{校准偏差}}+\underbrace{\sum_k
+p_k(1-p_k)}_{\text{与}q\text{无关的锐度项}}\)</span></p>
+<p>第一项严格凸且零点唯一，第二项与报告分布无关。因此多分类场景下，期望
+Brier 得分同样在 <span class="math inline">\(q=p\)</span>
+处取得唯一最小值。</p>
+<p><strong>分解的学术含义</strong>：期望 Brier 得分同时刻画了
+“报告概率与经验频率的偏差（校准）” 与 “预测的极端程度（锐度）”，即Brier
+可拆为"校准项（报告概率与经验频率的偏差）+
+锐度项（预测是否敢给极端值）"，可同时惩罚预测错误与过度自信，因此成为校准导向强化学习的核心奖励组件【2503.02623、2507.16806】。</p>
+<hr />
+<h3 id="a3-rlcr-定理双目标同时最优">A.3 RLCR 定理：双目标同时最优</h3>
+<p>RLCR 奖励函数【2507.16806】形式为： <span
+class="math inline">\(R_{\mathrm{RLCR}}=\mathbb{1}[\text{correct}]-\lambda\,S(q,c)\)</span>
+即正确性奖励减去二元 Brier 惩罚。对于 “模型输出对应答案的真实正确概率为
+<span class="math inline">\(p_y\)</span>” 的情形，期望奖励可展开为：
+<span class="math inline">\(V(q)=\lambda p_y-\left[p_y
+S(q,1)+(1-p_y)S(q,0)\right]\)</span> 证明分为两步：</p>
+<ol type="1">
+<li><p><strong>校准激励</strong>：正确性项 <span
+class="math inline">\(\lambda p_y\)</span> 与报告概率 q
+无关，因此最大化期望奖励等价于最小化期望评分损失。由严格适当评分规则的性质，该子问题的唯一最优解为
+<span
+class="math inline">\(q=p_y\)</span>，即如实报告真实概率。</p></li>
+<li><p><strong>正确性单调激励</strong>：将 <span
+class="math inline">\(q=p\)</span> 代入得到校准最优下的期望奖励 <span
+class="math inline">\(W(p)\)</span>，可证明当评分规则的得分差有界时，存在有限的
+<span class="math inline">\(\lambda\)</span> 使得 <span
+class="math inline">\(W(p)\)</span> 随真实正确率 p
+单调递增，即更高的真实正确率对应更高的期望奖励。</p></li>
+</ol>
+<blockquote>
+<p>定义 <span class="math inline">\(W(p)=\lambda
+p-[pS(p,1)+(1-p)S(p,0)]\)</span>（把 <span
+class="math inline">\(q=p\)</span> 代入后的校准最优期望奖励）。用
+Savage–Dawid 表示 <span
+class="math inline">\(S&#39;(p,1)=-(1-p)\omega(p))、(S&#39;(p,0)=p\omega(p)\)</span>，可得<span
+class="math inline">\(W&#39;(p)=\lambda-[S(p,1)-S(p,0)]\)</span>；</p>
+<ul>
+<li><p>W 关于 p 单调（即"已校准预测越可能对、期望奖励越高"）的充分条件是
+<span
+class="math inline">\(\max_p[S(p,1)-S(p,0)]\le\lambda\)</span></p></li>
+<li><p><strong>为什么必须有界</strong>：</p></li>
+<li><p>对 Brier，<span
+class="math inline">\(S(p,1)-S(p,0)=1-2p\)</span>，其最大值为 1，故
+<span class="math inline">\(\lambda=1\)</span> 恰好满足——这就是 RLCR 选
+Brier 的数学原因。</p></li>
+<li><p>对对数评分，<span
+class="math inline">\(S(p,1)-S(p,0)=\log\frac{1-p}{p}\)</span> 在 <span
+class="math inline">\(p\to0\)</span> 时无界，任何有限 <span
+class="math inline">\(\lambda\)</span> 都存在 <span
+class="math inline">\(p_y&lt;p_y&#39;\)</span> 但 <span
+class="math inline">\(W(p_y)&gt;W(p_y&#39;)\)</span>
+的区域：<strong>策略因此偏好"更没把握的答案"，即故意答错并报 0
+置信度来获取校准奖励</strong>。</p></li>
+</ul>
+</blockquote>
+<p>不同评分规则的适配性如下：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>评分规则</th>
+<th>得分差 <span class="math inline">\(S(p,1)-S(p,0)\)</span></th>
+<th>最大值</th>
+<th>可搭配正确性项</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Brier</td>
+<td><span class="math inline">\(1-2p\)</span></td>
+<td>1</td>
+<td>是（<span class="math inline">\(\lambda\ge1\)</span>）</td>
+</tr>
+<tr>
+<td>对数评分</td>
+<td><span class="math inline">\(\log\frac{1-p}{p}\)</span></td>
+<td>+∞</td>
+<td>否</td>
+</tr>
+</tbody>
+</table></div>
+<p>结论：在伯努利结果下，取 <span
+class="math inline">\(\lambda=1\)</span> 的 RLCR
+奖励可同时实现两个最优：输出概率校准最优，且期望奖励随真实正确率单调上升，准确率与校准可在同一点同时达到最优。</p>
+<hr />
+<h3 id="a4-grpo-目标函数rlcd-家族的训练底座">A.4 GRPO 目标函数：RLCD
+家族的训练底座</h3>
+<p>RLCD 家族统一采用 GRPO（组相对策略优化，DeepSeekMath,
+arXiv:2402.03300）作为策略优化算法。与 PPO
+依赖价值网络估计优势不同，GRPO 对同一提示 <span
+class="math inline">\(q\)</span> 从旧策略 <span
+class="math inline">\(\pi_{\mathrm{old}}\)</span> 一次性采样 <span
+class="math inline">\(G\)</span> 个输出 <span
+class="math inline">\(\{o_1,\dots,o_G\}\)</span>，以组内奖励的统计量构造优势基线，从而免除价值网络的训练与存储开销。</p>
+<p><strong>目标函数.</strong> GRPO 最大化</p>
+<p>$\mathcal{J}<em>{\mathrm{GRPO}}=\mathbb{E}\left[\frac{1}{G}\sum</em>{i=1}^{G}\sum_{t=1}^{|o_i|}\min!\left(\rho_{i,t}\hat
+A_i,\ \mathrm{clip}(\rho_{i,t},1-\epsilon,1+\epsilon)\hat
+A_i\right)-\beta,\mathrm{KL}(\pi_\theta|\pi_{\mathrm{old}})\right]$</p>
+<p>其中重要性采样比<span
+class="math inline">\(\rho_{i,t}=\frac{\pi_\theta(o_{i,t}\mid
+q,o_{i,&lt;t})}{\pi_{\mathrm{old}}(o_{i,t}\mid
+q,o_{i,&lt;t})}\)</span>，结果监督下的组内优势为<span
+class="math inline">\(\hat
+A_i=\frac{r_i-\mathrm{mean}(\{r_1,\dots,r_G\})}{\mathrm{std}(\{r_1,\dots,r_G\})}\)</span>；</p>
+<p>优势仅在同一题目的 <span class="math inline">\(G\)</span>
+个输出内部归一化，相当于以组均值为基线：由样本难度引入的共享分量在组内相消，策略只需学习"同一题下哪些回答相对更优"。</p>
+<p>另一个值得注意的区别是 KL 散度的处理方式：PPO 将 KL
+惩罚以奖励塑形的形式混入奖励信号，而 GRPO
+将其作为显式正则项直接加入损失（原实现取 <span
+class="math inline">\(\beta=0.04\)</span>）。二者的系统性对比如下表所示。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>PPO</th>
+<th>GRPO</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>基线</td>
+<td>价值网络输出的 GAE 优势</td>
+<td>同组奖励均值</td>
+</tr>
+<tr>
+<td>优势归一</td>
+<td>GAE 优势估计</td>
+<td>组内均值标准化</td>
+</tr>
+<tr>
+<td>KL 正则位置</td>
+<td>融入奖励项</td>
+<td>直接加入损失函数</td>
+</tr>
+<tr>
+<td>显存占用</td>
+<td>4 个模型（策略 + 参考 + 奖励 + 价值）</td>
+<td>3 个模型（无价值网络）</td>
+</tr>
+</tbody>
+</table></div>
+<p>去掉价值网络是开源 RLCD 能在单卡（如 Laya 用 Kaggle 免费
+2×T4）跑起来的工程前提。</p>
+<p>按监督粒度，GRPO 的组内优势有两种构造：</p>
+<ul>
+<li><p>结果监督将整道题的归一化奖励赋给该输出的全部词元；</p></li>
+<li><p>过程监督则将每步的归一化奖励自当前步起向后累加（形式上等价于
+<span class="math inline">\(n\)</span> 步回报）；</p></li>
+</ul>
+<p>RLCD 家族的奖励定义在最终答案的正确性上，因此均采用结果监督形式。</p>
+<p>在保留 GRPO 训练框架的前提下，RLCD
+家族对奖励与优势各引入一处改动：</p>
+<ol type="1">
+<li><p><strong>奖励函数替换</strong>：将 <span
+class="math inline">\(r_i\)</span> 由二元正确性替换为 RLCR 式的"正确性 +
+Brier 分数"组合（见 A.3 节），或直接采用严格恰当评分规则——Rewarding
+Doubt
+即以对数评分作为奖励，并对答案施行两阶段冻结【2503.02623】；</p></li>
+<li><p><strong>优势去标准化</strong>：RLCR
+在实测中移除了优势中的标准差除法，即 <span class="math inline">\(\hat
+A_i=R_i-\mathrm{mean}(\{R_j\})\)</span>；其原因在于，极端失校准的样本会显著放大组内方差，标准差归一化在这类样本上反而损害学习【2507.16806】。</p></li>
+</ol>
+<hr />
+<h3 id="a5-温度缩放校准">A.5 温度缩放校准</h3>
+<p>温度缩放将 logits 除以温度参数 T 后再经 softmax 归一化： <span
+class="math inline">\(p_k=\mathrm{softmax}(z/T)_k=\frac{e^{z_k/T}}{\sum_j
+e^{z_j/T}}\)</span>；</p>
+<ul>
+<li><p><span class="math inline">\(T&gt;1\)</span>
+使概率分布更平缓，<span class="math inline">\(T&lt;1\)</span>
+使分布更尖锐；</p></li>
+<li><p>该操作仅重标定置信度，不改变最终排序结果（argmax
+不变）；</p></li>
+</ul>
+<p>最优温度 <span class="math inline">\(T^*\)</span>
+在独立留出集上通过最小化负对数似然（或 Brier
+得分、ECE）一维搜索得到。</p>
+<p><strong>粒度是关键</strong>：全局单一温度不适用于异构任务负载，按题型、选项数量分桶设置温度是更稳健的方案。当模型本身的判别能力不足时，温度缩放无法改善校准效果。</p>
+<hr />
+<h2 id="附录-b-术语表">附录 B 术语表</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>术语（英文）</th>
+<th>定义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>System One 模型</td>
+<td>不生成文本、对声明选项单次前向输出类型化决策与概率的模型类别</td>
+</tr>
+<tr>
+<td>状态（state）</td>
+<td>决策的上下文输入，同一次请求内所有问题共享</td>
+</tr>
+<tr>
+<td>原语（typed question primitive）</td>
+<td>带类型的决策问题，包括 Choice、Score、Noul 三类</td>
+</tr>
+<tr>
+<td>校准（calibration）</td>
+<td>报告概率为p的预测集合，其经验正确率长期趋近于p；为群体统计属性，非单例保证</td>
+</tr>
+<tr>
+<td>期望校准误差（ECE）</td>
+<td>置信度分桶后，加权平均的正确率与置信度差值绝对值</td>
+</tr>
+<tr>
+<td>Brier 得分</td>
+<td>衡量概率预测质量的评分规则，同时惩罚预测错误与过度自信</td>
+</tr>
+<tr>
+<td>严格适当评分规则</td>
+<td>期望得分唯一在如实报告真实概率时取得最优的评分函数</td>
+</tr>
+<tr>
+<td>RLCD</td>
+<td>校准决策强化学习，官方提出的决策模型训练路线</td>
+</tr>
+<tr>
+<td>RLCR</td>
+<td>带校准奖励的强化学习，正确性 + Brier 双目标奖励的公开训练方案</td>
+</tr>
+<tr>
+<td>GRPO</td>
+<td>组相对策略优化，无价值网络的强化学习算法</td>
+</tr>
+<tr>
+<td>RLVR</td>
+<td>仅含正确性奖励的强化学习，易导致模型过度自信</td>
+</tr>
+<tr>
+<td>语言化置信度（verbalized confidence）</td>
+<td>模型在生成文本中表述的置信度，经验上不具备校准属性</td>
+</tr>
+<tr>
+<td>温度缩放（temperature scaling）</td>
+<td>基于留出集拟合温度的后处理校准方法，不改变预测排序</td>
+</tr>
+<tr>
+<td>风险 - 覆盖率曲线（risk–coverage / AURC）</td>
+<td>按置信度排序累积执行的错误率与覆盖率权衡曲线及曲线下面积</td>
+</tr>
+<tr>
+<td>错误检测 AUROC</td>
+<td>以决策对错为标签、置信度为评分的排序能力指标</td>
+</tr>
+<tr>
+<td>级联（cascade）</td>
+<td>低成本模型处理高置信样本、高成本模型 /
+人工处理低置信样本的分层架构</td>
+</tr>
+<tr>
+<td>影子评估（shadow eval）</td>
+<td>候选系统与现有系统并行运行、仅记录不执行的上线前验证方法</td>
+</tr>
+<tr>
+<td>选项敏感性（option-name/order sensitivity）</td>
+<td>仅改变选项措辞或顺序即可翻转决策结果的现象</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="附录-c-核心要点速览">附录 C 核心要点速览</h2>
+<p>本附录为正文核心结论的浓缩速查，详细论证与实证依据见对应章节。</p>
+<h3 id="c1-核心原语">C.1 核心原语</h3>
+<ul>
+<li><p><strong>Choice</strong>：多选一决策，返回各选项概率与整体置信度</p></li>
+<li><p><strong>Score</strong>：序数等级评分，返回各等级概率与概率加权期望分</p></li>
+<li><p><strong>Noul</strong>：单命题是非判断，返回 “是” 的概率</p></li>
+<li><p>支持单次请求内多问题并行求值，几乎不增加额外开销</p></li>
+</ul>
+<h3 id="c2-关键指标规范">C.2 关键指标规范</h3>
+<ul>
+<li><p>必报指标：准确率、ECE（按单数据集拆分，禁止仅汇报聚合
+ECE）、Brier 得分、错误检测 AUROC、风险 - 覆盖率曲线</p></li>
+<li><p>统计要求：置信度指标需报告 95% 自助法置信区间</p></li>
+<li><p>阈值设定：由业务成本矩阵推导，配合下界规则在本地标注集上标定</p></li>
+</ul>
+<h3 id="c3-主流技术路线">C.3 主流技术路线</h3>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>技术路线</th>
+<th>核心特征</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>零训练读出</td>
+<td>冻结大模型直接读取选项 logits，无需训练</td>
+<td>快速验证、负载频繁变动的场景</td>
+</tr>
+<tr>
+<td>解码器微调</td>
+<td>基于大模型 LoRA 微调 + 候选 token 读出 + 温度校准</td>
+<td>兼顾通用能力与校准需求</td>
+</tr>
+<tr>
+<td>编码器决策头</td>
+<td>编码器架构 + 专用决策头，低延迟、可端侧部署</td>
+<td>高吞吐、低延迟的固定场景</td>
+</tr>
+<tr>
+<td>托管 API 服务</td>
+<td>闭源训练、开箱即用</td>
+<td>快速落地、无自研训练能力场景</td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="c4-落地核心准则">C.4 落地核心准则</h3>
+<ol type="1">
+<li><p>校准为群体统计属性，不可直接作为单例保证，且概率语义绑定对应选项集；</p></li>
+<li><p>选项设计需保持中立、对仗、等长，避免使用可作为答案的字符串作为选项标识；</p></li>
+<li><p>全局温度不足以适配异构负载，需按任务类型分桶设置；</p></li>
+<li><p>级联方案需与最低成本可行基线对比验证，不可默认必然降本；</p></li>
+<li><p>模型、提示词、选项集版本变更后，需重新验证校准与阈值；</p></li>
+<li><p>互补、互斥问题的逻辑一致性需在调用侧强制约束，模型不提供天然保证；</p></li>
+</ol>
+<hr />
+<h2 id="附录-d-前沿文献追踪与证据说明">附录 D
+前沿文献追踪与证据说明</h2>
+<p>本附录覆盖 2026 年 9 月 15 日 Jev 发布后至 2026 年 10 月 17
+日的领域学术产出，明确正文证据池的纳入范围与边界文献处置规则。未进入精读证据池的文献仅作元数据级登记，其实验结论未经验证，不纳入正文论证链条。</p>
+<h3 id="d1-检索策略与纳入流程">D.1 检索策略与纳入流程</h3>
+<ul>
+<li><p><strong>数据来源</strong>：覆盖 arXiv 学术预印本、GitHub
+开源实现与官方技术文档三类载体。</p></li>
+<li><p><strong>时间窗口</strong>：主检索窗为 2026-09-15 至
+2026-10-05；扩展前沿窗延伸至 2026-10-17。</p></li>
+<li><p><strong>纳入标准</strong>：与类型化决策模型、校准训练、置信度级联等核心主题直接相关；排除通用强化学习校准、无关领域应用等误命中文献。</p></li>
+<li><p><strong>PRISMA 流程（首轮主检索）</strong>：初检去重后获得 88
+篇有效候选，经标题与摘要筛选排除 15 篇不相关文献，最终 73
+篇进入候选池，其中 41 篇为本次检索新发现文献。</p></li>
+</ul>
+<h3 id="d2-精读纳入文献清单">D.2 精读纳入文献清单</h3>
+<p>首轮主检索共 11 篇文献进入正文精读证据池，构成核心论证依据：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>arXiv ID</th>
+<th>标题</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2609.32160</td>
+<td><em>Typed Decision Models: An Early Evidence Audit and Evaluation
+Checklist</em></td>
+</tr>
+<tr>
+<td>2609.33209</td>
+<td><em>Beyond Calibration: Do a Typed-Decision Model's Probabilities
+Obey the Probability Axioms?</em></td>
+</tr>
+<tr>
+<td>2609.33971</td>
+<td><em>Do System One Decisions Add Up? A Study of Probabilistic
+Coherence</em></td>
+</tr>
+<tr>
+<td>2609.37470</td>
+<td><em>Probability Contracts: Accuracy, Coherence, Decisions Across LLM
+Interfaces</em></td>
+</tr>
+<tr>
+<td>2609.35865</td>
+<td><em>PACT: Pairwise-Anchored Calibrated Tuning for Single-Token Typed
+Decisions</em></td>
+</tr>
+<tr>
+<td>2609.38850</td>
+<td><em>OpenJev-RLCD: A Working RLCD Implementation</em></td>
+</tr>
+<tr>
+<td>2610.01006</td>
+<td><em>Beyond Answer Confidence: A Controlled Audit of Self-Knowledge
+in a Black-Box Decision Model</em></td>
+</tr>
+<tr>
+<td>2609.33401</td>
+<td><em>Evaluating System One Models for Agent Security
+Decisions</em></td>
+</tr>
+<tr>
+<td>2609.33671</td>
+<td><em>COGNIT-Guard: Calibrated Standalone Direct-Decision
+Guardrails</em></td>
+</tr>
+<tr>
+<td>2609.30216</td>
+<td><em>Jev in the Wild: A Data-Driven Analysis of the Jev Model's
+Functionality, Applications and Ecosystem</em></td>
+</tr>
+<tr>
+<td>2609.30922</td>
+<td><em>JevSoup: System-One Routing for Training-Free LoRA
+Composition</em></td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3 id="d3-边界文献整体特征">D.3 边界文献整体特征</h3>
+<p>未进入精读池的元数据级文献以垂直应用评测为主，整体呈现三类特征：</p>
+<ol type="1">
+<li><p><strong>场景扩散快，机制贡献少</strong>：覆盖医疗、网络安全、法律、工控、推荐等十余领域，多为单任务一次性评测，跨任务可复用的方法学贡献有限。</p></li>
+<li><p><strong>范式逐步独立化</strong>：多项同类工作脱离官方
+API，将直接决策读出范式迁移至自有基座，说明该范式正在脱离单一产品载体，成为通用技术路线。</p></li>
+<li><p><strong>研究重心深化</strong>：研究议题从基础准确率转向概率一致性、鲁棒性边界、校准适用对象等深层问题，与核心证据池的演化方向一致。</p></li>
+</ol>
+<h3 id="d4-核心演化趋势">D.4 核心演化趋势</h3>
+<p>基于已精读证据，领域呈现三条明确演化脉络：</p>
+<ol type="1">
+<li><p>评测前沿从基础校准指标转向概率公理与相干性验证，概率自洽性正在成为决策输出可用性的核心判据。</p></li>
+<li><p>失败模式与安全审计的关注点从输出格式合规，转向输入上下文扰动与模型自认知能力，攻击面持续向上下游延伸。</p></li>
+<li><p>范式普及由场景迁移驱动，核心机制创新高度集中；训练侧复现工作稀缺，评测侧工具与基准增长迅速。</p></li>
+</ol>
+<h3 id="d5-2026-年-10-月前沿更新">D.5 2026 年 10 月前沿更新</h3>
+<p>将检索窗口扩展至 2026-10-17 后，新增 9 篇精读论文与 4
+项开源实现，<strong>核心增量特征为：智能体决策层跃升为最活跃的实证方向，闭环评测基准密集发布，威胁模型从文本输入侧延伸至下游程序消费环节</strong>。</p>
+<hr />
+
+</div>
+<nav class="pager"><a href="refs.html"><span class="lbl">上一页</span>参考文献</a><span></span></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#附录-a-数学附录">附录 A 数学附录</a></li><li><a href="#附录-b-术语表">附录 B 术语表</a></li><li><a href="#附录-c-核心要点速览">附录 C 核心要点速览</a></li><li><a href="#附录-d-前沿文献追踪与证据说明">附录 D
+前沿文献追踪与证据说明</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

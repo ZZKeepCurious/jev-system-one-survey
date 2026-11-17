@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7、评测与验证：基准解剖、指标体系与评估协议 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/ch07.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7、评测与验证：基准解剖、指标体系与评估协议 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/ch07.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议" aria-current="page"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<blockquote>
+<p>本章系统梳理 Jev 与 System One
+决策模型的评测体系：两类事实标准基准的定义与可信度、五类核心指标的适用边界、概率公理一致性评测新前沿（RQ6）、专项基准矩阵，并给出可落地的最低评估协议与数据卫生规范。</p>
+<p>必须强调一个纪律：不同基准/版本/硬件/数据划分的数字不可排进同一张排行榜进行比较</p>
+</blockquote>
+<p>Jev
+发布后两周内，评测工作沿四个目标独立生长：<strong>测准不准（Bonn）、测概率数值对不对（Sys1Cal）、测概率自不自洽（公理三连）、测抗输入操纵能力（JevAdvBench）</strong>。四类指标对应决策输出的四种消费方式
+——argmax 决策、数值概率、阈值路由、动作契约，不存在单一通用标尺。</p>
+<p>本章内容主要基于如下材料（截止1005）进行汇总，这里说明：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>标识</th>
+<th>类型</th>
+<th>规模定义</th>
+<th>核心度量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fstandhartinger/jevbench</td>
+<td>基准本体 + 实时榜</td>
+<td>v1.4.2.2：95 系统 / 91 排名</td>
+<td>Intelligence/Calibration/Speed/Cost 四轴复合</td>
+</tr>
+<tr>
+<td>jev-benchmarking（arXiv:2609.37647）</td>
+<td>学术零打点评测</td>
+<td>37 数据集 / 346,009 请求 /$9.40</td>
+<td>零样本 acc + ECE + 选择性预测 + 记忆探针</td>
+</tr>
+<tr>
+<td>Sys1Cal-v1（arXiv:2609.35342）</td>
+<td>逐点真值数据集</td>
+<td>365 样例 / 92 问题</td>
+<td>每命题 P (A) 数值吻合度（OVL）</td>
+</tr>
+<tr>
+<td>arXiv:2609.33209</td>
+<td>公理 battery</td>
+<td>160 items/$0.076</td>
+<td>negation/partition 等 7 条概率恒等式</td>
+</tr>
+<tr>
+<td>arXiv:2609.33971</td>
+<td>层级相干性评测</td>
+<td>3 数据集 / 72,000 问</td>
+<td>coarse–fine 概率可加性</td>
+</tr>
+<tr>
+<td>arXiv:2609.37470</td>
+<td>概率契约基准</td>
+<td>1,000 worlds/11,913 slots</td>
+<td>精确后验真值 + 跨接口动作后果</td>
+</tr>
+<tr>
+<td>CJ-Bench（arXiv:2609.36965）</td>
+<td>中文基准</td>
+<td>307,900 held-out</td>
+<td>中文 ACC/ECE/ 延迟</td>
+</tr>
+<tr>
+<td>JevAdvBench（arXiv:2609.31142）</td>
+<td>对抗基准</td>
+<td>812 题 / 9,744 变体 /$0.41</td>
+<td>输入侧鲁棒性 vs 重跑噪声地板</td>
+</tr>
+<tr>
+<td>RLCDAlignBench（arXiv:2609.29429）</td>
+<td>失效检测基准</td>
+<td>10 类失效 × 44 基准 / 7,193 实例</td>
+<td>零样本对齐失效检测 AUROC</td>
+</tr>
+<tr>
+<td>imaddde867/jev-position-test</td>
+<td>顺序探针</td>
+<td>n=6 单克隆</td>
+<td>选项排列不变性</td>
+</tr>
+<tr>
+<td>bydeng01/scientific-decision-eval</td>
+<td>传导式评测</td>
+<td>S2：20 组 / 40 题 / 13 模型</td>
+<td>单格错误→下游结论错误传导率</td>
+</tr>
+<tr>
+<td>论文 2609.32160（TDM 审计）</td>
+<td>审计综述</td>
+<td>28 篇 corpus/14 项清单</td>
+<td>评测纪律合规率</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="71生态事实标准基准解剖">7.1、生态事实标准基准解剖</h2>
+<h3 id="711jevbench四轴复合榜">7.1.1、JevBench：四轴复合榜</h3>
+<p><strong>先厘清一个同名陷阱：</strong>GitHub 上有两个都叫
+<code>jevbench</code> 的仓库，owner 不同、内容无关，引用时必须带
+owner。本节的主体是
+github.com/fstandhartinger/jevbench（社区基准工程）即 JevBench v1.x
+基准本体；另一个 <code>dhruvmehra/jevbench</code>（8
+stars）是同名独立小横评；</p>
+<p>JevBench 由社区独立运营，README 明示不隶属、不被 TypeSafe AI
+背书，是包含数据集、冻结评分代码、历史快照与实时榜单的完整工程体系。</p>
+<p>JevBench 无对应 arXiv 论文，纯工程基准，被生态内多数项目以 adapter
+方式对接，是引用最广的通用基准。其比较好的方面包括：题目冻结并哈希、修订日志明确标注
+"冻结后题目与答案永不更改"、v1.2.3 公开修正三处 cost
+计算错误且强调不改排名。</p>
+<p>下面进行详细介绍。</p>
+<p><strong>评分规则（v1.3.0 起）</strong>：总分 JevBench Score =
+Intelligence、Calibration、Speed、Cost 四个维度各 25%
+的几何平均；Intelligence 低于 50 时整分乘以 (Intelligence/50)²。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>定义</th>
+<th>定义说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intelligence</td>
+<td>(accuracy − chance)/(1 − chance)，按档位 clip 0</td>
+<td>hard 30% / easy 14% / standard 28% / judge 28%</td>
+</tr>
+<tr>
+<td>Calibration</td>
+<td>hard 档 ECE + 对 gold 分布的 fidelity</td>
+<td>与 Intelligence 几何平均；纯 label-only 系统记 0</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>mean(score(p50), score(p95))，score(s)=100−20·log10(s/0.1s)</td>
+<td>延迟越低分越高</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>100−30·log10(cost_per_1000_decisions / 0.001)</td>
+<td>按千决策计，不以 token 为单位</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><strong>数据组织</strong>：</p>
+<ul>
+<li><p>v1.2 共 534 道决策，公开档 231 道；hard 档 220 道（111 公开 + 109
+留出），由 Claude Opus 5 与 GPT-5.6 Sol 撰写并在运行前冻结哈希；judge
+档完全私有；</p></li>
+<li><p>v1.4 新增 308 道密封题防过拟合，规定公开 / 密封准确率差 &gt;25pp
+扣 Intelligence 分；</p></li>
+<li><p>Cost 轴以 Jev 1.13.0 均 950 input tokens / 决策、$0.042/M input
+折算约 $0.0399 / 千决策为锚。</p></li>
+</ul>
+<hr />
+<p><strong>榜单关键快照</strong>：</p>
+<p><img src="figures/fig-25.png" alt="fig-25" /></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>版本 / 规则</th>
+<th>前五节选（总分降序）</th>
+<th>规模</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v1.4.2.2</td>
+<td>Imajev-4B 67.37 &gt; Plumb-4B 65.84 &gt; decider-4b v2 64.13 &gt;
+Jev 1.13.0 63.29 &gt; JevK5 v0.2.0 62.04<br></td>
+<td>95 系统 / 91 排名</td>
+</tr>
+<tr>
+<td>v1.2 历史</td>
+<td>Jev 1.13.0 74.4 &gt; SemIf (Qwen3.5-4B) 73.1 &gt; djev 73.0 &gt;
+Winnow-12B Q8 71.2 &gt; reflex 4B 70.3</td>
+<td>48 排名行</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>注意<strong>跨版本不可比</strong>：v1.4.2.2 与 v1.2
+题库、权重均不同，分数随版本漂移，不构成同一标尺下的前后名次对比；另外，v1.4.2.2
+榜首 Imajev-4B 高于闭源 Jev
+为四轴混合分结果，不等价于特定任务上的精度优势。</p>
+</blockquote>
+<hr />
+<h3
+id="712dhruvmehrajevbench经典-nlp-基准独立横评">7.1.2、dhruvmehra/jevbench：经典
+NLP 基准独立横评</h3>
+<p>该同名仓库与 fstandhartinger 版本无关，将托管 Jev、开源
+Laya、GPT-5-mini、Claude-Sonnet-5、微调 DistilBERT、bart-large-mnli
+零样本 NLI 置于 sst2/agnews/banking77 三个经典分类集上并排对比，默认每集
+n=500。</p>
+<blockquote>
+<p><code>sst2 / agnews / banking77</code> 是 NLP
+分类领域公认的<strong>标准基准套件</strong>，分别对应二分类、粗粒度多分类、细粒度高基数路由三类典型场景：</p>
+<ul>
+<li><p>SST-2（Stanford Sentiment Treebank 2）</p></li>
+<li><p><strong>基本属性</strong>：斯坦福大学发布的电影评论情感二分类基准，标签只有“正面
+/ 负面”两类；训练集约 6.7 万句、测试集约 1821
+句，输入为单句短文本；</p></li>
+<li><p><strong>难度定位</strong>：低难度、高共识的入门级二分类任务，是所有分类模型的基础标尺；</p></li>
+<li><p>验证 Jev 的二值原语（Noul / 二元
+Choice）在最简单的经典分类场景下，能否打平微调分类器与通用 LLM
+零样本表现，属于“及格线”级别的对照</p></li>
+<li><p>AG News（AG's News Corpus）</p></li>
+<li><p><strong>基本属性</strong>：来源于路透社等新闻源的主题分类基准，共
+4 类（世界、体育、商业、科技）；训练集约 12 万条、测试集约 7600
+条，输入为新闻标题 + 短描述；</p></li>
+<li><p><strong>难度定位</strong>：中难度粗分类，类别语义区分度高，是 4
+选项多分类的经典参照；</p></li>
+<li><p>测试 4 选项 Choice
+原语的多分类准确率，验证低基数多选下的读出稳定性；同时对照“零样本决策模型
+vs 微调 NLI 模型”在常规主题分类上的相对位置；</p></li>
+<li><p>Banking77</p></li>
+<li><p><strong>基本属性</strong>：PolyAI 发布的银行客服意图数据集，共
+<strong>77
+类细粒度用户意图</strong>（如“查询余额”“挂失卡片”“投诉手续费”等）；训练集约
+1 万条、测试集约 3080 条，输入为真实用户对话
+query，很多类别语义高度接近、边界模糊；</p></li>
+<li><p><strong>难度定位</strong>：高基数细粒度路由任务，是工业级“意图分诊
+/
+路由”场景的典型代表，也是三个数据集中最难、最能拉开模型差距的一个；</p></li>
+<li><p>对应 Jev 最主流的落地场景 —— 客服 /
+系统意图路由；专门用来观测高基数选项下，决策模型的读出精度会不会显著衰减；</p></li>
+</ul>
+</blockquote>
+<p>其特征在于：</p>
+<ul>
+<li><p>同一份 label 描述复用到全部范式，保证跨范式公平；</p></li>
+<li><p>主动声明微调 BERT 与零样本方回答的不是同一问题；</p></li>
+<li><p>工程上实现了准确率与延迟分离测量，响应缓存机制使复跑准确率零成本；</p></li>
+<li><p>局限为样本量小（95% CI ≈
+±2.5pp），作者自认排名并列居多，不足得出强结论 ——
+<strong>其价值在于提供了经典 NLP 基准的外部视角</strong>；</p></li>
+</ul>
+<hr />
+<h3
+id="713jev-benchmarking学术侧零打点评测">7.1.3、jev-benchmarking：学术侧零打点评测</h3>
+<p>论文【2609.37647，《Evaluating and Benchmarking the System One Model
+Jev》】是首份系统性零打点评测论文，配套仓库为【<a
+href="https://github.com/AppliedMachineLearning-Lab/jev-benchmarking">https://github.com/AppliedMachineLearning-Lab/jev-benchmarking</a>】，属于首份在开源基准上的系统评估.</p>
+<p><strong>规模与成本</strong>：37 个数据集，覆盖 3 种原语 × 7
+个任务族、200+ 语言变体，全程零样本无 in-context example；</p>
+<ul>
+<li><p>针对 Jev
+的三种核心原语（<strong>Choice</strong>、<strong>Score</strong>、<strong>Noul</strong>），论文将
+<strong>37 个公开数据集</strong>
+映射为结构化请求，涵盖七大任务类别：</p>
+<ul>
+<li><p><strong>文本分类</strong>（如 AG
+News、IMDB、GoEmotions）</p></li>
+<li><p><strong>意图与主题路由</strong>（如
+Banking77、CLINC150、SIB-200）</p></li>
+<li><p><strong>自然语言推理、释义与事实核查</strong>（如
+ANLI、PAWS、LLM-AggreFact）</p></li>
+<li><p><strong>阅读理解与知识问答</strong>（如
+BoolQ、Belebele、MMLU、C-Eval）</p></li>
+<li><p><strong>常识与推理</strong>（如
+HellaSwag、WinoGrande、BIG-bench）</p></li>
+<li><p><strong>安全、审核与法律文本</strong>（如 ToxiGen、OpenAI
+Moderation、UNFAIR-ToS）</p></li>
+<li><p><strong>评分量表</strong>（如
+STS-B、SummEval、HelpSteer2）</p></li>
+</ul></li>
+<li><p>总计 346009 请求、217.9M input token、总成本 $9.40；平均延迟
+0.36s，全量运行 5 小时 15 分；</p></li>
+</ul>
+<p><strong>核心结果与发现</strong>：</p>
+<ul>
+<li><p><strong>准确率</strong>：语言识别与常识类任务接近满分（Language
+ID 99.6%、BoolQ 91.3%）；情感类 93–97%；路由类 CLINC150 89.5%、Banking77
+79.7%；grounding/NLI 类 67.7–85%；最弱项 AGB-DE（德消保条款，4.9%
+正例）F1 仅 0.204、AUROC 0.784。</p>
+<blockquote>
+<p>Jev 在 IMDB、SST-2、HellaSwag、ARC 上达到 95–99% 准确率；在
+Emotion、SST-5、AGB-DE 等细粒度或专业判断任务上性能显著下降；</p>
+</blockquote></li>
+<li><p><strong>校准分层</strong>：22 个 Choice 数据集 pooled ECE =
+0.028（median per-dataset 同为 0.028，unweighted mean 0.061）；对照 Qwen
+0.063、Gemma 0.208。但三原语校准质量不一致：</p></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>原语</th>
+<th>Jev ECE</th>
+<th>Qwen ECE</th>
+<th>Gemma ECE</th>
+<th>方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Choice（pooled）</td>
+<td>0.028</td>
+<td>0.063</td>
+<td>0.208</td>
+<td>略过自信</td>
+</tr>
+<tr>
+<td>单 Noul</td>
+<td>0.052</td>
+<td>0.113</td>
+<td>0.123</td>
+<td>略欠自信</td>
+</tr>
+<tr>
+<td>多标签 Noul</td>
+<td>0.168</td>
+<td>—</td>
+<td>—</td>
+<td>严重过预测 yes</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><p><strong>胜负对比</strong>：Jev 胜 Qwen 27/37、负 9、平 1（11
+个领先 CI 不重叠）；Gemma 在全部 37 数据集上低于 Jev、31 个 CI
+不重叠。在 <strong>路由与 grounding 族上优势最显著</strong>。</p></li>
+<li><p><strong>选择性预测</strong>：50% coverage 下 Banking77 准确率从
+79.7% 升至 96.3%，ANLI 从 73.9% 升至 86.9%，置信度排序有效。</p></li>
+<li><p><strong>阈值重调</strong>：默认 0.5 阈值普遍错位。</p>
+<ul>
+<li>在 1000 例验证集上以步长 0.01 重选阈值后，UNFAIR-ToS micro-F1 从
+0.499 升至 0.748，GoEmotions macro-F1 从 0.243 升至 0.353；但 AGB-DE
+无改善，判断为分离度不足而非阈值错位。</li>
+</ul></li>
+<li><p><strong>多语言</strong>：</p>
+<ul>
+<li><p>Belebele 英文 97.2%、122 语言均值 86.7%，但低资源语言如 Nigerian
+Fulfulde 仅 37.4%；</p></li>
+<li><p><strong>Score 打 rubric 是唯一 Qwen 追平 /
+反超领域，说明生成文本质量判断超出 System1 单步能力</strong>；</p></li>
+</ul></li>
+</ul>
+<hr />
+<p>反常发现：<strong>Jev 在 MMLU 计算密集科目上准确率反而更高（聚合
+94.3% vs 其他科目 91.3%），与两个对照模型方向相反</strong></p>
+<ul>
+<li><p>作者通过选项旋转与撤题两轮探针排除了浅层记忆，但明确承认无法区分
+"训练见过真题" 与 "真能单步解题"；</p></li>
+<li><p>建议对老牌英文基准结果保持警惕
+——因为存在训练记忆的问题；</p></li>
+</ul>
+<hr />
+<h2
+id="72指标体系准确率校准排序与选择性预测">7.2、指标体系：准确率、校准、排序与选择性预测</h2>
+<h3
+id="721五个核心指标的定义与适用边界">7.2.1、五个核心指标的定义与适用边界</h3>
+<p>决策模型概率同时被下游 threshold/route/defer
+消费，单一准确率远不足够，这里定义5个评价指标，各对一个方面，请注意【参考
+TDM 审计】：</p>
+<ul>
+<li><p><strong>聚合 ECE 骗人</strong>：pooled ECE 0.047 看似良好，但
+median per-benchmark ECE 可高达 0.168，聚合数字掩盖了基线率错配 —— ECE
+必须 pooled 与 per-dataset 同报。</p></li>
+<li><p><strong>分桶方式影响结论</strong>：分桶数（10/15/20）与等宽 /
+等频选择会改变 ECE 数值，必须随数字一同报告；</p>
+<blockquote>
+<p><strong>2609.33971 在 10/15/20 bins 下重复 Laya MASSIVE 的 ECE
+反升结论（0.046→0.124 方向不变），说明该结论对分桶不敏感；</strong></p>
+<p><strong>但多数论文只报一种分桶；</strong></p>
+</blockquote></li>
+<li><p><strong>排序好不等于开箱即用</strong>：AUROC
+为阈值无关指标，与固定阈值下的 F1 / 召回率是两回事</p>
+<blockquote>
+<p>Bonn 里 OpenAI moderation 各类平均 AUROC 0.972，但 prompt injection
+在 固定 0.5 阈值下 recall 仅 50%；</p>
+</blockquote></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>指标</th>
+<th>度量目标</th>
+<th>适用边界与陷阱</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>准确率 Acc</td>
+<td>argmax 选对比例</td>
+<td>只评 "选谁"，对概率数值不敏感；<br>饱和测试上的打平无信息量</td>
+</tr>
+<tr>
+<td>ECE（15 等宽 bin）</td>
+<td>置信度与正确率的系统偏差</td>
+<td>仅评 top-label
+置信校准；<br>测不出每个选项概率的数值含义，也测不出跨原语一致性</td>
+</tr>
+<tr>
+<td>Brier 得分</td>
+<td>(q−c)²，同时惩罚错误与过度自信</td>
+<td>将准确率与校准压缩为单一标量；<br>是评分规则 RL
+的核心零件，但平均化改善不保证决策改善</td>
+</tr>
+<tr>
+<td>AUROC</td>
+<td>概率区分正负类的排序能力（阈值无关）</td>
+<td>排序好 ≠ 阈值指标好：GoEmotions AUROC 0.873 但多标签 Noul 阈值 F1
+很差</td>
+</tr>
+<tr>
+<td>risk-coverage / AURC</td>
+<td>按置信度排序后高置信区准确率</td>
+<td>选择性预测核心指标</td>
+</tr>
+</tbody>
+</table></div>
+<p>需要注意：<strong>五个核心指标互相不可替代——一个通过不代表另一个通过</strong></p>
+<p><img src="figures/fig-26.png" alt="fig-26" /></p>
+<hr />
+<h3
+id="722sys1cal-v1逐点概率真值与第三真值修复">7.2.2、Sys1Cal-v1：逐点概率真值与第三真值修复</h3>
+<p>论文 2609.35342《Jev thinks "I don't know", but doesn't say it:
+Introducing Sys1Cal-v1 Dataset for Probability
+Calibration》指出了当前的评测盲区：现有基准仅测 top-label 置信校准，不测
+P (A) 数值本身的正确性，因为只有 realized label 而无逐点真值分布。</p>
+<blockquote>
+<p>简单来讲，<strong>realized label
+是单个样本的“最终对错结果”，逐点真值分布是单个样本的“真实概率数值”；</strong></p>
+<p>绝大多数分类基准只有前者、没有后者，因此只能测“跨样本的平均校准”，测不出“每个概率数值本身准不准”；</p>
+</blockquote>
+<p>Sys1Cal-v1
+的做法是：<strong>不用真实世界的样本，用程序生成受控题目，把每个命题的真实概率
+P*(A) 精确写死，比如其构造了六类概率族：</strong></p>
+<ul>
+<li><p>频率型：罐子里 70 个红球 30 个蓝球，摸出红球的概率 =
+0.7；</p></li>
+<li><p>条件型、贝叶斯型、序列型……
+每道题的真实概率都是数学上精确已知的有理数；</p></li>
+</ul>
+<p>这样每个样本就不再只有“对 /
+错”标签，而是有一个<strong>精确的逐点真值分布</strong>——
+可以直接拿模型输出的概率 p̂ 和真实概率 p* 比数值误差，即分布重叠度指标
+OVL = 1 − |p̂ −
+p*|，<strong>本质评价的是“单样本概率数值的吻合度”</strong>：</p>
+<ul>
+<li><p>真实 0.7，模型输出 0.7 → OVL = 1.0（完全命中）；</p></li>
+<li><p>真实 0.7，模型输出 0.764 → OVL = 0.936；</p></li>
+<li><p>真实 0.7，模型输出 0.9 → OVL = 0.8；</p></li>
+</ul>
+<hr />
+<p>在规模 365 样例 / 92 个 latent 问题上进行了评估：</p>
+<ul>
+<li>逐点看，Choice 原语输出的概率数值和真实概率平均偏差约
+0.236，数值吻合度并不高； 但这和 Bonn 测出的 Choice pooled ECE = 0.028
+并不矛盾 —— 因为 ECE 是跨样本平均校准，高估和低估抵消后看起来很好</li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>输出</th>
+<th>Mean OVL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jev-Choice</td>
+<td>0.764</td>
+</tr>
+<tr>
+<td>Jev-Noul</td>
+<td>0.918</td>
+</tr>
+<tr>
+<td>Jev-Score</td>
+<td>0.886</td>
+</tr>
+<tr>
+<td>SemIf-Choice（基线）</td>
+<td>0.629</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p>启发：概率校准与逐点校准不是一回事，其对应的是不同的决策模型下游用法</p>
+<ul>
+<li><p>只有 realized label 的基准，只能验证频率校准（ECE） ——<strong>ECE
+合格不等于概率可逐点用于决策，ECE
+好看只说明平均上对，不说明每个概率值本身准；</strong></p></li>
+<li><p>有逐点真值的基准，才能验证概率数值本身的质量；</p></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>校准维度</th>
+<th>度量指标</th>
+<th>对应下游用法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>频率校准（top-label 校准）</td>
+<td>ECE</td>
+<td>只拿 argmax 做决策、用置信度做粗粒度阈值 / 升级</td>
+</tr>
+<tr>
+<td>逐点数值校准</td>
+<td>OVL / Brier / TV 距离</td>
+<td>拿概率数值做计算：贝叶斯更新、期望损失、风险定价、级联精确阈值</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h3 id="723统计纪律现状tdm-早期证据审计综述">7.2.3、统计纪律现状：TDM
+早期证据审计/综述</h3>
+<p>论文 2609.32160《Typed Decision Models: An Early Evidence Audit and
+Evaluation Checklist》（Northeastern，2026-09-26）对 Jev 发布后 9
+天内涌现的 28 篇论文做系统综述，给出 14
+项评测清单与合规率统计（对<strong>27
+篇评测论文统计</strong>），是本章评估协议的主要依据：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>清单项</th>
+<th>合规率</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B1 同 backbone label-logprob baseline</td>
+<td>5/26</td>
+<td>绝大多数无对照，无法归因 typed 接口收益</td>
+</tr>
+<tr>
+<td>B2 廉价生成级联 baseline</td>
+<td>1/5</td>
+<td>几乎无人对照便宜生成级联</td>
+</tr>
+<tr>
+<td>B3 任务特定模型 baseline</td>
+<td>7/13</td>
+<td>专用分类器对照不足</td>
+</tr>
+<tr>
+<td>T3 选项名不变性测试</td>
+<td>1/27</td>
+<td>几乎无人测选项重命名 / 重排</td>
+</tr>
+<tr>
+<td>R2 headline 置信区间 / 显著性</td>
+<td>15/27</td>
+<td>近半数头条结果无 CI</td>
+</tr>
+<tr>
+<td>C1 calibration 度量</td>
+<td>13/17</td>
+<td>—</td>
+</tr>
+<tr>
+<td>C3 阈值与评测集分离冻结</td>
+<td>7/7</td>
+<td>适用者基本全合规</td>
+</tr>
+<tr>
+<td>C4 latency 报缓存前后</td>
+<td>3/20</td>
+<td>延迟测量方式普遍缺失缓存区分</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>14项清单的详细扩展：</li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>分组</th>
+<th>ID</th>
+<th>Report</th>
+<th>Why it matters / failure observed<br> 意义 &amp;
+观测到的失效案例</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Baselines</strong><br> <strong>基线设置</strong></td>
+<td>B1</td>
+<td>A baseline that reads label log-probabilities from an ordinary or
+same-backbone LM.<br> 基线：使用普通大模型 /
+相同骨干模型读取标签对数概率。</td>
+<td>Otherwise interface gains cannot be separated from model gains; the
+same backbone is the most informative choice; where tested, the readout
+added little accuracy (Finding 1).<br> 否则无法区分效果提升来自 TDM
+接口本身还是骨干模型；同骨干对照是最有参考价值的基线；已有对照实验发现，这套读出方式几乎不带来精度提升（核心结论
+1）。</td>
+<td>5/26; 1 unclear</td>
+</tr>
+<tr>
+<td></td>
+<td>B2</td>
+<td>Where a confidence threshold passes decisions to another model: a
+cheap generative cascade as a baseline.<br>
+基线：如果依靠置信阈值把请求转交其他模型，必须设置廉价生成式级联作为对照基线。</td>
+<td>On external τ²-bench a cheap generative cascade was cheaper than the
+TDM cascade and not less accurate [71]; two of six open-weight LLMs in
+Jev’s price range had higher median macro-F1 [28].<br> 在 τ²-bench
+基准上，廉价生成模型级联比 TDM 级联成本更低、精度不差 [71]；和 Jev
+同价位的 6 个开源大模型里，有 2 个中位数 macro-F1 更高 [28]。</td>
+<td>1/5</td>
+</tr>
+<tr>
+<td></td>
+<td>B3</td>
+<td>Where labeled data suffice to train one: a task-specific model
+(encoder, classical classifier, reward model or probe) as a
+baseline.<br>
+基线：标注数据充足时，使用任务专用模型（编码器、传统分类器、奖励模型、探测头）作为对照基线。</td>
+<td>Fine-tuned encoders were not significantly worse than an open TDM in
+ranking and had nominally lower ECE (but higher Brier) and were faster
+[54]; trained quality models stayed well ahead [56].<br>
+微调编码器在排序任务上和开源 TDM 差距不显著，ECE 更低（但 Brier
+更高）且速度更快 [54]；专门训练的质量评估模型效果持续领先 [56]。</td>
+<td>7/13; 3 unclear</td>
+</tr>
+<tr>
+<td><strong>Test design</strong><br> <strong>测试设计</strong></td>
+<td>T1</td>
+<td>Spread between models on the test; avoid parity claims on saturated
+tests.<br>
+测试设计：报告模型间性能差异；禁止在天花板饱和任务上宣称效果等价。</td>
+<td>Several parity results come from tests on which strong models are at
+or near ceiling (Finding 2).不少 “效果持平”
+结论来自强模型已经接近满分的测试集（核心结论 2）。</td>
+<td>–</td>
+</tr>
+<tr>
+<td></td>
+<td>T2</td>
+<td>Correctness or agreement of individual decisions across repeated,
+reordered or reworded requests, not only aggregate accuracy.<br>
+测试设计：除整体准确率外，还要评估请求改写、重排、重复提交后，单条决策结果是否一致、正确。</td>
+<td>Equal aggregate scores hid different decisions [79]; correct final
+labels hid wrong intermediate choices
+[16].总体得分相同，背后决策结果可能完全不一样
+[79]；最终标签选对了，中间判断步骤依然可能出错 [16]。</td>
+<td>17/26; 1 unclear</td>
+</tr>
+<tr>
+<td></td>
+<td>T3</td>
+<td>Option-name invariance test: swap names across rubrics or compare
+neutral with semantic names.<br>
+选项名称不变性测试：在评判细则之间调换选项名称，或者对比无含义代号名称和带语义名称两种形式</td>
+<td>Swapping no/yes across rubrics moved Jev AUC from .815 to .581 with
+zero type errors [61]; asking through Score instead of Choice moved
+graded accuracy by up to 10.5 points [53].<br> 在评判细则互换 yes/no
+标签后，Jev 的 AUC 从 0.815 跌到 0.581，且没有出现类型报错
+[61]；调用接口时改用 Score 原语而不是 Choice
+原语，分级准确率最高可达到10.5个点</td>
+<td>1/27</td>
+</tr>
+<tr>
+<td></td>
+<td>T4</td>
+<td>T4 Data provenance: synthetic or real, gold-label source, and
+whether a public benchmark predates the model.<br>
+测试设计：披露数据来源：合成数据 /
+真实数据、金标来源、公开基准数据集是否早于模型发布。</td>
+<td>The corpus includes agent-generated texts with agent-generated
+labels [36] and unresolved contamination concerns
+[28,79].这批研究里存在智能体自生成文本 + 自标注数据
+[36]，还有尚未排除的数据污染风险 [28,79]。</td>
+<td>–</td>
+</tr>
+<tr>
+<td><strong>Reproducibility and statistics</strong><br>
+<strong>可复现性与统计</strong></td>
+<td>R1</td>
+<td>R1 Exact model version and run date<br>
+可复现性：写明精确模型版本、调用时间。</td>
+<td>Hosted TDMs are closed and may change under a stable name; several
+papers provide neither.<br> 商用托管 TDM
+是闭源的，同名版本可能静默更新；多篇论文两项信息都没有提供。</td>
+<td>–</td>
+</tr>
+<tr>
+<td></td>
+<td>R2</td>
+<td>R2 Confidence intervals or significance tests on headline
+results<br> 可复现性：核心结果提供置信区间或者显著性检验。</td>
+<td>Twelve of the 27 report neither for their headline results. Because
+the hosted model is not deterministic [61,79], repeated-run stability
+should also be reported where feasible.<br> 27 篇里面有 12
+篇核心结果两者都不给。托管模型本身具有非确定性
+[61,79]，条件允许时还应报告多次运行的稳定性。</td>
+<td>15/27</td>
+</tr>
+<tr>
+<td></td>
+<td>R3</td>
+<td>R3 Disclose prompts, recipes, baselines, or thresholds chosen after
+seeing test data.<br>
+可复现性：披露所有看完测试结果之后才选定的提示词、实验方案、基线、阈值。</td>
+<td>At least seven papers make such choices; one series of redesigns
+moves the headline metric from .576 to .797 [56].<br> 至少 7
+篇论文存在这类事后调参；有一项工作反复调整方案，核心指标从 0.576 提升到
+0.797 [56]。</td>
+<td>–</td>
+</tr>
+<tr>
+<td><strong>Confidence &amp; deployment</strong><br>
+<strong>置信度与部署</strong></td>
+<td>C1</td>
+<td>Where the TDM’s probabilities are used or described as calibrated:
+calibration measured with ECE, Brier score, reliability analysis or an
+equivalent metric.<br> 置信部署：如果使用 TDM
+概率、宣称概率经过校准，必须用 ECE、Brier
+分数、可靠性分析等指标评测校准效果。</td>
+<td>Held-out data, a metric suited to label prevalence, and results
+before and after any recalibration are preferable. Raw probabilities are
+miscalibrated in some workloads; recalibration reduces error by 3.3×,
+while a 0.01 grid limits rare-label resolution [52].<br>
+优先使用留出集、适配标签分布的指标，同时上报重校准前后结果。原始概率在部分任务校准很差；重校准可以把误差降低
+3.3 倍，但两位小数（0.01 步进）限制了稀有标签的分辨能力 [52]。</td>
+<td>13/17; 1 unclear</td>
+</tr>
+<tr>
+<td></td>
+<td>C2</td>
+<td>Accuracy among the highest-confidence examples, by task.<br>
+置信部署：按任务统计高置信样本子集的准确率。</td>
+<td>The corpus contains high confidence at near-base-rate accuracy [28]
+and wrong tool calls with mean confidence .778 [71]; under optimized
+answer-preserving context, 45% of Jev’s initially correct decisions (73%
+of those redirected) end with probability ≥ 0.7 on the wrong option
+[73]<br> 已有文献发现：高置信样本正确率接近随机基线
+[28]；错误工具调用的平均置信度高达 0.778 [71]；在精心构造的上下文下，Jev
+原本正确的决策里，45%（被篡改样本里 73%）最终把≥0.7 置信分给错误选项
+[73]。</td>
+<td>–</td>
+</tr>
+<tr>
+<td></td>
+<td>C3</td>
+<td>Where confidence thresholds gate acceptance or escalation:
+thresholds fitted on data separate from the evaluation set, or fixed
+before evaluation and not tuned on it.<br> 置信部署：置信阈值用于放行 /
+转交时，阈值只能在测试集之外的数据拟合，或者实验前固定，禁止在测试集调参。</td>
+<td>Frozen thresholds should also be tested for transfer across
+workloads or fallback models, since thresholds fitted on a selection set
+did not hold on held-out items for every fallback, and fitted
+temperatures differ across workloads [39]; some fixed thresholds are
+applied to scores the authors explicitly do not assume to be calibrated
+[29].<br>
+固定阈值还要跨任务、跨复核模型测试泛化能力；在筛选集调好的阈值不一定在留出集生效，最优温度参数随任务变化
+[39]；部分论文直接把阈值套在作者自己都不认为已经校准的分数上 [29]。</td>
+<td>7/7; 3 unclear</td>
+</tr>
+<tr>
+<td></td>
+<td>C4</td>
+<td>Where TDM latency is reported or a latency advantage is claimed:
+latency both with and without caching.<br>
+置信部署：宣称延迟优势时，同时上报开启缓存、关闭缓存两套延迟数据。</td>
+<td>Serving location, concurrency and measured cost per correct outcome
+should also be stated. Caching removes one reported latency advantage
+[36]; two sibling papers report opposite cost directions on different
+workloads [36,37].<br>
+还应标注服务地域、并发量、每一次正确推理的成本。缓存会抹平一部分延迟优势
+[36]；两篇同源论文在不同任务上得到相反的成本结论 [36,37]。</td>
+<td>3/20; 1 unclear</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><p>另外，论文定义了TDM的三要素：</p>
+<ul>
+<li><p>选项集合<strong>在请求时动态传入</strong>，不是训练时固定标签；</p></li>
+<li><p>单次请求可以批量跑多个独立问题，各问题决策互不干扰；</p></li>
+<li><p>直接输出归一化概率分布，下游代码基于概率做分流、阈值判断、转交复核，而不是只取最大概率答案；</p></li>
+</ul></li>
+<li><p>定义了8个核心构成组件：</p></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>TDM 核心组件（Component）</th>
+<th>Closest ancestor <br> 技术前身</th>
+<th>What TDMs change<br> （TDM 改造点，原文）</th>
+<th>详细解读</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scoring a label set by LM probability<br>
+基于大模型概率对标签集合打分</td>
+<td>Cloze/verbalizer classification（完形 / 文本化分类）Likelihood
+scoring（似然打分）</td>
+<td>Options declared per request rather than fixed verbalizers<br>
+选项随单次请求传入，不再是训练阶段固定的 verbalizer 标签词</td>
+<td>传统 verbalizer
+分类：训练时就定好每个类别对应的提示词（如<code>yes</code>/<code>no</code>），标签集合固化；<br>
+TDM 保留 “拿模型 token 概率打分” 这个底层能力，但标签集合<strong>每次
+API 调用由调用方自定义</strong>，同一个模型可以今天做 3 分类、明天做 7
+分类，不需要重新 SFT。论文核心结论 1 的来源：<strong>很多宣称 TDM
+更强的效果，本质只是同骨干模型的标签概率打分，TDM
+专用接口本身不带来稳定精度增益</strong></td>
+</tr>
+<tr>
+<td>Option-label readout<br> 选项标签读出层</td>
+<td>Multiple-choice symbol binding<br> 多选题符号绑定</td>
+<td>Named options may include rubrics rather than letters<br>
+选项可以附带评判细则（rubric），而不只是 A/B/C 字母</td>
+<td>传统多选打分一般只用简短字母 / 代号区分选项；<br> TDM
+支持每个选项带上完整判定规则。例如：选项 A 附带判定标准
+“属于合同违约：满足 XX 条件”；模型不是单纯匹配文字，而是按 rubric
+做判断。<br> 风险点（后文实验 T3）：TDM
+很容易被选项字面名称干扰，<strong>调换选项文字名称、含义不变时，决策会大幅漂移</strong>，这是鲁棒性短板</td>
+</tr>
+<tr>
+<td>Guaranteed valid output<br> 输出合法性保证</td>
+<td>Grammar-constrained decoding<br> 语法约束解码</td>
+<td>Returns a renormalized distribution without token generation<br>
+输出归一化概率分布，不生成自由文本 token</td>
+<td>约束解码（如 CFG、JSON-gram）是限制生成文本只能在合法集合里；TDM
+更进一步：<strong>放弃逐 token
+生成文本，直接输出在传入选项上归一后的概率</strong>。对外接口承诺：输出一定落在你给的候选集合里，不会跑出额外答案；这是面向软件系统最关键的契约，程序不需要做输出校验、解析、容错。注意：论文提示，底层实现很多开源
+TDM 依然在内部算 token logit，只是对外屏蔽文本</td>
+</tr>
+<tr>
+<td>Fine-tuned label-token head<br> 微调标签 token 输出头</td>
+<td>Yes/no rerankers（二选一重排器）generative
+verifiers（生成式校验器）</td>
+<td>Arbitrary option sets; many questions per call<br>
+支持任意选项集合；单次请求批量处理多个独立问题</td>
+<td>早期重排器、校验器大多固定少量候选、单次一问；<br> TDM
+输出头支持：一个上下文（同一段文本），一次性提交 K
+个互不干扰的决策问题，各自有独立候选集，批量返回各组概率。<br>
+工程价值：减少多次轮询开销，适合 Agent
+里批量判断多个条件；但代价：问题之间依然存在隐性上下文污染风险</td>
+</tr>
+<tr>
+<td>Runtime labels in small encoders<br> 编码器动态标签</td>
+<td>NLI zero-shot classifiers（NLI 零样本分类）GLiClass</td>
+<td>Presented as a general decision interface<br>
+封装成通用决策接口</td>
+<td>GLiClass 这类编码器零样本分类，已经支持动态标签；<br> TDM
+的创新不在编码器打分机制，而是<strong>把这套能力标准化成统一 API
+契约（Choice/Score/Noul 原语）</strong>，统一输入输出范式，不管底层是
+Decoder、BERT 式编码器，对外都是同一套调用方式。<br> 开源
+TDM（Open-Jev、Laya）大多走这条技术路线</td>
+</tr>
+<tr>
+<td>Rubric-conditioned judging<br> 评判细则驱动打分</td>
+<td>Prometheus、G-EvalLLM <br> 评判模型</td>
+<td>Rubric attached to each option<br> 评判细则绑定到每一个选项</td>
+<td>G-Eval、Prometheus 是用自然语言标准让大模型打分；<br> TDM
+把评判标准从全局 prompt
+里拆出来，<strong>绑定到单个选项上</strong>。典型场景：内容审核、医学报告判读、人工标注自动化；每个选项自带判定规则，模型基于规则分配概率，而不是自由写评语。<br>
+短板：模型容易 “读字不读义”，对 rubric 理解不稳定，是 T3
+鲁棒性测试重点考察项</td>
+</tr>
+<tr>
+<td>Confidence-based escalation<br> 基于置信度的逐级转交</td>
+<td>Reject option（拒绝选项）LLM cascades（大模型级联）</td>
+<td>Cheap first stage with a native probability<br>
+原生概率输出，作为低成本第一级<br></td>
+<td>选择性分类、模型级联早已有 “低置信交给更强模型 / 人工”；<br> TDM
+的差异化：置信度（概率）是原生一等公民输出，不是后算出来的附属指标。<br>
+这就是业界最主流的<strong>TDM 级联部署范式</strong>：TDM
+做廉价初审；置信低于阈值，路由到强生成模型复核。<br>
+论文明确局限：<strong>如果两级模型错误高度相关，复核几乎无效；不能默认置信度可靠</strong></td>
+</tr>
+<tr>
+<td>Calibration training<br> 校准训练目标</td>
+<td>RL with proper scoring rewards<br> 基于恰当打分函数的强化学习</td>
+<td>Calibration is part of the product objective (RLCD)<br>
+概率校准是主训练目标（Jev 称为 RLCD）</td>
+<td>以往分类模型的校准大多是后处理（温度缩放、Platt 缩放）；Jev
+宣称在训练阶段就用 RLCD（Reinforcement Learning for Calibrated
+Decisions），把概率校准直接放进奖励目标，希望输出概率和真实正确率匹配。<br>
+但论文实测结论：<strong>RLCD 不能跨场景保证校准；分布漂移、陌生任务下
+ECE/Brier 会明显恶化，高置信样本依然大量出错</strong>，对应评估清单
+C1/C2</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="73概率一致性与公理评测">7.3、概率一致性与公理评测</h2>
+<p>校准是跨样本的平均性质：报 p 的事件长期以 p 频率发生。但它不要求同一
+case 上逻辑相关问题逐项自洽。违反概率公理的模型在 pipeline 中表现为
+"动作取决于提问措辞"。</p>
+<blockquote>
+<p><strong>一个模型可以给"claim is supported" 0.7、同时给"claim is not
+supported" 0.6，这违反 Kolmogorov 补事件公理，在 pipeline
+里表现为"动作取决于正面还是负面措辞"！</strong></p>
+</blockquote>
+<p>这对应了我们的一个RQ：<strong>决策模型的概率是否满足一致性/公理。</strong>相关证据主要由如下独立评测构成。</p>
+<h3 id="731否定--划分公理arxiv260933209">7.3.1、否定 /
+划分公理（arXiv:2609.33209）</h3>
+<p>论文<strong>2609.33209《Beyond Calibration: Do a Typed-Decision
+Model's Probabilities Obey the Probability
+Axioms?》</strong>（东北大学沈阳，2026-09-27）构造 label-free 的 7
+恒等式（negation complement、disjunctive complement、partition
+additivity、disjunction additivity、description
+invariance、monotonicity、cross-format consistency）160 items（ChaosNLI
+100 + PubMedQA 60），对照 Jev（jev-1.13 经 OpenRouter）与 Qwen3.8-27B
+两种读出：</p>
+<ul>
+<li><p>这 7 个恒等式，等于 <strong>7
+条概率必须遵守的数学铁律（公理）</strong>，用来自检：<strong>不需要正确答案，也不用和外部事实比，只看模型自己输出的概率
+“前后矛不矛盾、内部自不自洽”；</strong></p></li>
+<li><p>它测的既不是准确率（答得对不对），也不是
+ECE（平均校准好不好），而是<strong>概率输出的内部逻辑一致性</strong>——
+<code>同一件事换个问法、换个接口、拆成不同选项，模型给的概率能不能自圆其说</code>；</p></li>
+</ul>
+<blockquote>
+<p>前面看到的两类评测都有局限：</p>
+<ol type="1">
+<li><p><strong>准确率 / ECE</strong>：要和外部真实标签比，测的是
+“和事实对不对得上”；</p></li>
+<li><p><strong>Sys1Cal OVL</strong>：要和逐点真实概率比，测的是
+“数值准不准”；</p></li>
+</ol>
+</blockquote>
+<blockquote>
+<p>这里评测覆盖的情况是：<strong>哪怕模型整体校准不错、准确率也高，它输出的概率本身可能在数学上是
+“自相矛盾” 的；</strong></p>
+</blockquote>
+<p>所有的7个恒等式均基于同一个逻辑：<strong>对同一个事件，换一种等价问法，模型输出的概率应该满足数学恒等关系——如果存在偏差且偏差越大，说明越不自洽；</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>恒等式名称</th>
+<th>数学含义</th>
+<th>测的核心问题</th>
+<th>Jev 实测偏差（越小越好）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. 否定互补</strong><br><strong>Negation
+complement</strong></td>
+<td>P(A) + P(¬A) = 1<br>一件事发生的概率 + 不发生的概率 = 100%</td>
+<td>最基础的正反问法一致性：正着问反着问，概率加起来是不是 1</td>
+<td>0.064（偏差很小，表现最好的一项）</td>
+</tr>
+<tr>
+<td><strong>2. 析取互补</strong><br><strong>Disjunctive
+complement</strong></td>
+<td>P(A∨B) + P(¬A ∧ ¬B) = 1<br>“A 或 B 发生” 的概率 + “AB 都不发生”
+的概率 = 100%</td>
+<td>把单个否定扩展成两个事件的并集，测扩展后的互补性是否成立</td>
+<td>0.054（和否定互补接近，偏差小）</td>
+</tr>
+<tr>
+<td><strong>3. 划分可加性</strong><br><strong>Partition
+additivity</strong></td>
+<td>所有互斥且穷尽的选项，概率之和 =
+1；<br>比如三个选项覆盖全部可能，加起来必须是 100%</td>
+<td><strong>Jev 最严重的缺陷</strong>：单标签概率之和平均 =
+1.14，相当于三个选项各给 38%，加起来 114%，数学上不可能<br></td>
+<td><strong>0.141</strong>（偏差最大，核心短板）<br></td>
+</tr>
+<tr>
+<td><strong>4. 析取可加性</strong><br><strong>Disjunction
+additivity</strong></td>
+<td>若 A、B 互斥，则 P (A∨B) = P (A) + P (B)两个互斥事件 “至少一个发生”
+的概率 = 两个概率相加</td>
+<td>互斥事件的并集概率，是不是等于分别概率之和</td>
+<td>0.138（偏差第二大）</td>
+</tr>
+<tr>
+<td><strong>5. 拆包一致性</strong><br><strong>Unpacking</strong></td>
+<td>同一事件，拆不拆开描述概率相等比如 “生病” 和 “得甲病或乙病”
+如果等价，概率应一致</td>
+<td>表述拆分 / 合并会不会扭曲概率，测 “表述形式对结果的影响”</td>
+<td>0.060（中等偏差）</td>
+</tr>
+<tr>
+<td><strong>6. 单调性</strong><br><strong>Monotonicity</strong></td>
+<td>若 A 能推出 B，则 P (A) ≤ P (B)子集概率不能大于母集（比如 “北京人”
+概率 ≤ “中国人” 概率）</td>
+<td>会不会犯合取谬误：子集反而比母集概率更高</td>
+<td>0.013（偏差极小，表现很好）</td>
+</tr>
+<tr>
+<td><strong>7. 跨格式一致性</strong><br><strong>Cross-format
+consistency</strong></td>
+<td>同一个问题，用 Choice / Noul / Score 不同原语问，概率应一致</td>
+<td>接口格式会不会改变结果，对应 “跨接口动作分裂” 的底层原因</td>
+<td>0.091（偏差中等偏上）</td>
+</tr>
+</tbody>
+</table></div>
+<p>整体评估来看，与 Qwen的First-Token相比，v
+在几乎每条恒等式上更自洽，但 partition 与 disjunction
+仍是最大短板；偏差随置信度升高而缩小。</p>
+<hr />
+<h3
+id="732层级相干性arxiv260933971">7.3.2、层级相干性（arXiv:2609.33971）</h3>
+<p>论文2609.33971《Do System One Decisions Add Up? A Study of
+Probabilistic
+Coherence》测试了另一类相干性：同一决策先分粗类再选细类，是否满足"粗类概率
+= 其细类概率之和"；</p>
+<ul>
+<li><p>本质是把前面 7 个恒等式里的“划分可加性（Partition
+additivity）”放到真实的两级分类任务中做落地验证；</p></li>
+<li><p>验证的是<strong>层级分类场景下的概率可加性</strong>：如果分类树逻辑自洽，那么
+“一个粗类的概率” 应该严格等于“它下属所有细类的概率之和”；</p></li>
+<li><p>基本假设：如果模型输出的概率满足概率论公理，那么<strong>“直接从所有细类里选”和“先选粗类、再选细类，最后汇总概率”</strong>两种方式，得到的最终准确率应该基本一致
+—— 偏差越大，说明层级概率越不自洽；</p></li>
+</ul>
+<p>具体来讲，论文用了 3 个天然带“粗 - 细”两级分类的经典意图 /
+分类数据集：TREC（问题分类）、CLINC150（对话意图）、MASSIVE（语音助手意图）进行测试，分为两种测试模式：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>做法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Flat</strong><br><strong>（扁平模式）</strong></td>
+<td>直接把所有细类选项全部列出来，让模型一次选出答案，直接算细类准确率。</td>
+</tr>
+<tr>
+<td><strong>Marginalization</strong><br><strong>（分层边际化）</strong></td>
+<td>分两步走：<br>- 先问“属于哪个粗类”，得到每个粗类的概率；<br>-
+再分别对每个粗类，问“属于该粗类下的哪个细类”，得到细类条件概率；<br>-
+用贝叶斯公式汇总：P（细类）= P（粗类）×
+P（细类｜粗类），再算最终准确率；</td>
+</tr>
+</tbody>
+</table></div>
+<p>论文在上述3个数据集的72K问题上，对比了Jev和Laya模型，但得到了反直觉的结论：</p>
+<ul>
+<li><p>最反直觉：Jev 分层后准确率暴跌，Laya 分层后反而上涨</p>
+<ul>
+<li><p>flat→marginalization 后，Jev 在 CLINC150 掉
+22.9pp（91.0%→68.1%），Laya 反而涨 21.3pp（23.1%→44.4%），6 个 CI
+全部排除 0；</p></li>
+<li><p><strong>Jev
+暴跌的原因</strong>：正好对应前文公理评测里<strong>“Partition additivity
+偏差 0.141”</strong>的短板 ——Jev
+给每个单标签的概率普遍偏高，所有细类概率加起来会超过粗类概率（相当于
+“概率预算超支”）——
+分层汇总后概率分布被系统性扭曲，准确率直接跳水；</p></li>
+<li><p><strong>Laya 上涨的原因</strong>：Laya
+基座小、单步区分上百个细类的能力很弱；分层提问相当于给了它结构化提示，先缩小到粗类范围再选细类，相当于做了
+“分而治之” 的辅助，反而帮它提升了判别力；</p></li>
+</ul>
+<blockquote>
+<p>两者的错误来源完全不同：Jev
+输在“概率数值不自洽，但单步判别力强”；Laya
+赢在“分层结构补了判别力短板，但概率数值更不准了”</p>
+</blockquote></li>
+<li><p>准确率与校准可脱钩</p>
+<ul>
+<li>Laya 在 MASSIVE 上，分层后准确率涨了 9.2pp，但 ECE 从 0.046 升到
+0.124；</li>
+</ul>
+<blockquote>
+<p>分层虽然帮它选对了更多答案，但输出的概率数值离真实正确率更远了 ——
+猜对的题概率给低了、猜错的题概率给高了，整体置信度和正确率的匹配度变差；</p>
+<p>这里实际印证了全文反复强调的一个核心判断：<strong>准确率和校准是两个完全独立的维度，不能用准确率高低推断校准好坏；</strong></p>
+</blockquote></li>
+<li><p>顺序鲁棒性不等于层级自洽性</p>
+<ul>
+<li><p>flat 模式下，选项顺序翻转率 Laya 高达
+62.5%–76.7%（换个排列顺序答案就变，非常脆弱），Jev 仅
+5.8%–20.0%（顺序基本不影响结果）；</p></li>
+<li><p><strong>但顺序稳不代表概率自洽</strong>：Jev
+抗顺序扰动的能力远强于 Laya，但层级可加性反而更差</p></li>
+</ul></li>
+</ul>
+<hr />
+<h3
+id="733概率契约与跨接口决策后果arxiv260937470">7.3.3、概率契约与跨接口决策后果（arXiv:2609.37470）</h3>
+<p>论文 2609.37470《Probability Contracts: Accuracy, Coherence, and
+Decisions Across LLM
+Interfaces》把评测推到"有精确后验真值"的受控有限世界 ——
+构造了一套“真实后验概率完全已知”的受控环境，同时度量三个经常被混淆的目标：<strong>数值精度
+accuracy（离真后验多近）、内部一致性
+coherence（跨等价表示是否自洽）、最终决策价值 decision
+value（按它动作损失多少）</strong>，把 “违反公理” 从抽象数学问题落地成了
+“会不会导致业务动作出错” 的工程问题，具体来讲：</p>
+<ul>
+<li><p>普通评测基准只有 “对 / 错” 标签（realized label），只能算 ECE
+这种跨样本平均校准，测不出单个样本的概率数值本身准不准；</p></li>
+<li><p>论文通过程序生成了 1000
+个独立的有限世界，每个世界里每个事件的<strong>真实后验概率都是精确的有理数</strong>（类似
+“罐子里拿球” 的经典概率题，真值可由数学规则严格算出），共 11913
+个可测槽位。这样就可以直接拿模型输出和真实概率比数值误差，不需要靠统计平均；</p></li>
+<li><p>具体实验，对每个事件，用 Jev 的两种合法原语分别查询：</p>
+<ul>
+<li><p><strong>Event 接口</strong>：二元事件原生接口，直接问“事件 A
+发生的概率”</p></li>
+<li><p><strong>Choice 接口</strong>：二选项选择题接口，问“A 和 ¬A
+哪个对”</p></li>
+</ul></li>
+<li><p>使用两个独立指标进行评估：</p>
+<ul>
+<li><p><strong>一致性残差</strong>：比如补事件 P (A)+P (¬A) 和 1
+的偏差，越小说明越自洽；</p></li>
+<li><p><strong>TV（总变差）距离</strong>：模型输出概率和真实后验的数值差距，越小说明越精准；</p></li>
+</ul></li>
+</ul>
+<hr />
+<p><strong>关键发现</strong>：</p>
+<ul>
+<li><p><strong>跨接口动作分裂</strong>：32.8% 的事件输出相反动作</p>
+<ul>
+<li><p><strong>现象</strong>：同一个事件，用 Event 和 Choice
+两种接口问，得到的概率数值存在系统性偏差。当业务设置了固定决策阈值（比如置信度
+≥0.9 自动执行，否则人工复核）时，有 <strong>32.8%
+的事件会因为接口不同，刚好跨过阈值，得到完全相反的动作；</strong></p></li>
+<li><p><strong>细节</strong>：所有分裂都发生在 act/defer（执行 /
+复核）边界，没有出现正反答案完全颠倒的极端情况，但对生产已经足够致命
+——<strong>同一个事件，A 模块用 Event 接口放行了，B 模块用 Choice
+接口卡了，系统逻辑完全不一致。</strong></p></li>
+<li><p><strong>原文典型案例</strong>：同一事件真实后验 ≈0.694，Event
+接口输出 0.84（低于 0.9 → 人工复核），Choice 接口输出 0.97（高于 0.9 →
+自动执行）；</p></li>
+<li><p><strong>本质原因</strong>：Jev
+的不同原语（Choice/Noul/Score）有各自独立的概率语义，不是同一个概率的不同格式包装
+—— <strong>这和 7.2.2 Sys1Cal 里“三原语 OVL
+差异巨大”的结论完全呼应。</strong></p></li>
+</ul></li>
+<li><p><strong>精度序与一致性序可反转</strong>：一致性残差只暴露
+"可证部分错误"，共享错误须有真值才能发现</p>
+<ul>
+<li><p>两个指标：一致性残差、TV距离</p></li>
+<li><p>反直觉现象：</p></li>
+<li><p>单看补事件一致性：Jev 残差 0.0929，远好于 Kev 的 0.5055，看起来
+Jev 更 “靠谱” —— <strong>一致性残差更小，更自恰；</strong></p></li>
+<li><p>但看整体数值精度：Kev TV=0.2350，反而优于 Jev 的 0.2677 ——
+更精确；</p></li>
+<li><p>这说明致性<strong>只能测出“自己和自己矛盾”的错误，测不出“大家一起错”的共享偏差</strong>，也即：</p></li>
+<li><p>不能用“公理一致性排名”代替“准确率排名”，两者是完全独立的维度；</p></li>
+<li><p>只看一致性选模型，可能选出 “自洽但不准” 的选项；</p></li>
+</ul>
+<blockquote>
+<ul>
+<li><p>模型甲：P (A)=0.7，P (¬A)=0.6，加起来
+1.3，一致性很差，但数值和真值接近</p></li>
+<li><p>模型乙：P (A)=0.3，P (¬A)=0.7，加起来
+1.0，一致性完美，但数值全错</p></li>
+</ul>
+</blockquote></li>
+<li><p><strong>可重复性</strong>：exact repeat pass 率仅
+74.5%，均值接近不等于逐例稳定</p>
+<ul>
+<li><p>也就是完全相同的请求重复调用两次，只有 74.5%
+的样本两次输出概率差小于 0.02，剩下 25.5%
+的样本存在不可忽视的逐例抖动；</p></li>
+<li><p>需要辨析：</p></li>
+<li><p>这不是“整体准确率不稳定” —— 平均误差变化非常小；</p></li>
+<li><p>但<strong>单个样本的抖动足以跨过业务阈值，</strong>比如阈值
+0.5，第一次输出 0.51 通过，第二次 0.49
+驳回，出现“同请求不同结果”的非确定性；</p></li>
+</ul></li>
+</ul>
+<hr />
+<p><strong>论文明确的立场为</strong>：总排名分数（或基于单一分数的合成分数）是不可靠的
+—— 不能使用一个总分或合成评分排序所有模型——</p>
+<ul>
+<li><p>不同类型的不一致对应不同的业务风险（补事件不一致、跨接口不一致、分层不一致影响完全不同），每条残差都有独立的含义；</p></li>
+<li><p>不能随便加权合并成一个数字，否则关键信息会被平均掉；</p></li>
+</ul>
+<hr />
+<h3 id="734小结与校准评测的关系">7.3.4、小结：与校准评测的关系</h3>
+<p>三篇公理评测（从“否定 / 划分公理”“层级相干性”到“概率契约”）与 Sys1Cal
+共同构成了一条完整的证据链（如下RQ6），覆盖了从<strong>“纯数学自洽”→“真实任务层级自洽”→“落地决策影响”</strong>的完整链条：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>评测工作</th>
+<th>核心命题</th>
+<th>是否需要真值</th>
+<th>核心结论</th>
+<th>本质缺陷</th>
+<th>落地影响</th>
+<th>定位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>7 恒等式公理</strong>（2609.33209）</td>
+<td>单事件的正反 / 拆分表述，概率是否满足基本公理<br>&gt;
+基础数学公理自洽性<br>&gt; <br>&gt;</td>
+<td>否<br>（纯自洽测试）</td>
+<td>三选项概率和平均 1.14，划分可加性偏差最大</td>
+<td>单标签概率普遍高估，互斥事件概率和严格大于 1</td>
+<td>正反提问结果不一致；<br>拆分 / 合并表述会改变概率输出；</td>
+<td>抽象层：基础公理守不守得住</td>
+</tr>
+<tr>
+<td><strong>层级相干性评测</strong>（2609.33971）</td>
+<td>粗类概率是否等于下属细类概率之和（真实两级分类任务）<br>&gt;
+真实任务层级可加性<br>&gt; <br>&gt;</td>
+<td>否<br>（纯自洽测试）</td>
+<td>Jev 分层后准确率掉 22.9pp；<br>Laya 分层后准确率涨 21.3pp 但 ECE
+恶化；</td>
+<td>层级概率可加性不成立，分层汇总后概率分布系统性扭曲</td>
+<td>层级分类、贝叶斯汇总、分域路由不能直接概率相加，会出现精度损失</td>
+<td>任务层：真实分类场景下的自洽影响</td>
+</tr>
+<tr>
+<td><strong>概率契约基准</strong>（2609.37470）</td>
+<td>跨接口概率是否一致、精度与一致性是否相关、对最终动作的影响<br>&gt;
+精度 + 一致性 + 决策价值 三维度<br>&gt; <br>&gt;</td>
+<td>是<br>（精确已知真实后验）</td>
+<td>跨接口动作分裂
+32.8%；<br>精度序与一致性序可反转；<br>逐例重复通过率仅 74.5%；</td>
+<td>不同原语概率语义不互通；<br>逐例非确定性抖动；</td>
+<td>多接口混用会出现动作不一致；<br>阈值边界存在非确定性翻转；</td>
+<td>落地层：对实际业务动作的影响</td>
+</tr>
+</tbody>
+</table></div>
+<p>三者证据都共同支撑的判断：</p>
+<ul>
+<li><p><strong>ECE 合格 ≠ 概率可用于逻辑运算：</strong>Bonn
+【2609.37647】测出的 Choice pooled ECE=0.028
+看似优秀，但三篇一致证明：聚合校准会掩盖逐点的自洽性缺陷，一旦拿概率去做相加、拆分、跨接口对比、贝叶斯更新，系统性偏差就会暴露。</p></li>
+<li><p><strong>不一致是结构性的，不是随机波动：</strong>三篇分别从<strong><code>数学公理、真实任务、落地决策</code></strong>三个独立维度复现了概率不自洽，且偏差远大于重跑噪声地板，属于模型输出的固有属性，不是测量误差；</p></li>
+<li><p><strong>自洽性、准确率、校准是三个独立维度，</strong>三者没有必然正相关：</p>
+<blockquote>
+<ul>
+<li><p>准确率高的模型（Jev）自洽性可能有明显短板；</p></li>
+<li><p>自洽性差的模型，整体精度反而可能更高；</p></li>
+<li><p>不能用一个维度的表现推断另外两个；</p></li>
+</ul>
+</blockquote></li>
+</ul>
+<hr />
+<h2
+id="74专项基准从领域单步评测到-agentic-闭环评测">7.4、专项基准：从领域单步评测到
+Agentic 闭环评测</h2>
+<p>除两类事实标准基准与公理评测外，生态内还演化出多个面向特定维度的专项基准，覆盖跨语言、对抗鲁棒性、对齐失效检测、闭环
+agent 等场景。以下列表进行简单概述:</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>基准</th>
+<th>文献 / 仓库</th>
+<th>类型</th>
+<th>核心规模</th>
+<th>核心结论</th>
+<th>关键局限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CJ-Bench</strong></td>
+<td>arXiv:2609.36965</td>
+<td>中文跨语言基准</td>
+<td>307900 条 held-out 决策（通用 100,000 / 医学 200,000 / 法律 4,300 /
+金融 3,600）;<br>被测模型为 322M 参数 mmBERT 底座的 Chinese-Jev</td>
+<td>通用子集：Chinese-Jev ACC 69.20% / ECE 3.78% / 14ms，准确率反超托管
+Jev 0.85pp、ECE 降 67%、延迟低约 20×；<br>医学域超 Jev 3.36pp，法律 /
+金融仍落后且法律域 ECE 反升</td>
+<td>域微调数据量不均（医学远多于法律金融）</td>
+</tr>
+<tr>
+<td><strong>JevAdvBench</strong></td>
+<td>arXiv:2609.31142</td>
+<td>对抗鲁棒性基准</td>
+<td>首个 RLCD typed-decision 对抗基准：812 题 / 66 场景 / 9,744
+个单编辑变体，以同请求干净重跑为参照系</td>
+<td>词 / 空格编辑≈噪声地板级（翻转率）；<br>旁观者意见翻转率
+12.1%，与最强权威冒用注入（10.1%）统计持平；<br>至少一种递送攻击总翻转率
+29.2%；<br>38% 的自信答案可被压过 0.8 复核阈值；</td>
+<td>单版本、弱模板化攻击者，为鲁棒性下界</td>
+</tr>
+<tr>
+<td><strong>RLCDAlignBench</strong></td>
+<td>arXiv:2609.29429</td>
+<td>对齐失效检测基准</td>
+<td>10 类失效 × 44 基准 × 5 个 ≤7B 模型7193 标注实例<br>&gt;
+将答案作为概率分布读取 vs 作为 argmax 决策读取差异显著<br>&gt;
+<br>&gt;</td>
+<td>零样本检测中位 AUROC 0.886，25/31 基准击败 TF-IDF
+与长度基线；<br>相对 TF-IDF +0.132 AUROC，代价约
+63×；<br>概率分布读取（SCORE soft）优于 argmax 读取（CHOICE）</td>
+<td>目标模型均为小开源；数据 gated</td>
+</tr>
+<tr>
+<td><strong>jev-position-test</strong></td>
+<td>imaddde867 仓库</td>
+<td>选项顺序探针</td>
+<td>n=6 单克隆<br></td>
+<td>开源克隆选项重排可造成严重翻转，托管 Jev 36/36
+标签一致；<br>提供十分钟自检法(换排列看答案动不动）</td>
+<td>样本量极小，仅作方法演示，不可外推</td>
+</tr>
+<tr>
+<td><strong>scientific-decision-eval</strong></td>
+<td>bydeng01 仓库</td>
+<td>传导式评测</td>
+<td>20 组 / 40 题 / 13 模型<br></td>
+<td>单格错误可放大为下游结论错误；<br>发布即提供 sha256
+清单与无网络复现命令;</td>
+<td>开发集结果，不证明泛化</td>
+</tr>
+<tr>
+<td><strong>System1-Arena</strong></td>
+<td>arXiv:2610.21244</td>
+<td>闭环 agent 评测</td>
+<td>92k 题 / 105 任务 / 138 闭环环境 30 个模型<br>&gt; 非 agentic
+侧对照：Jev 单步准确率与 Vega-27B、GPT-6 Luna 相当，Brier 更优、延迟约
+1/4<br>&gt; <br>&gt;</td>
+<td><strong>step acc 不预测闭环成功率</strong>：step acc 同为 67.8%
+的三个模型，闭环成功率 26.5% / 17.4% / 5.7%；<br>≤4B 小 System-1
+闭环成功率 ≤3.1%；<br><strong>直接证伪 "小 System-1 可直接做 agent 动作"
+的设想</strong></td>
+<td>单实验室产出，待第三方复现</td>
+</tr>
+<tr>
+<td><strong>AgentDecisionBench</strong></td>
+<td>arXiv:2610.21412</td>
+<td>三层级 agent 评测</td>
+<td>在 agent shadow 轨迹上逐点拟合阈值；<br>评测分 L1（孤立模型题）/
+L2（带回退级联）/ L3（完整 agent 任务）三层<br></td>
+<td>核心结论：<strong>孤立基准高分不迁移到 agent 闭环</strong><br>- L1
+层模型差异仅 5.1pp，L3 层拉到 57.5pp；<br>- must-ask
+状态是关键失败点（Jev 仅 58.3%）；<br>&gt; <strong>L1/L2/L3
+三层框架可复用</strong><br>&gt; <br>&gt;</td>
+<td>自建环境</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>注意：</p>
+<ul>
+<li><p>JevAdvBench 的 <strong>delivery control 校验</strong>：用账单
+token 增长确认编辑到达模型，schema
+外字段的无效编辑从鲁棒性证据中剔除，避免把“没到达”误记为“防御成功”。</p></li>
+<li><p>RLCDAlignBench
+的消融直接支撑<strong>“概率是一等输出”</strong>的范式主张：用完整概率分布做检测显著优于只用
+argmax 标签；</p></li>
+<li><p>两个闭环新基准共同修正了认知边界：<strong>单步准确率与闭环成功率脱钩，小决策模型不能直接替代
+agent 动作层；</strong></p></li>
+</ul>
+</blockquote>
+<hr />
+<h2
+id="75评测执行规范最低协议数据卫生与方法论边界">7.5、评测执行规范：最低协议、数据卫生与方法论边界</h2>
+<blockquote>
+<p>整合评测全流程的执行规范，包括：</p>
+<ul>
+<li><p>最小的评测协议规范；</p></li>
+<li><p>数据卫生红线与规范清单；</p></li>
+<li><p>评测方法论选择；</p></li>
+</ul>
+</blockquote>
+<hr />
+<h3 id="751最低评估协议配置">7.5.1、最低评估协议配置</h3>
+<p>综合 TDM 审计清单与 Bonn 工程教训【2609.37647】，总结 System One
+决策模型评测的最低可复用配置如下：</p>
+<blockquote>
+<p>特别强调：2609.37647
+论文的核心贡献在于它的评测工程规范做得非常完整；</p>
+</blockquote>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>环节</th>
+<th>最低要求</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>指标组合</td>
+<td>主 acc + ECE（pooled 与 per-dataset 同报）+ Brier +
+AUROC（不平衡二分类）+ risk-coverage/AURC；<br>跨原语场景加测
+negation/partition/ 跨接口动作改变率；</td>
+<td>Bonn 评测；<br>概率公理评测</td>
+</tr>
+<tr>
+<td>对照基线</td>
+<td>同 backbone label-logprob 读出；<br>任务特定模型 /
+廉价生成级联；<br>&gt; 缺一不得声称“typed 接口带来精度收益”<br>&gt;
+<br>&gt;</td>
+<td>TDM 审计合规率 5/26、7/13、1/5</td>
+</tr>
+<tr>
+<td>统计纪律</td>
+<td>case-level bootstrap 95% CI（500–2000
+次）；<br>跨配置配对检验；<br>报重跑噪声地板并比较观测效应；</td>
+<td>JevAdvBench；<br>公理评测</td>
+</tr>
+<tr>
+<td>阈值与校准</td>
+<td>阈值只在 validation 集选择、原样应用
+test；<br>温度只在校准集拟合；</td>
+<td>Bonn；<br>TDM C3</td>
+</tr>
+<tr>
+<td>影子评估</td>
+<td>上线前与现有系统并行 1000–2000 已知答案决策，在自有分布上摸底</td>
+<td>open-spark-jev</td>
+</tr>
+<tr>
+<td>复现性</td>
+<td>pin 模型版本 / 数据版本 / 种子；<br>原始响应全量公开 +
+请求哈希缓存；<br>付费 API 加预算护栏；</td>
+<td>Bonn Zenodo 数据集</td>
+</tr>
+<tr>
+<td>生产阶段</td>
+<td>阈值带非对称代价惩罚与延迟 SLO 约束；<br>报 ECE/Brier/
+延迟分位数（p50/p95）；</td>
+<td>COGNIT-Guard<br>【论文2609.33671】</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>OGNIT-Guard
+是将校准写成约束优化问题的生产范例：<strong>将校准、假阳性代价、延迟 SLO
+纳入同一目标函数，线上实测 mean 41.63ms（P95 76.25）、94.62% 请求落 CPU
+快路径、ECE 1.12%；</strong></p>
+</blockquote>
+<hr />
+<h3 id="752数据卫生规范与检查清单">7.5.2、数据“卫生”规范与检查清单</h3>
+<p>必须在评估前进行10项内容核对：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>#</th>
+<th>核对项</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>划分按 case 不按问题；同源材料同划分</td>
+<td>防泄漏</td>
+</tr>
+<tr>
+<td>2</td>
+<td>dev/calibration/test 三集合互斥，test 仅最终打开一次</td>
+<td>TDM C3</td>
+</tr>
+<tr>
+<td>3</td>
+<td>温度 / 阈值只在校准集拟合，不在 test 上调</td>
+<td>Guo 2017；Bonn</td>
+</tr>
+<tr>
+<td>4</td>
+<td>检查点 / 对照 / 指标选择在开 test 前确定并写入报告</td>
+<td>TDM 审计后验设计</td>
+</tr>
+<tr>
+<td>5</td>
+<td>报 case-level bootstrap CI，<strong>无 CI
+的小幅提升不可采信</strong></td>
+<td>统计纪律底线</td>
+</tr>
+<tr>
+<td>6</td>
+<td>固定种子、数据 revision、运行时版本；<strong>付费 API
+加预算护栏</strong></td>
+<td>Bonn 缓存机制</td>
+</tr>
+<tr>
+<td>7</td>
+<td>区分 "与教师一致" 与 "真实正确"</td>
+<td>蒸馏基准上限由教师决定</td>
+</tr>
+<tr>
+<td>8</td>
+<td>概率按原语分别报告</td>
+<td>三原语校准质量不一致</td>
+</tr>
+<tr>
+<td>9</td>
+<td>latency 报缓存前后</td>
+<td>TDM C4</td>
+</tr>
+<tr>
+<td>10</td>
+<td>公开 / 密封榜准确率差 &gt;25pp 扣减评分</td>
+<td>JevBench 防过拟合机制</td>
+</tr>
+</tbody>
+</table></div>
+<p>另外，在进行结果比较时，必须强调如下信息不可纳入同一排行比较：</p>
+<ul>
+<li><p>版本不同：如 JevBench 不同版本题库、权重均不同</p></li>
+<li><p>基准不同：四轴复合分 ≠ 零样本 acc ≠ 专项基准</p></li>
+<li><p>硬件 / 端点不同：托管 API 含网络 RTT，自托管测量方式混杂</p></li>
+<li><p>划分不同：各项目 split 与 prompt
+模板不统一，跨论文不可横比</p></li>
+</ul>
+<hr />
+<h3 id="753关于评测方法的批评">7.5.3、关于评测方法的“批评”</h3>
+<ul>
+<li><p>JevBench 不是厂商基准，但也不是中立排行榜；</p>
+<blockquote>
+<p>它由社区独立运营，比厂商自营中立；但
+系统硬件端点混杂、单请求串行、四轴几何平均后分数不可分解 ——
+总分高不等于特定任务更好，更适合视为时点系统快照，而非模型智商排名</p>
+</blockquote></li>
+<li><p>官方的性能主张（70–500ms、$0.042/MTok、193.6x/444.6x）为官方自报，其中倍率为官方标注上界，并未独立实测；</p></li>
+<li><p><strong>第三方复现的差异</strong>：</p>
+<ul>
+<li><p>Bonn 测出的 Choice ECE 0.028 与官方 "校准概率"
+主张方向一致，是少有的独立正面证据；</p></li>
+<li><p>但同时发现 <strong>MMLU 反常、多标签过预测、AGB-DE 弱项、rubric
+打分被 Qwen 追平等</strong>不在官方说法中的结论；</p></li>
+<li><p>TDM 审计进一步发现难任务上 Jev 反而落后，<strong>"打平"
+多发生在饱和测试上</strong>；</p></li>
+</ul></li>
+</ul>
+<p>如下为整体对照参考，<strong>整体上官方说法回答的是“快不快、便宜不便宜”（量级方向在多源验证上一致），而第三方评测回答的则是“准不准、校准好不好、难任务上行不行”（结论分层，有支持有保留）</strong>：</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>命题</th>
+<th>官方 / 基准方的说法</th>
+<th>第三方实测 / 审计【反例】</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>概率校准</td>
+<td>官方承诺 0.2→20% 频率</td>
+<td>Bonn：Choice pooled ECE 0.028（支持）；但多标签 Noul 0.168、Sys1Cal
+Choice OVL 0.764（限定）</td>
+</tr>
+<tr>
+<td>零样本高准确率</td>
+<td>官方博客 193.6x/444.6x 上界</td>
+<td>Bonn：MMLU 计算科目反常，<strong>疑真题记忆</strong></td>
+</tr>
+<tr>
+<td>难任务竞争力</td>
+<td>营销未强调</td>
+<td>TDM 审计：<strong>社会科学标注、JudgeBench
+落后；打平多在饱和测试</strong></td>
+</tr>
+<tr>
+<td>接口新颖性带来精度</td>
+<td>typed readout 的说法</td>
+<td>TDM 审计：同 backbone 对照一致显示精度收益不归因于接口</td>
+</tr>
+<tr>
+<td>响应可重复</td>
+<td>未主张</td>
+<td>公理评测 NF=0.013；<br>概率契约 exact-repeat 通过率仅 74.5%</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="76本章小结">7.6、本章小结</h2>
+<ul>
+<li><p><strong>两把尺子分开看</strong>：</p>
+<ul>
+<li><p>JevBench 是四轴复合实时榜，v1.4.2.2 当前 95 系统、Imajev-4B
+居首；</p></li>
+<li><p>Bonn 评测是 37 数据集零打点评测，Choice ECE 0.028 但 MMLU
+反常且论文也自认无法排除真题记忆；</p></li>
+</ul></li>
+<li><p><strong>ECE 不够</strong>：</p>
+<ul>
+<li><p>Sys1Cal 与公理评测的三篇论文证明 pooled ECE
+会平均掉逐点与自洽性缺陷；</p></li>
+<li><p><strong>概率用于决策时必须加公理 /
+逐点真值评测</strong>；</p></li>
+</ul></li>
+<li><p><strong>统计纪律是最大短板</strong>：TDM 审计显示 label-logprob
+baseline、廉价级联 baseline、选项不变性测试、headline CI
+合规率普遍偏低；</p></li>
+<li><p><strong>可比性纪律</strong>：</p>
+<ul>
+<li><p>不同版本 / 基准 / 硬件 / 划分的数字不可排排行榜；</p></li>
+<li><p>引用必须带版本号、读数日期与来源分层；</p></li>
+</ul></li>
+</ul>
+<hr />
+<p><a id="ch08"></a></p>
+
+</div>
+<nav class="pager"><a href="ch06.html"><span class="lbl">上一页</span>6、训练方法与数据：范式分类与数据组织【参考】</a><a class="next" href="ch08.html"><span class="lbl">下一页</span>8、应用与落地：已公开场景、两种生产模式、成本与选型</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#71生态事实标准基准解剖">7.1、生态事实标准基准解剖</a></li><li><a href="#73概率一致性与公理评测">7.3、概率一致性与公理评测</a></li><li><a href="#76本章小结">7.6、本章小结</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

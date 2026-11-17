@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4、官方体系与公开信息的边界 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/ch04.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="4、官方体系与公开信息的边界 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/ch04.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界" aria-current="page"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<blockquote>
+<p>定位：完成了上述的基本铺垫，我们在开始正式讨论训练方法、模型结构与训练数据之前，先简短的看下Jev官方</p>
+<p>最新的情况</p>
+</blockquote>
+<h2 id="41从三原语到四原语的api形态">4.1、从三原语到四原语的API形态</h2>
+<p><strong>截止目前为止10-21，官方文档仅对三种原语有明确的契约定义，但
+jev‑1.14
+发布的博文当中公布了一个实验性质的第四种独立原语，专门做图像目标框检测（bounding
+box）：</strong></p>
+<ul>
+<li><p><strong>Box：图像定位，在输入图像里找出描述目标的包围框</strong></p>
+<ul>
+<li><p>TypeSafe 内部描述它是
+“处于决策灰色地带的新类型”：它不是分类打分，但同样是<strong>类型化、固定
+schema 的结构化输出</strong>，延续 System
+One“不生成自由文本、输出强类型”的整体范式；</p></li>
+<li><p>输入侧的state里会携带图像（PNG/JPEG，单文件上限
+16MiB，单请求图像总上限 32MiB，边长范围 256–1568px），然后在
+<code>questions</code> 里定义一条 <code>type: "box"</code>
+的问题，附带文本指令 <code>instructions</code>，描述你要找什么目标；</p>
+<pre><code>```HTML
+{
+  &quot;model&quot;: &quot;jev-1.14.0&quot;,
+  &quot;state&quot;: &quot;&lt;base64图像&gt;&quot;,
+  &quot;questions&quot;: {
+    &quot;obj1&quot;: {
+      &quot;type&quot;: &quot;box&quot;,
+      &quot;instructions&quot;: &quot;图中的猫&quot;
+    }
+  }
+}
+```</code></pre></li>
+</ul></li>
+<li><p>约束：<strong>一个 box
+问题只能输出单个框</strong>；如果图里有多个同类目标，不能一次返回多个
+bbox，需要多 question 或者业务层循环。</p>
+<ul>
+<li><p>返回的 box 字段是归一化坐标（相对图像宽高，值域
+<code>[0,1]</code>，左上角原点）:</p>
+<pre><code>```JSON
+{
+  &quot;obj1&quot;: {
+    &quot;box&quot;: {
+      &quot;left&quot;: 0.12,
+      &quot;right&quot;: 0.55,
+      &quot;top&quot;: 0.20,
+      &quot;bottom&quot;: 0.81
+    },
+    &quot;confidence&quot;: 0.87
+  }
+}
+```</code></pre></li>
+</ul></li>
+<li><p>这实际之前讨论的“Jev仅处理文本模态”相对应，<strong>官方最新修正了对外说法来回应对多模态的支撑问题：多模态/长上下文能力一直存在、只是此前未在公开文档显式承诺！</strong></p></li>
+</ul>
+<p>其余三种原语这里不再多做解释，开源方案也多遵循相应的原语设计，其核心根源在于：<strong>三原语覆盖的决策空间恰好对应了
+“选、评、判” 三类原子动作：选（K
+个互斥选项里挑一个，Choice）、评（在有序量表上定位，Score）、判（单一命题是否成立，Noul）——
+任何更复杂的决策（多标签、多目标、层级路由）都被可以被设计为
+“把复杂问题拆成多个三原语问题、在一次请求里调用”，而不是新增第四种原语。</strong></p>
+<hr />
+<p>官方文档：<a
+href="https://docs.typesafe.ai/primitives">https://docs.typesafe.ai/primitives</a></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>原语</th>
+<th>语义</th>
+<th>返回字段</th>
+<th>硬约束</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Choice</td>
+<td>从 K 个枚举选项中选一个；K
+较大时先对各选项独立打分、再做显式选择（两阶段）</td>
+<td><code>choice</code> / <code>probabilities</code>（和为 1）/
+<code>confidence</code></td>
+<td><strong>每 Choice 最多 255 个选项</strong>；api.md："You can have a
+maximum of 255 options per Choice"</td>
+</tr>
+<tr>
+<td>Score</td>
+<td>在有序 rubric 层级上打分，<code>score</code>
+为概率加权期望位置（可落在两层之间）</td>
+<td><code>score</code> / <code>legend</code> /
+<code>probabilities</code> / <code>confidence</code></td>
+<td><strong>至少 2 级、最多 10 级</strong>；api.md："A Score should have
+at least two levels; the API accepts up to 10"</td>
+</tr>
+<tr>
+<td>Noul</td>
+<td>单一命题 yes/no，返回 yes 的概率</td>
+<td><code>noul</code>（0=no、1=yes 的概率）</td>
+<td>二值；命名一说源自 Bernoulli 分布【转引，第三方插件
+README；官方文档未见词源说明】</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p>如下为一个调用和响应示例，仅做说明：</p>
+<pre class="Shell"><code># 请求调用，一次多个
+POST /v1/systemone
+{
+  &quot;model&quot;: &quot;jev-latest&quot;,
+  &quot;state&quot;: &quot;&lt;工单/日志/待判断文本&gt;&quot;,
+  &quot;questions&quot;: {
+    &quot;q1&quot;: { &quot;type&quot;: &quot;noul&quot;,   &quot;body&quot;: &quot;此工单是否需人工处置？&quot; },
+    &quot;q2&quot;: { &quot;type&quot;: &quot;choice&quot;, &quot;body&quot;: &quot;归入哪类？&quot;, &quot;options&quot;: [&quot;骚扰&quot;,&quot;垃圾&quot;,&quot;自伤&quot;,&quot;其他&quot;] },
+    &quot;q3&quot;: { &quot;type&quot;: &quot;score&quot;,  &quot;body&quot;: &quot;紧急度？&quot;,    &quot;legend&quot;: [0,1,2,3,4] }
+  }
+}
+# 响应示例
+{
+  &quot;q1&quot;: { &quot;noul&quot;: 0.72 },
+  &quot;q2&quot;: { &quot;choice&quot;: &quot;垃圾&quot;, &quot;probabilities&quot;: {&quot;骚扰&quot;:0.10,&quot;垃圾&quot;:0.72,&quot;自伤&quot;:0.03,&quot;其他&quot;:0.15}, &quot;confidence&quot;: 0.72 },
+  &quot;q3&quot;: { &quot;score&quot;: 1.43, &quot;probabilities&quot;: {0:0,1:0.57,2:0.43,3:0,4:0}, &quot;confidence&quot;: 0.35 }
+}</code></pre>
+<hr />
+<h2 id="42可外部验证的计算语义">4.2、可外部验证的计算语义</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>语义</th>
+<th>官方原文 / 数值</th>
+<th>对调用方的含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>并行独立评估</td>
+<td>"Every question is evaluated independently, so <strong>adding more
+questions does not create context-rot</strong>"</td>
+<td>同一 state
+上独立承载多少问题，问题之间互不污染；这是对生成式模型“多问共上下文导致提示干扰”的结构性回答</td>
+</tr>
+<tr>
+<td>扇出延迟近常数</td>
+<td>fan-out.md："sending many questions in a single API call… adding
+more questions usually has little effect on response time"</td>
+<td>多问题摊销的是同一次 state
+处理成本；官方<strong>未给</strong>单请求问题数硬上限【问题数量不上限】</td>
+</tr>
+<tr>
+<td>上下文窗口</td>
+<td><strong>64k tokens / 请求</strong>；<br>其中 state + 最长问题 ≤
+<strong>32k；</strong></td>
+<td>长 state（工单、日志全文）占用的是 32k 子预算</td>
+</tr>
+<tr>
+<td>限流</td>
+<td><strong>100K tokens/second + 80
+requests/second</strong>（动态调整中，超限返 429）</td>
+<td>官方标注“动态调整中”，非 SLA 承诺</td>
+</tr>
+<tr>
+<td>输入计费规则</td>
+<td>按 input token 计费，<strong>output token 免费</strong><br></td>
+<td>响应是结构化字段而非逐 token 生成，输出没有边际成本</td>
+</tr>
+</tbody>
+</table></div>
+<p>除了上述偏向服务验证的部分，我们还需要关注的是两个可外部复核的语义点：</p>
+<ul>
+<li><p>Choice 的 probabilities 与为 1、Score 的 score = <span
+class="math inline">\(\sum{level × p(level)}\)</span>
+都是纯算术，调用方可本地复算；</p>
+<ul>
+<li><p>比如：3 级量表 {0,1,2} 上 p=(0, 0.57, 0.43) →
+score=1.43（算术为本报告按官方定义复算）；</p></li>
+<li><p>这是官方输出契约里少数不依赖厂商说法即可验证的部分【[<a
+href="https://docs.typesafe.ai/primitives/choice.md](https://docs.typesafe.ai/primitives/choice.md">https://docs.typesafe.ai/primitives/choice.md](https://docs.typesafe.ai/primitives/choice.md</a>)】。</p></li>
+</ul></li>
+<li><p><strong>高基数 Choice 走两阶段</strong>：</p>
+<ul>
+<li><p>官方博客原文 "Jev supports a cardinality up to 255. For the
+higher cardinality choices, we do a 2 stage-system of scoring
+independently then making an explicit choice"【官方，[<a
+href="https://typesafe.ai/blog](https://typesafe.ai/blog">https://typesafe.ai/blog](https://typesafe.ai/blog</a>)】</p></li>
+<li><p>这解释了为什么 255
+不是“模型一次能看见多少选项”的语义上限，而是“显式选择阶段”的工程上限；</p></li>
+</ul></li>
+</ul>
+<p>另外，一些关于成本/上下文预算的限制与推测也需要关注：</p>
+<ul>
+<li><p>64k 是模型单次请求的总上下文，其中 state + 最长问题不得超过
+32k【[<a
+href="https://docs.typesafe.ai/models.md](https://docs.typesafe.ai/models.md">https://docs.typesafe.ai/models.md](https://docs.typesafe.ai/models.md</a>)】</p>
+<ul>
+<li><p>这意味着长工单/长日志可以整段塞进 state，但任何单个 question
+的文本长度仍受 32k 子预算约束；</p></li>
+<li><p>多问题同时决策时，各问题共享 32k 中的 state
+部分，问题本身逐条计费进 input token；</p></li>
+</ul>
+<blockquote>
+<p>调用方做长 state 集成时，应把 state 长度与最长 question
+放在一起核算，而不是只看 64k 总量；</p>
+</blockquote></li>
+<li><p>尚不明确：<code>state 是否前缀 KV 复用、选项间是否 listwise 交互、读出头是 pointer 还是 slot、后向信息流是否存在</code>；</p></li>
+</ul>
+<hr />
+<h2 id="43命名来源">4.3、命名来源</h2>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>名字</th>
+<th>出处</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>System One</strong>（类名）</td>
+<td>Kahneman《Thinking, Fast and Slow》的快思考系统<br>- [<a
+href="https://typesafe.ai/blog](https://typesafe.ai/blog">https://typesafe.ai/blog](https://typesafe.ai/blog</a>)
+FAQ</td>
+<td>对应“快速、直觉、低功耗”的系统；与慢速推理/生成式 System Two
+相对</td>
+</tr>
+<tr>
+<td><strong>Jev</strong>（模型名）</td>
+<td>纪念 William Stanley Jevons（威廉·斯坦利·杰文斯）<br>- [<a
+href="https://typesafe.ai/blog](https://typesafe.ai/blog">https://typesafe.ai/blog](https://typesafe.ai/blog</a>)
+FAQ</td>
+<td>取“杰文斯悖论”之意：蒸汽机效率提升反而增加煤耗——类比决策智能的单位成本下降后，用例总量反而上升</td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>杰文斯悖论放在本产品语境里的具体主张是：当单个决策的边际成本压到可忽略量级（$0.042/MTok、输出免费、70–500ms），调用方不会因此少做决策，反而会把决策嵌入到以前“不敢自动化”的高频链路里（每工单多个危害检查、每帧一次
+GUI 判断）——总用量随单位效率上升而上升</p>
+</blockquote>
+<hr />
+<p><a id="ch05"></a></p>
+
+</div>
+<nav class="pager"><a href="ch03.html"><span class="lbl">上一页</span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</a><a class="next" href="ch05.html"><span class="lbl">下一页</span>5、架构与实现形态：官方逆向与开源方案</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#41从三原语到四原语的api形态">4.1、从三原语到四原语的API形态</a></li><li><a href="#42可外部验证的计算语义">4.2、可外部验证的计算语义</a></li><li><a href="#43命名来源">4.3、命名来源</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

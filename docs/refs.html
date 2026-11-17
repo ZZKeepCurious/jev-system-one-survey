@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>参考文献 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/refs.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="参考文献 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/refs.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献" aria-current="page"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<ul>
+<li><p>[1] TypeSafe AI, “Jev,” official blog, Sep. 15, 2026. [<a
+href="https://typesafe.ai/blog](https://typesafe.ai/blog">https://typesafe.ai/blog](https://typesafe.ai/blog</a>)
+(accessed Oct. 5, 2026). 【综述用途：官方说法与效率数据】</p></li>
+<li><p>[2] TypeSafe AI, “Models,” official documentation. [<a
+href="https://docs.typesafe.ai/models.md](https://docs.typesafe.ai/models.md">https://docs.typesafe.ai/models.md](https://docs.typesafe.ai/models.md</a>)
+(accessed Oct. 5, 2026). 【综述用途：定价与部署约束】</p></li>
+<li><p>[3] TypeSafe AI, “API,” official documentation. [<a
+href="https://docs.typesafe.ai/api.md](https://docs.typesafe.ai/api.md">https://docs.typesafe.ai/api.md](https://docs.typesafe.ai/api.md</a>)
+(accessed Oct. 5, 2026). 【综述用途：API 契约与批量决策语义】</p></li>
+<li><p>[4] TypeSafe AI, “Choice,” official documentation. [<a
+href="https://docs.typesafe.ai/primitives/choice.md](https://docs.typesafe.ai/primitives/choice.md">https://docs.typesafe.ai/primitives/choice.md](https://docs.typesafe.ai/primitives/choice.md</a>)
+(accessed Oct. 5, 2026). 【综述用途：Choice 机制表述】</p></li>
+<li><p>[5] TypeSafe AI, “Machine learning primer,” official
+documentation. [<a
+href="https://docs.typesafe.ai/introduction/machine-learning-primer.md](https://docs.typesafe.ai/introduction/machine-learning-primer.md">https://docs.typesafe.ai/introduction/machine-learning-primer.md](https://docs.typesafe.ai/introduction/machine-learning-primer.md</a>)
+(accessed Oct. 5, 2026). 【综述用途：RLCD 官方定义与校准边界】</p></li>
+<li><p>[6] S. Kadavath et al., “Language Models (Mostly) Know What They
+Know,” arXiv:2207.05221, 2022. [<a
+href="https://arxiv.org/abs/2207.05221](https://arxiv.org/abs/2207.05221">https://arxiv.org/abs/2207.05221](https://arxiv.org/abs/2207.05221</a>)
+【综述用途：P(True)/P(IK) 读出与 RLHF 后校准）】</p></li>
+<li><p>[7] Z. Shao et al., “DeepSeekMath: Pushing the Limits of
+Mathematical Reasoning in Open Language Models,” arXiv:2402.03300, 2024.
+[<a
+href="https://arxiv.org/abs/2402.03300](https://arxiv.org/abs/2402.03300">https://arxiv.org/abs/2402.03300](https://arxiv.org/abs/2402.03300</a>)
+【综述用途：GRPO 引擎底座】</p></li>
+<li><p>[8] D. Bani-Harouni et al., “Rewarding Doubt: A Reinforcement
+Learning Approach to Calibrated Confidence Expression of Large Language
+Models,” arXiv:2503.02623, 2025. [<a
+href="https://arxiv.org/abs/2503.02623](https://arxiv.org/abs/2503.02623">https://arxiv.org/abs/2503.02623](https://arxiv.org/abs/2503.02623</a>)
+【综述用途：评分规则 RL 校准的早期代表】</p></li>
+<li><p>[9] M. Damani et al., “Beyond Binary Rewards: Training LMs to
+Reason about Their Uncertainty,” arXiv:2507.16806, 2025. [<a
+href="https://arxiv.org/abs/2507.16806](https://arxiv.org/abs/2507.16806">https://arxiv.org/abs/2507.16806](https://arxiv.org/abs/2507.16806</a>)
+【综述用途：RLCR（Brier 奖励、定理 1】</p></li>
+<li><p>[10] Y. Li et al., “ConfTuner: Training Large Language Models to
+Express Their Confidence Verbally,” arXiv:2508.18847, 2025. [<a
+href="https://arxiv.org/abs/2508.18847](https://arxiv.org/abs/2508.18847">https://arxiv.org/abs/2508.18847](https://arxiv.org/abs/2508.18847</a>)
+【综述用途：tokenized Brier 的 SFT 路线】</p></li>
+<li><p>[11] Z. Cheng, W. Dai, and J. Sun, “this-that-model-1.0: A typed
+decision model that decides in 30 ms, for a millionth of a cent,”
+arXiv:2609.23886, 2026. [<a
+href="https://arxiv.org/abs/2609.23886](https://arxiv.org/abs/2609.23886">https://arxiv.org/abs/2609.23886](https://arxiv.org/abs/2609.23886</a>)
+【综述用途：独立 2B typed 决策对照（非 TypeSafe 官方）】</p></li>
+<li><p>[12] S. Ren et al., “Open-Jev Judgments on CallScreenBench:
+Calibrated One-Pass Scam Screening with a Small Language Model,”
+arXiv:2609.23959, 2026. [<a
+href="https://arxiv.org/abs/2609.23959](https://arxiv.org/abs/2609.23959">https://arxiv.org/abs/2609.23959](https://arxiv.org/abs/2609.23959</a>)
+【综述用途：反诈一遍式筛选与预注册非劣效】</p></li>
+<li><p>[13] G. Yu and Y. Yao, “Visual Jev: Accurate and Efficient
+Decisions from Shared Visual Context,” arXiv:2609.25845, 2026. [<a
+href="https://arxiv.org/abs/2609.25845](https://arxiv.org/abs/2609.25845">https://arxiv.org/abs/2609.25845](https://arxiv.org/abs/2609.25845</a>)
+【综述用途：共享视觉上下文的批量决策】</p></li>
+<li><p>[14] Y. Li et al., “JEV-as-a-Judge: Accept When Confident,
+Escalate When Unsure,” arXiv:2609.26550, 2026. [<a
+href="https://arxiv.org/abs/2609.26550](https://arxiv.org/abs/2609.26550">https://arxiv.org/abs/2609.26550](https://arxiv.org/abs/2609.26550</a>)
+【综述用途：置信度级联实证】</p></li>
+<li><p>[15] Y. Sun et al., “Type-Safe Is Not Error-Free: A Constrained
+Decision Head Follows the Option Name, Not the Rubric Bound to It,”
+arXiv:2609.26758, 2026. [<a
+href="https://arxiv.org/abs/2609.26758](https://arxiv.org/abs/2609.26758">https://arxiv.org/abs/2609.26758](https://arxiv.org/abs/2609.26758</a>)
+【综述用途：选项名—定义错绑与极性劫持】</p></li>
+<li><p>[16] W. Ye, H. Liu, and R. Jiang, “NumericJev: Jev-like LLM
+Numerical Decoding with Multiway Decision Trees,” arXiv:2609.28587,
+2026. [<a
+href="https://arxiv.org/abs/2609.28587](https://arxiv.org/abs/2609.28587">https://arxiv.org/abs/2609.28587](https://arxiv.org/abs/2609.28587</a>)
+【综述用途：数值估计的树化 Choice】</p></li>
+<li><p>[17] T. Wu and W. Y. B. Lim, “Decision Hijacking: Prompt
+Injection Attacks on Jev’s Typed Probabilistic Decisions,”
+arXiv:2609.28613, 2026. [<a
+href="https://arxiv.org/abs/2609.28613](https://arxiv.org/abs/2609.28613">https://arxiv.org/abs/2609.28613](https://arxiv.org/abs/2609.28613</a>)
+【综述用途：typed 决策的提示注入】</p></li>
+<li><p>[18] J. A. dos Santos, “Calibrated Decision Models for Autonomous
+Penetration-Testing Harnesses: JEV and Laya as System One Decision
+Layers for LLM-Driven Pentest Agents,” arXiv:2609.28940, 2026. [<a
+href="https://arxiv.org/abs/2609.28940](https://arxiv.org/abs/2609.28940">https://arxiv.org/abs/2609.28940](https://arxiv.org/abs/2609.28940</a>)
+【综述用途：渗透测试 harness 中的决策层】</p></li>
+<li><p>[19] X. Zhou, X. Yang, and L. Zhao, “From Text Decisions to
+Pixels: An Study of Jev-Style Visual Choice Model,” arXiv:2609.29283,
+2026. [<a
+href="https://arxiv.org/abs/2609.29283](https://arxiv.org/abs/2609.29283">https://arxiv.org/abs/2609.29283](https://arxiv.org/abs/2609.29283</a>)
+【综述用途：视觉 Choice 原型（题名 An Study
+为原文笔误，照录）】</p></li>
+<li><p>[20] R. Guo et al., “Just Ask Jev: Reinforcement Learning for
+Calibrated Decisions as a Zero-Shot Detector of AI Alignment Failures,”
+arXiv:2609.29429, 2026. [<a
+href="https://arxiv.org/abs/2609.29429](https://arxiv.org/abs/2609.29429">https://arxiv.org/abs/2609.29429](https://arxiv.org/abs/2609.29429</a>)
+【综述用途：对齐失败检测与 RLCD 说法对照】</p></li>
+<li><p>[21] D. Rao and C. Callison-Burch, “Jev vs. LLMs as Rubric
+Judges: Cheaper, Faster, and Wrong in the Same Places,”
+arXiv:2609.29769, 2026. [<a
+href="https://arxiv.org/abs/2609.29769](https://arxiv.org/abs/2609.29769">https://arxiv.org/abs/2609.29769](https://arxiv.org/abs/2609.29769</a>)
+【综述用途：rubric judge 级联与错误重叠】</p></li>
+<li><p>[22] L. Zhang, “Jev-Mobile: Jev as an Executor for Mobile GUI
+Agents,” arXiv:2609.30186, 2026. [<a
+href="https://arxiv.org/abs/2609.30186](https://arxiv.org/abs/2609.30186">https://arxiv.org/abs/2609.30186](https://arxiv.org/abs/2609.30186</a>)
+【综述用途：移动 GUI agent 执行层】</p></li>
+<li><p>[23] G. Ling, M. Xue, and Z. Ye, “Jev in the Wild: A Data-Driven
+Analysis of the Jev Model’s Functionality, Applications and Ecosystem,”
+arXiv:2609.30216, 2026. [<a
+href="https://arxiv.org/abs/2609.30216](https://arxiv.org/abs/2609.30216">https://arxiv.org/abs/2609.30216](https://arxiv.org/abs/2609.30216</a>)
+【综述用途：生态实证（附录 D 登记，正文未承重）】</p></li>
+<li><p>[24] Z. Xu, “JevOut: Natural Context Can Flip Decision Models,”
+arXiv:2609.30243, 2026. [<a
+href="https://arxiv.org/abs/2609.30243](https://arxiv.org/abs/2609.30243">https://arxiv.org/abs/2609.30243](https://arxiv.org/abs/2609.30243</a>)
+【综述用途：自然上下文翻转】</p></li>
+<li><p>[25] X. Wang et al., “JevSoup: System-One Routing for
+Training-Free LoRA Composition,” arXiv:2609.30922, 2026. [<a
+href="https://arxiv.org/abs/2609.30922](https://arxiv.org/abs/2609.30922">https://arxiv.org/abs/2609.30922](https://arxiv.org/abs/2609.30922</a>)
+【综述用途：免训练 LoRA 组合路由】</p></li>
+<li><p>[26] J. Hu et al., “JevAdvBench: A Benchmark and Black-Box
+Attacks for Reinforcement Learning for Calibrated Decisions Models,”
+arXiv:2609.31142, 2026. [<a
+href="https://arxiv.org/abs/2609.31142](https://arxiv.org/abs/2609.31142">https://arxiv.org/abs/2609.31142](https://arxiv.org/abs/2609.31142</a>)
+【综述用途：输入侧对抗 benchmark】</p></li>
+<li><p>[27] L. Tang and Y. Zheng, “Typed Decision Models: An Early
+Evidence Audit and Evaluation Checklist,” arXiv:2609.32160, 2026. [<a
+href="https://arxiv.org/abs/2609.32160](https://arxiv.org/abs/2609.32160">https://arxiv.org/abs/2609.32160](https://arxiv.org/abs/2609.32160</a>)
+【综述用途：TDM 早期审计与评测清单】</p></li>
+<li><p>[28] K. Li, Y. He, and Q. Li, “Beyond Calibration: Do a
+Typed-Decision Model’s Probabilities Obey the Probability Axioms?,”
+arXiv:2609.33209, 2026. [<a
+href="https://arxiv.org/abs/2609.33209](https://arxiv.org/abs/2609.33209">https://arxiv.org/abs/2609.33209](https://arxiv.org/abs/2609.33209</a>)
+【综述用途：概率公理检验】</p></li>
+<li><p>[29] Y. Liu, “Evaluating System One Models for Agent Security
+Decisions: Reliability, Calibration, and Selective Automation,”
+arXiv:2609.33401, 2026. [<a
+href="https://arxiv.org/abs/2609.33401](https://arxiv.org/abs/2609.33401">https://arxiv.org/abs/2609.33401](https://arxiv.org/abs/2609.33401</a>)
+【综述用途：agent 安全决策评测】</p></li>
+<li><p>[30] H. Chen, “COGNIT-Guard: Calibrated Standalone
+Direct-Decision Guardrails with Heterogeneous CPU–NPU Confidence
+Cascading under Explicit Latency and False-Positive Constraints,”
+arXiv:2609.33671, 2026. [<a
+href="https://arxiv.org/abs/2609.33671](https://arxiv.org/abs/2609.33671">https://arxiv.org/abs/2609.33671](https://arxiv.org/abs/2609.33671</a>)
+【综述用途：异构级联护栏】</p></li>
+<li><p>[31] S. S. Joy, “Do System One Decisions Add Up? A Study of
+Probabilistic Coherence,” arXiv:2609.33971, 2026. [<a
+href="https://arxiv.org/abs/2609.33971](https://arxiv.org/abs/2609.33971">https://arxiv.org/abs/2609.33971](https://arxiv.org/abs/2609.33971</a>)
+【综述用途：概率相干性】</p></li>
+<li><p>[32] H. Zhang, “Do Not Cut When Uncertain: Rejectable and
+Calibrated Decision Heads for VLA Policies in Robotic Harvesting,”
+arXiv:2609.35039, 2026. [<a
+href="https://arxiv.org/abs/2609.35039](https://arxiv.org/abs/2609.35039">https://arxiv.org/abs/2609.35039](https://arxiv.org/abs/2609.35039</a>)
+【综述用途：元数据错挂，仅登记存在，不作数字证据】</p></li>
+<li><p>[33] R. Porcedda, “Jev thinks ‘I don’t know’, but doesn’t say it:
+Introducing Sys1Cal-v1 Dataset for Probability Calibration,”
+arXiv:2609.35342, 2026. [<a
+href="https://arxiv.org/abs/2609.35342](https://arxiv.org/abs/2609.35342">https://arxiv.org/abs/2609.35342](https://arxiv.org/abs/2609.35342</a>)
+【综述用途：Sys1Cal-v1 与原语语义差异】</p></li>
+<li><p>[34] Y. Lin, “PACT: Pairwise-Anchored Calibrated Tuning for
+Single-Token Typed Decisions,” arXiv:2609.35865, 2026. [<a
+href="https://arxiv.org/abs/2609.35865](https://arxiv.org/abs/2609.35865">https://arxiv.org/abs/2609.35865](https://arxiv.org/abs/2609.35865</a>)
+【综述用途：单 token typed 校准微调）】</p></li>
+<li><p>[35] Z. Wang et al., “Chinese-Jev: Bringing System One Model to
+Chinese-Language Tasks,” arXiv:2609.36965, 2026. [<a
+href="https://arxiv.org/abs/2609.36965](https://arxiv.org/abs/2609.36965">https://arxiv.org/abs/2609.36965](https://arxiv.org/abs/2609.36965</a>)
+【综述用途：中文 mmBERT 决策模型】</p></li>
+<li><p>[36] H. Chen and Y. Li, “Probability Contracts: Accuracy,
+Coherence, and Decisions Across LLM Interfaces,” arXiv:2609.37470, 2026.
+[<a
+href="https://arxiv.org/abs/2609.37470](https://arxiv.org/abs/2609.37470">https://arxiv.org/abs/2609.37470](https://arxiv.org/abs/2609.37470</a>)
+【综述用途：跨接口概率契约】</p></li>
+<li><p>[37] T. Deußer, L. Sparrenberg, and R. Sifa, “Evaluating and
+Benchmarking the System One Model Jev,” arXiv:2609.37647, 2026. [<a
+href="https://arxiv.org/abs/2609.37647](https://arxiv.org/abs/2609.37647">https://arxiv.org/abs/2609.37647](https://arxiv.org/abs/2609.37647</a>)
+【综述用途：Bonn 独立零打点评测】</p></li>
+<li><p>[38] Z. Gao and P. Wang, “OpenJev-RLCD: A Working RLCD
+Implementation,” arXiv:2609.38850, 2026. [<a
+href="https://arxiv.org/abs/2609.38850](https://arxiv.org/abs/2609.38850">https://arxiv.org/abs/2609.38850](https://arxiv.org/abs/2609.38850</a>)
+【综述用途：开源 RLCD 工作版】</p></li>
+<li><p>[39] J. Zhong, M. Li, and Y. Lai, “When the Right Answer Is
+Missing: An Arithmetic-Dependent Rejection Bottleneck in Jev,”
+arXiv:2609.39496, 2026. [<a
+href="https://arxiv.org/abs/2609.39496](https://arxiv.org/abs/2609.39496">https://arxiv.org/abs/2609.39496](https://arxiv.org/abs/2609.39496</a>)
+【综述用途：算术拒绝瓶颈】</p></li>
+<li><p>[40] J. Zhang et al., “AnyJev Technical Report: Typed Decisions
+from One Prefill of Any Open LLM,” arXiv:2610.00831, 2026. [<a
+href="https://arxiv.org/abs/2610.00831](https://arxiv.org/abs/2610.00831">https://arxiv.org/abs/2610.00831](https://arxiv.org/abs/2610.00831</a>)
+【综述用途：旋转去偏与闭式读出头】</p></li>
+<li><p>[41] S. M. Shankaranarayana, D. Runje, and J. Jannink, “Beyond
+Answer Confidence: A Controlled Audit of Self-Knowledge in a Black-Box
+Decision Model,” arXiv:2610.01006, 2026. [<a
+href="https://arxiv.org/abs/2610.01006](https://arxiv.org/abs/2610.01006">https://arxiv.org/abs/2610.01006](https://arxiv.org/abs/2610.01006</a>)
+【综述用途：自知识审计】</p></li>
+<li><p>[42] Y. Yang et al., “Code Owns the Simulation, Jev Owns the
+Evaluation,” arXiv:2610.01834, 2026. [<a
+href="https://arxiv.org/abs/2610.01834](https://arxiv.org/abs/2610.01834">https://arxiv.org/abs/2610.01834](https://arxiv.org/abs/2610.01834</a>)
+【综述用途：evaluation 与 simulation 分工】</p></li>
+<li><p>[43] Y. Li and J. Wagle, “LLM2Jev: LLMs Are Already Jev-Style
+Decision Models—When and How to Fine-Tune Them,” arXiv:2610.02076, 2026.
+[<a
+href="https://arxiv.org/abs/2610.02076](https://arxiv.org/abs/2610.02076">https://arxiv.org/abs/2610.02076](https://arxiv.org/abs/2610.02076</a>)
+【综述用途：前缀数字编号与微调边界】</p></li>
+<li><p>[44] 0xNatoshi, jev-codex-router. [<a
+href="https://github.com/0xNatoshi/jev-codex-router](https://github.com/0xNatoshi/jev-codex-router">https://github.com/0xNatoshi/jev-codex-router](https://github.com/0xNatoshi/jev-codex-router</a>)
+【综述用途：Codex 逐调用“模型 + 思考深度”联合路由（2026-09-24
+已归档；回测为仿真自报）】</p></li>
+<li><p>[45] Astro-Han, decision-head-rlcd. [<a
+href="https://github.com/Astro-Han/decision-head-rlcd](https://github.com/Astro-Han/decision-head-rlcd">https://github.com/Astro-Han/decision-head-rlcd](https://github.com/Astro-Han/decision-head-rlcd</a>)
+【综述用途：RLCD 决策头受控实验，分离数据整编与算法贡献】</p></li>
+<li><p>[46] Heman10x-NGU, openJev-verdict-2.0. [<a
+href="https://github.com/Heman10x-NGU/openJev-verdict-2.0](https://github.com/Heman10x-NGU/openJev-verdict-2.0">https://github.com/Heman10x-NGU/openJev-verdict-2.0](https://github.com/Heman10x-NGU/openJev-verdict-2.0</a>)
+【综述用途：专训小模型 Verdict（ModernBERT ~151M +
+GLiClass；非零训练读出）】</p></li>
+<li><p>[47] Yinsongxu, LLM2Jev. [<a
+href="https://github.com/Yinsongxu/LLM2Jev](https://github.com/Yinsongxu/LLM2Jev">https://github.com/Yinsongxu/LLM2Jev](https://github.com/Yinsongxu/LLM2Jev</a>)
+【综述用途：[43] 的本地 LLM/VLM prefill-logits 服务】</p></li>
+<li><p>[48] abhishek085, open-spark-jev. [<a
+href="https://github.com/abhishek085/open-spark-jev](https://github.com/abhishek085/open-spark-jev">https://github.com/abhishek085/open-spark-jev](https://github.com/abhishek085/open-spark-jev</a>)
+【综述用途：独立本地决策栈（Jev 启发，非 TypeSafe 复现）】</p></li>
+<li><p>[49] allebee, jevk5. [<a
+href="https://github.com/allebee/jevk5](https://github.com/allebee/jevk5">https://github.com/allebee/jevk5](https://github.com/allebee/jevk5</a>)
+【综述用途：JevK5 开源权重与 <code>/v1/systemone</code>
+风格服务】</p></li>
+<li><p>[50] Applied Machine Learning Lab, jev-benchmarking. [<a
+href="https://github.com/AppliedMachineLearning-Lab/jev-benchmarking](https://github.com/AppliedMachineLearning-Lab/jev-benchmarking">https://github.com/AppliedMachineLearning-Lab/jev-benchmarking](https://github.com/AppliedMachineLearning-Lab/jev-benchmarking</a>)
+【综述用途：[37] 配套可复现零打点评测（37 集，pin
+jev-1.13.0）】</p></li>
+<li><p>[51] Bespoke Labs, nimble. [<a
+href="https://github.com/bespokelabsai/nimble](https://github.com/bespokelabsai/nimble">https://github.com/bespokelabsai/nimble](https://github.com/bespokelabsai/nimble</a>)
+【综述用途：扁平 schema 一次前向概率及训练/服务配方】</p></li>
+<li><p>[52] bydeng01, scientific-decision-eval. [<a
+href="https://github.com/bydeng01/scientific-decision-eval](https://github.com/bydeng01/scientific-decision-eval">https://github.com/bydeng01/scientific-decision-eval](https://github.com/bydeng01/scientific-decision-eval</a>)
+【综述用途：科学 Choice 题的确定性下游传导评测】</p></li>
+<li><p>[53] dhruvmehra, jevbench. [<a
+href="https://github.com/dhruvmehra/jevbench](https://github.com/dhruvmehra/jevbench">https://github.com/dhruvmehra/jevbench](https://github.com/dhruvmehra/jevbench</a>)
+【综述用途：三公开分类集横评脚本（与 [56] 同名不同仓）】</p></li>
+<li><p>[54] docxology, daf-jev. [<a
+href="https://github.com/docxology/daf-jev](https://github.com/docxology/daf-jev">https://github.com/docxology/daf-jev](https://github.com/docxology/daf-jev</a>)
+【综述用途：TypeSafe API 客户端、三原语组合与评测脚手架】</p></li>
+<li><p>[55] E. Zhang, openjev-sglang. [<a
+href="https://github.com/ekzhang/openjev-sglang](https://github.com/ekzhang/openjev-sglang">https://github.com/ekzhang/openjev-sglang](https://github.com/ekzhang/openjev-sglang</a>)
+【综述用途：SGLang 上 Qwen3.6-35B-A3B 的 prefill-only Jev API】</p></li>
+<li><p>[56] fstandhartinger, jevbench. [<a
+href="https://github.com/fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench">https://github.com/fstandhartinger/jevbench](https://github.com/fstandhartinger/jevbench</a>)
+【综述用途：JevBench 四轴公开实时榜（基准本体；≠ [53]）】</p></li>
+<li><p>[57] hr98w, jev-visual. [<a
+href="https://github.com/hr98w/jev-visual](https://github.com/hr98w/jev-visual">https://github.com/hr98w/jev-visual](https://github.com/hr98w/jev-visual</a>)
+【综述用途：Apple MLX 共享视觉上下文的多题 logits 读出】</p></li>
+<li><p>[58] iApp Technology, openthai-systemone. [<a
+href="https://github.com/iapp-technology/openthai-systemone](https://github.com/iapp-technology/openthai-systemone">https://github.com/iapp-technology/openthai-systemone](https://github.com/iapp-technology/openthai-systemone</a>)
+【综述用途：泰英 Qwen0.8B（256 路 slot head）专训权重】</p></li>
+<li><p>[59] imaddde867, jev-position-test. [<a
+href="https://github.com/imaddde867/jev-position-test](https://github.com/imaddde867/jev-position-test">https://github.com/imaddde867/jev-position-test](https://github.com/imaddde867/jev-position-test</a>)
+【综述用途：固定题干、仅置换选项顺序的自检探针】</p></li>
+<li><p>[60] J. Palmer, kev. [<a
+href="https://github.com/jaredpalmer/kev](https://github.com/jaredpalmer/kev">https://github.com/jaredpalmer/kev](https://github.com/jaredpalmer/kev</a>)
+【综述用途：Qwen 系 System One 兼容专训权重与本地服务】</p></li>
+<li><p>[61] kerpopule, hermes-jev-skills. [<a
+href="https://github.com/kerpopule/hermes-jev-skills](https://github.com/kerpopule/hermes-jev-skills">https://github.com/kerpopule/hermes-jev-skills](https://github.com/kerpopule/hermes-jev-skills</a>)
+【综述用途：Hermes agent 技能，将小决策外包 Jev】</p></li>
+<li><p>[62] kshetrajna12, reflex. [<a
+href="https://github.com/kshetrajna12/reflex](https://github.com/kshetrajna12/reflex">https://github.com/kshetrajna12/reflex](https://github.com/kshetrajna12/reflex</a>)
+【综述用途：冻结 Qwen 字母/logit 零训练读出；仓库自报微调无益】</p></li>
+<li><p>[63] lytang63, OmniMed-Jev. [<a
+href="https://github.com/lytang63/OmniMed-Jev](https://github.com/lytang63/OmniMed-Jev">https://github.com/lytang63/OmniMed-Jev](https://github.com/lytang63/OmniMed-Jev</a>)
+【综述用途：医疗多模态 LoRA + 决策头（HF xmutly/OmniMed-Jev-4B；配套
+arXiv:2610.00381，数字自报）】</p></li>
+<li><p>[64] malevrigns, agent-jev. [<a
+href="https://github.com/malevrigns/agent-jev](https://github.com/malevrigns/agent-jev">https://github.com/malevrigns/agent-jev](https://github.com/malevrigns/agent-jev</a>)
+【综述用途：0.6B agent
+反射层（置换等变候选头；分原语温度校准）】</p></li>
+<li><p>[65] Mapika, decider. [<a
+href="https://github.com/Mapika/decider](https://github.com/Mapika/decider">https://github.com/Mapika/decider](https://github.com/Mapika/decider</a>)
+【综述用途：一次前向 Choice/Score/Noul，无散文生成（2B 路线）】</p></li>
+<li><p>[66] metask-ai, metask-jev. [<a
+href="https://github.com/metask-ai/metask-jev](https://github.com/metask-ai/metask-jev">https://github.com/metask-ai/metask-jev](https://github.com/metask-ai/metask-jev</a>)
+【综述用途：专训 Metask-Jev-4B（candidate-logit +
+教师软标签；非零训练）】</p></li>
+<li><p>[67] mizorewww, laya-coreml. [<a
+href="https://github.com/mizorewww/laya-coreml](https://github.com/mizorewww/laya-coreml">https://github.com/mizorewww/laya-coreml](https://github.com/mizorewww/laya-coreml</a>)
+【综述用途：Laya 的 CoreML / Neural Engine 端侧运行时】</p></li>
+<li><p>[68] mizorewww, laya-mlx. [<a
+href="https://github.com/mizorewww/laya-mlx](https://github.com/mizorewww/laya-mlx">https://github.com/mizorewww/laya-mlx](https://github.com/mizorewww/laya-mlx</a>)
+【综述用途：Laya 的 MLX 本地运行时】</p></li>
+<li><p>[69] NandhaKishorM, laya. [<a
+href="https://github.com/NandhaKishorM/laya](https://github.com/NandhaKishorM/laya">https://github.com/NandhaKishorM/laya](https://github.com/NandhaKishorM/laya</a>)
+【综述用途：Laya 专训权重与多语言按请求路由（分组温度校准）】</p></li>
+<li><p>[70] Nokia Applied Research, AnyJev. [<a
+href="https://github.com/nokia-applied-research/AnyJev](https://github.com/nokia-applied-research/AnyJev">https://github.com/nokia-applied-research/AnyJev](https://github.com/nokia-applied-research/AnyJev</a>)
+【综述用途：[40] 的 L0–L2 零/少标签读出实现】</p></li>
+<li><p>[71] OmniJev, PlayJev. [<a
+href="https://github.com/OmniJev/PlayJev](https://github.com/OmniJev/PlayJev">https://github.com/OmniJev/PlayJev](https://github.com/OmniJev/PlayJev</a>)
+【综述用途：像素到浏览器游戏的一步视觉专训 demo（非通用 System One
+权重）】</p></li>
+<li><p>[72] OpenByte Inc., QuantDinger. [<a
+href="https://github.com/OpenByteInc/QuantDinger](https://github.com/OpenByteInc/QuantDinger">https://github.com/OpenByteInc/QuantDinger](https://github.com/OpenByteInc/QuantDinger</a>)
+【综述用途：量化交易栈中的决策集成】</p></li>
+<li><p>[73] razorback16, openjev. [<a
+href="https://github.com/razorback16/openjev](https://github.com/razorback16/openjev">https://github.com/razorback16/openjev](https://github.com/razorback16/openjev</a>)
+【综述用途：本地决策服务器（引用须带 owner，见附录 E.3）】</p></li>
+<li><p>[74] receptron, laya. [<a
+href="https://github.com/receptron/laya](https://github.com/receptron/laya">https://github.com/receptron/laya](https://github.com/receptron/laya</a>)
+【综述用途：Laya 的 Node/TypeScript + ONNX 分发】</p></li>
+<li><p>[75] S. Willison, llm-typesafe. [<a
+href="https://github.com/simonw/llm-typesafe](https://github.com/simonw/llm-typesafe">https://github.com/simonw/llm-typesafe](https://github.com/simonw/llm-typesafe</a>)
+【综述用途：llm CLI 的 typesafe/jev-latest 插件】</p></li>
+<li><p>[76] sumleo, RLCDAlignBench. [<a
+href="https://github.com/sumleo/RLCDAlignBench](https://github.com/sumleo/RLCDAlignBench">https://github.com/sumleo/RLCDAlignBench](https://github.com/sumleo/RLCDAlignBench</a>)
+【综述用途：[20] 配套的对齐失效检测基准】</p></li>
+<li><p>[77] TheoLeeCJ, SemIf-OpenJev. [<a
+href="https://github.com/TheoLeeCJ/SemIf-OpenJev](https://github.com/TheoLeeCJ/SemIf-OpenJev">https://github.com/TheoLeeCJ/SemIf-OpenJev](https://github.com/TheoLeeCJ/SemIf-OpenJev</a>)
+【综述用途：冻结 Qwen 单 token 选项 logits 零训练读出】</p></li>
+<li><p>[78] TianyuCodings, NanoJev. [<a
+href="https://github.com/TianyuCodings/NanoJev](https://github.com/TianyuCodings/NanoJev">https://github.com/TianyuCodings/NanoJev](https://github.com/TianyuCodings/NanoJev</a>)
+【综述用途：0.6B 并行决策专训及浏览器 demo】</p></li>
+<li><p>[79] wfzyx, von. [<a
+href="https://github.com/wfzyx/von](https://github.com/wfzyx/von">https://github.com/wfzyx/von](https://github.com/wfzyx/von</a>)
+【综述用途：选项隔离架构；OpenVINO CPU 可服务的本地
+<code>/v1/systemone</code> 替代】</p></li>
+<li><p>[80] ZimmyGao, openjev-rlcd. [<a
+href="https://github.com/ZimmyGao/openjev-rlcd](https://github.com/ZimmyGao/openjev-rlcd">https://github.com/ZimmyGao/openjev-rlcd](https://github.com/ZimmyGao/openjev-rlcd</a>)
+【综述用途：[38] 的可复现训练与消融配方】</p></li>
+<li><p>[81] 本研究, “Jev 与 System One 决策模型检索日志,” Oct. 5, 2026.
+【综述用途：三轨检索、PRISMA 数字流与纳入裁定（附录 D）】</p></li>
+<li><p>[82] Cornell University, arXiv.org API. [<a
+href="https://export.arxiv.org/api/query](https://export.arxiv.org/api/query">https://export.arxiv.org/api/query](https://export.arxiv.org/api/query</a>)
+【综述用途：书目核验与 id_list 元数据补拉（2026-10-05）】</p></li>
+<li><p>[83] PaperWeekly, “Jev才火一周，13篇论文光速上线！,” WeChat
+public account, Sep. 2026.
+【综述用途：首轮候选发现起点（社区转引，未逐篇复核）】</p></li>
+<li><p>[84] System One Models, resource index. [<a
+href="https://systemonemodels.org](https://systemonemodels.org">https://systemonemodels.org](https://systemonemodels.org</a>)
+【综述用途：生态链接聚合（社区转引，未逐链核验）】</p></li>
+<li><p>[85] “Jev-related repository star counts,” dev.to, Oct. 2, 2026.
+【综述用途：附录 E stars 的二手转引（未经机读复核）】</p></li>
+<li><p>[86] PyTorchKR, community compilation of 1000+ projects, Sep.
+2026. 【综述用途：生态规模量级参考（社区转引，非计数证据）】</p></li>
+<li><p>[87] L. Kuhn, Y. Gal, and S. Farquhar, “Semantic Uncertainty:
+Linguistic Invariances for Uncertainty Estimation in Natural Language
+Generation,” arXiv:2302.09664, 2023. [<a
+href="https://arxiv.org/abs/2302.09664](https://arxiv.org/abs/2302.09664">https://arxiv.org/abs/2302.09664](https://arxiv.org/abs/2302.09664</a>)
+【综述用途：语义不确定性背景】</p></li>
+<li><p>[88] K. Tian et al., “Just Ask for Calibration: Strategies for
+Eliciting Calibrated Confidence Scores from Language Models Fine-Tuned
+with Human Feedback,” arXiv:2305.14975, 2023. [<a
+href="https://arxiv.org/abs/2305.14975](https://arxiv.org/abs/2305.14975">https://arxiv.org/abs/2305.14975](https://arxiv.org/abs/2305.14975</a>)
+【综述用途：verbalized confidence 校准策略】</p></li>
+<li><p>[89] S. Lin, J. Hilton, and O. Evans, “Teaching Models to Express
+Their Uncertainty in Words,” arXiv:2205.14334, 2022. [<a
+href="https://arxiv.org/abs/2205.14334](https://arxiv.org/abs/2205.14334">https://arxiv.org/abs/2205.14334](https://arxiv.org/abs/2205.14334</a>)
+【综述用途：verbalized confidence 早期测量】</p></li>
+<li><p>[90] Y. Geifman and R. El-Yaniv, “Selective Classification for
+Deep Neural Networks,” arXiv:1705.08500, 2017. [<a
+href="https://arxiv.org/abs/1705.08500](https://arxiv.org/abs/1705.08500">https://arxiv.org/abs/1705.08500](https://arxiv.org/abs/1705.08500</a>)
+【综述用途：risk–coverage / 选择性预测】</p></li>
+<li><p>[91] D. Hendrycks and K. Gimpel, “A Baseline for Detecting
+Misclassified and Out-of-Distribution Examples in Neural Networks,”
+arXiv:1610.02136, 2017. [<a
+href="https://arxiv.org/abs/1610.02136](https://arxiv.org/abs/1610.02136">https://arxiv.org/abs/1610.02136](https://arxiv.org/abs/1610.02136</a>)
+【综述用途：OOD 检测基线】</p></li>
+<li><p>[92] Q. Li and X. Wang, “Jeva: System One Models from First
+Principles,” arXiv:2610.18773, 2026. [<a
+href="https://arxiv.org/abs/2610.18773](https://arxiv.org/abs/2610.18773">https://arxiv.org/abs/2610.18773](https://arxiv.org/abs/2610.18773</a>)
+【综述用途：decision-native 架构路线】</p></li>
+<li><p>[93] J. Geuter, A. Cheng, and D. Alvarez-Melis, “Releasing the
+Inner Jev: A Simple Recipe for Open Decision Models,” arXiv:2610.17205,
+2026. [<a
+href="https://arxiv.org/abs/2610.17205](https://arxiv.org/abs/2610.17205">https://arxiv.org/abs/2610.17205](https://arxiv.org/abs/2610.17205</a>)
+【综述用途：Jeff / OpenDecisions 与 LoRA 配方】</p></li>
+<li><p>[94] J. Zhang, Y. Zhang, and Y. Huang, “JevCoder: When Does
+Decision Delegation Pay Off in Code Repair?,” arXiv:2610.19596, 2026.
+[<a
+href="https://arxiv.org/abs/2610.19596](https://arxiv.org/abs/2610.19596">https://arxiv.org/abs/2610.19596](https://arxiv.org/abs/2610.19596</a>)
+【综述用途：代码修复委派边界】</p></li>
+<li><p>[95] W. Hu et al., “Jev-Guard: Fast Routing and Auditing Agent
+Actions over Editable Policy Trees,” arXiv:2610.18326, 2026. [<a
+href="https://arxiv.org/abs/2610.18326](https://arxiv.org/abs/2610.18326">https://arxiv.org/abs/2610.18326](https://arxiv.org/abs/2610.18326</a>)
+【综述用途：可编辑策略树 guardrail】</p></li>
+<li><p>[96] Y. Luo et al., “Nudge the Judge: Uncovering Program Decision
+Hijacking in Real-World Jev Applications,” arXiv:2610.18612, 2026. [<a
+href="https://arxiv.org/abs/2610.18612](https://arxiv.org/abs/2610.18612">https://arxiv.org/abs/2610.18612](https://arxiv.org/abs/2610.18612</a>)
+【综述用途：程序消费概率的劫持】</p></li>
+<li><p>[97] K. Wang et al., “Jev-LiteMAS: Separating Decisions from
+Generation in Multi-Agent Workflows,” arXiv:2610.21411, 2026. [<a
+href="https://arxiv.org/abs/2610.21411](https://arxiv.org/abs/2610.21411">https://arxiv.org/abs/2610.21411](https://arxiv.org/abs/2610.21411</a>)
+【综述用途：多智能体路由与评审分离】</p></li>
+<li><p>[98] B. Zheng and Z. Chen, “Selective Reasoning for Typed
+Decision Models: When to Start, Read, and Stop,” arXiv:2610.19644, 2026.
+[<a
+href="https://arxiv.org/abs/2610.19644](https://arxiv.org/abs/2610.19644">https://arxiv.org/abs/2610.19644](https://arxiv.org/abs/2610.19644</a>)
+【综述用途：推理深度门控】</p></li>
+<li><p>[99] T. Chen et al., “System1-Arena: Which Decisions Can Be Left
+to System 1?,” arXiv:2610.21244, 2026. [<a
+href="https://arxiv.org/abs/2610.21244](https://arxiv.org/abs/2610.21244">https://arxiv.org/abs/2610.21244](https://arxiv.org/abs/2610.21244</a>)
+【综述用途：step acc 与闭环成功率脱钩】</p></li>
+<li><p>[100] K. Zhu et al., “JevAgentHarness: Benchmarking, Deploying
+and Training Decision Models That Share Control with LLMs,”
+arXiv:2610.21412, 2026. [<a
+href="https://arxiv.org/abs/2610.21412](https://arxiv.org/abs/2610.21412">https://arxiv.org/abs/2610.21412](https://arxiv.org/abs/2610.21412</a>)
+【综述用途：L1/L2/L3 评测与 GRPO 对照】</p></li>
+<li><p>[101] LiQiiiii, Jeva. [<a
+href="https://github.com/LiQiiiii/Jeva](https://github.com/LiQiiiii/Jeva">https://github.com/LiQiiiii/Jeva](https://github.com/LiQiiiii/Jeva</a>)
+【综述用途：[92] 官方实现（state + typed questions 一次前向）】</p></li>
+<li><p>[102] JevAgentHarness, JevAgentHarness. [<a
+href="https://github.com/JevAgentHarness/JevAgentHarness](https://github.com/JevAgentHarness/JevAgentHarness">https://github.com/JevAgentHarness/JevAgentHarness](https://github.com/JevAgentHarness/JevAgentHarness</a>)
+【综述用途：[100] 官方仓：routine / hard 模型路由代理】</p></li>
+<li><p>[103] OpenLAIR, lev. [<a
+href="https://github.com/OpenLAIR/lev](https://github.com/OpenLAIR/lev">https://github.com/OpenLAIR/lev](https://github.com/OpenLAIR/lev</a>)
+【综述用途：循环语言模型上的深度可调 typed decision】</p></li>
+<li><p>[104] firelex, jeff. [<a
+href="https://github.com/firelex/jeff](https://github.com/firelex/jeff">https://github.com/firelex/jeff](https://github.com/firelex/jeff</a>)
+【综述用途：[93] 发布的 0.8B–2B 多 LoRA 决策模型族与 serving】</p></li>
+<li><p>[105] TypeSafe AI, “jev-1.14.0,” official release note, Oct. 14,
+2026. [<a
+href="https://typesafe.ai/blog](https://typesafe.ai/blog">https://typesafe.ai/blog](https://typesafe.ai/blog</a>)
+(accessed Oct. 17, 2026). 【综述用途：§4 版本能力与官方自报 intelligence
+/ 校准】</p></li>
+<li><p>[106] TypeSafe AI, Series A announcement, Oct. 9, 2026.
+【综述用途：产业语境（$870M @ $7.5B，a16z 领投；无单一稳定
+URL，据官方/媒体通稿；非机制证据）】</p></li>
+<li><p>[107] TypeSafe AI, “Jack &amp; Jill,” customer case, Oct. 2026.
+[<a
+href="https://typesafe.ai](https://typesafe.ai">https://typesafe.ai](https://typesafe.ai</a>)
+(accessed Oct. 17, 2026).
+【综述用途：落地成本与延迟的官方自报】</p></li>
+<li><p>[108] W. Yang et al., “What Can’t Jev Decide? Probing the Limits
+of One-Pass Decision Models,” arXiv:2610.24929, 2026. [<a
+href="https://arxiv.org/abs/2610.24929](https://arxiv.org/abs/2610.24929">https://arxiv.org/abs/2610.24929](https://arxiv.org/abs/2610.24929</a>)
+【综述用途：单遍决策极限探针】</p></li>
+<li><p>[109] A. Hume, “Jev’s Architecture Unmasked,” Sep. 17, 2026. [<a
+href="https://archerhume.com/posts/jevs-architecture-unmasked](https://archerhume.com/posts/jevs-architecture-unmasked">https://archerhume.com/posts/jevs-architecture-unmasked](https://archerhume.com/posts/jevs-architecture-unmasked</a>)
+【综述用途： 五项黑盒实验与证据包（开篇 “I probed Jev with 10,000 API
+calls”）】</p></li>
+<li><p>[110] JevResearch, “Jev: Not Frontier, But Still Worth Your
+Attention,” rev. 5, Oct. 3, 2026. [<a
+href="https://jevresearch.github.io/Jev-Research/report/](https://jevresearch.github.io/Jev-Research/report/">https://jevresearch.github.io/Jev-Research/report/](https://jevresearch.github.io/Jev-Research/report/</a>)</p></li>
+<li><p>Y. Weng, C. Liu, X. Chen, and S. Manoharan, “Our Own Jev: Typed
+Decisions in One Forward Pass, from an In-House Judge to Open LoRA
+Models,” arXiv:2610.29052, 2026. [<a
+href="https://arxiv.org/abs/2610.29052](https://arxiv.org/abs/2610.29052">https://arxiv.org/abs/2610.29052](https://arxiv.org/abs/2610.29052</a>)
+【综述用途：内部 judge 到 LoRA 的成本锚点】</p></li>
+<li><p>M. Song, M. Zheng, Z. Ma, and X. Zhou, “Understanding Jev-Style
+System One Models: Does Structure Reduce Selection Bias?,”
+arXiv:2610.35826, 2026. [<a
+href="https://arxiv.org/abs/2610.35826](https://arxiv.org/abs/2610.35826">https://arxiv.org/abs/2610.35826](https://arxiv.org/abs/2610.35826</a>)
+【综述用途：顺序呈现与累计失败集】</p></li>
+<li><p>S. U. K. Bukhari, S. S. Khalid, and M. Aamir, “System X: An LLM
+Decision Model That Replies from Its Own KV Cache,” arXiv:2610.25456,
+2026. [<a
+href="https://arxiv.org/abs/2610.25456](https://arxiv.org/abs/2610.25456">https://arxiv.org/abs/2610.25456](https://arxiv.org/abs/2610.25456</a>)
+【综述用途：KV 缓存复用决策栈】</p></li>
+<li><p>L. Stambler, “P(Yes): 15× Improvements via Test-Time Scaling of
+Decision Models,” arXiv:2610.25474, 2026. [<a
+href="https://arxiv.org/abs/2610.25474](https://arxiv.org/abs/2610.25474">https://arxiv.org/abs/2610.25474](https://arxiv.org/abs/2610.25474</a>)
+【综述用途：测试时缩放决策（仅据摘要；未获 HTML 全文）】</p></li>
+<li><p>R. Munot, “When Multiple Choices Are Correct: Asymmetric
+Probability Allocation in Jev and Other Decision Models,”
+arXiv:2610.29217, 2026. [<a
+href="https://arxiv.org/abs/2610.29217](https://arxiv.org/abs/2610.29217">https://arxiv.org/abs/2610.29217](https://arxiv.org/abs/2610.29217</a>)
+【综述用途：多正确选项的概率分配】</p></li>
+</ul>
+<hr />
+<p><a id="appendix"></a></p>
+
+</div>
+<nav class="pager"><a href="ch14.html"><span class="lbl">上一页</span>14、结论与展望</a><a class="next" href="appendix.html"><span class="lbl">下一页</span>附录&amp;辅助材料</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#top">（本页无二级标题）</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

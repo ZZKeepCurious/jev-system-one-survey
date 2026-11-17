@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/ch03.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/ch03.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族" aria-current="page"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<blockquote>
+<p>定位：这部分主要是对Jev背后涉及的数学机制进行基础铺垫 ——</p>
+<ul>
+<li><p>校准概率"在数学上是什么？</p></li>
+<li><p>训练它们的关键机制（评分规则 RL）为什么成立？</p></li>
+<li><p>朴素方案为什么失败？</p></li>
+<li><p>后处理校准能做到什么、做不到什么？</p></li>
+</ul>
+</blockquote>
+<h2 id="31校准的数学定义">3.1、校准的数学定义</h2>
+<p>设模型对问题 x 给出选项 i 的概率 <span
+class="math inline">\(q_i\)</span>，真实结果为 y（i
+为正确选项）。<strong>校准（calibration）</strong>要求模型报告的概率与经验频率一致：</p>
+<blockquote>
+<p>概率为 p 的预测，长期看恰好以比例 p 正确</p>
+<ul>
+<li><p>官方定义，outcomes assigned 0.2 should occur about 20% of the
+time；</p></li>
+<li><p>来源：[<a
+href="https://docs.typesafe.ai/introduction/machine-learning-primer.md](https://docs.typesafe.ai/introduction/machine-learning-primer.md">https://docs.typesafe.ai/introduction/machine-learning-primer.md](https://docs.typesafe.ai/introduction/machine-learning-primer.md</a>)；</p></li>
+</ul>
+</blockquote>
+<p>两个最常用的量化指标：</p>
+<ul>
+<li><p>ECE（Expected Calibration Error）：把预测置信度分 M
+个桶，对每个桶比较平均置信度与桶内正确率：</p>
+<p><span
+class="math inline">\(\mathrm{ECE}=\sum_{b=1}^{B}\frac{n_b}{N}\,\left|\,\mathrm{acc}(B_b)-\mathrm{conf}(B_b)\,\right|\)</span></p>
+<ul>
+<li><p>其中 <span class="math inline">\(B_b\)</span> 为第 b
+个置信度桶，<span class="math inline">\(n_b\)</span>为该桶样本数，<span
+class="math inline">\(\mathrm{conf}(B_b)\)</span>
+为桶内平均预测概率，<span
+class="math inline">\(\mathrm{acc}(B_b)\)</span>
+为桶内经验准确率；</p></li>
+<li><p>ECE=0 是理想校准 ——
+它惩罚的是"置信度与正确率的系统性偏差"，<strong>与准确率正交；</strong>也就是一个
+95% 准确率但全部报 0.6 置信度的模型可以有很高的 ECE；</p></li>
+<li><p><strong>简单来讲：ECE
+度量"准不准"，但它不惩罚"该自信时不自信"</strong>——
+要把准确率与校准压进同一个可优化的标量里，用的是 Brier 分数。</p></li>
+</ul></li>
+<li><p><strong>Brier 得分</strong>：在二元情况下，q
+为预测正类概率、<span class="math inline">\(c\in\{0,1\}\)</span>
+为真实标签：<span
+class="math inline">\(\mathrm{S}(q,c)=(q-c)^2\)</span>；多分类情况下推广为：</p>
+<p><span
+class="math inline">\(\mathrm{BS}=\sum_{k=1}^{K}(q_k-y_k)^2\)</span></p>
+<ul>
+<li><p>其中，<span class="math inline">\(q_k\)</span> 为模型对选项 k
+的报告概率、<span class="math inline">\(y_k\in\{0,1\}\)</span> 为
+one-hot 真实结果；</p></li>
+<li><p>实际操作当中，对BS分数的最小化，即等价于对负BS分数进行最大化，可以转化为我们的最大化目标函数；</p></li>
+<li><p><strong>实际意义上来讲：Brier
+会同时惩罚"答错"与"过度自信"</strong>：</p></li>
+</ul>
+<blockquote>
+<p>报 0.9 答对得 <span
+class="math inline">\((0.9−1)^2=0.01\)</span>的小罚、答错得 <span
+class="math inline">\((0.9)^2\)</span>=0.81 的大罚；</p>
+</blockquote></li>
+<li><p><strong>如上所示，Brier
+得分</strong>把准确率与校准压进一个标量，是评分规则 RL
+类算法（RLVR）的核心零件【进一步3.2内容】—— 这里解释下；</p>
+<blockquote>
+<p>论文：《Strictly Proper Scoring Rules, Prediction, and
+Estimation》Gneiting &amp; Raftery 2007</p>
+</blockquote>
+<p>二元情形下，期望 Brier
+可分解为<strong>校准项与锐度项</strong>之和（Rewarding Doubt
+谱系共享的性质）：</p>
+<p><span class="math inline">\(\mathbb{E}_{y\sim
+p}\,\mathrm{BS}(q,y)=\underbrace{(q-p)^2}_{\text{校准偏差}}+\underbrace{p(1-p)}_{\text{与
+}q\text{ 无关的锐度项}}\)</span></p>
+<ul>
+<li><p><em>第二项 <em><span class="math inline">\(p(1-p)\)</span></em>
+是无论怎么报都存在的不可约噪声，因为真实结果本身的不确定性；第一项严格凸、存在唯一零点在
+<em><span class="math inline">\(q=p\)</span></em>；</em></p></li>
+<li><p><strong>这就解释了 Brier
+为何同时压准确率与校准：它把两者合并进一个标量，因而成为评分规则 RL
+的核心零件；</strong></p></li>
+</ul></li>
+</ul>
+<hr />
+<h2
+id="32严格适当评分规则为什么报真实概率是最优策略">3.2、严格适当评分规则：为什么"报真实概率"是最优策略</h2>
+<p><strong>定义</strong>：一个评分规则 <span
+class="math inline">\(S(q,c)\)</span> 是严格适当（strictly
+proper）的，当且仅当在真实条件概率 (<span
+class="math inline">\(p_y\)</span>) 下，报 (<span
+class="math inline">\(q=p_y\)</span>) 使期望评分最优：</p>
+<p><span class="math inline">\(p_y=\arg\max_q\
+\mathbb{E}_{c\sim\mathrm{Bernoulli}(p_y)}\,S(q,c)\)</span></p>
+<blockquote>
+<p>直觉：</p>
+<ul>
+<li><p>如果模型的真实置信是 p，那么无论它怎么在 q≠p
+处夸大或压低，期望得分都严格更低；</p></li>
+<li><p>这就把"如实报告概率"变成一个最优策略，而不是靠额外约束去要求；</p></li>
+<li><p>其数学依据可以追溯至 Brier（1950）与 Gneiting &amp;
+Raftery（2007）的严格适当评分规则理论，这里不在展开，如下所示就是<strong>恰当评分规则（proper
+scoring rule）+ Bregman 散度 + 凸共轭 / 熵的</strong>经典框架：</p></li>
+<li><p>下图解释：光滑广义熵函数G（实心凸曲线）、配套得分函数以及 Bregman
+散度之间关系的示意图</p></li>
+<li><p>对任意概率预报<span
+class="math inline">\(p\in[0,1]\)</span>，期望得分<span
+class="math inline">\(S(p, q) = qS(p, 1)+(1−q)S(p,
+0)\)</span>，等于G在p点处切线【斜率为<span
+class="math inline">\(G&#39;(p)\)</span>的实线】在<span
+class="math inline">\(q\in[0,1]\)</span>处的纵坐标；</p></li>
+<li><p>特别地，得分<span class="math inline">\(S(p, 0) = G(p) −
+pG&#39;(p)\)</span>、<span class="math inline">\(S(p, 1) = G(p) + (1 −
+p)G&#39;(p)\)</span>，可以通过把该切线分别取<span
+class="math inline">\(q=0\)</span>和<span
+class="math inline">\(q=1\)</span>读出；</p></li>
+<li><p>Bregman 散度<span class="math inline">\(d(p, q) = S(q, q) − S(p,
+q)\)</span>，等于函数G在q点的值减去G在p点的切线在q点的值；</p></li>
+</ul>
+<p><img src="figures/fig-06.png" alt="fig-06" /></p>
+<ul>
+<li><p>目标：构造一类公平打分规则，同时附带一个衡量预测偏差的散度，保证评分是恰当合适的；</p></li>
+<li><p>准确性要求：给预测打分，预测的越好则打分越高；</p></li>
+<li><p>恰当性要求：模型如实报出真实概率
+q，长期期望得分最高；故意谎报别的概率，期望得分只会更低；</p></li>
+<li><p>附带一个散度指标（距离），来衡量分布 p 和真实分布 q
+之间差多少；</p></li>
+<li><p>问题是什么：随便写一个打分公式行不行？</p></li>
+<li><p>很多打分方式<strong>不恰当</strong>：模型撒谎、报一个不是自己真实信念的概率，反而期望得分更高
+—— 激励造假；并且得分、散度之间关系看不清！！</p></li>
+<li><p>那么满足恰当性的一大族得分规则，有没有统一的 “母结构”？</p></li>
+<li><p>怎么做：用一个光滑凸的广义熵函数 G 作为母函数，从它上面
+“切一刀（切线）”，得到全部东西；</p></li>
+<li><p>核心直觉：<strong>凸函数</strong>G<strong>+
+它在</strong>p<strong>处的切线 = 得分规则的生成器</strong></p></li>
+<li><p>选一个<strong>凸、光滑的广义熵函数</strong>G（图里那条向下凸的实线），这是
+“母函数”。</p></li>
+<li><p>固定一个预报值 p，求 G 在 p 点的切线，切线斜率就是导数
+G′(p)。</p></li>
+<li><p>这条切线本身，<strong>就是期望得分函数</strong>S(p,q)：输入真值概率
+q，<strong>切线高度就是期望得分；</strong></p></li>
+<li><p>取 q=0，切线高度 = S(p,0)：事件不发生时的得分；</p></li>
+<li><p>取 q=1，切线高度 = S(p,1)：事件发生时的得分；</p></li>
+<li><p>直觉：<strong>一条切线，同时装下两种场景的得分，加权就是期望得分！！！</strong></p></li>
+<li><p>定义 Bregman 散度 <span
+class="math inline">\(d(p,q)=S(q,q)−S(p,q)\)</span>【这里不是定义出来的哈，Bregman
+散度本身就凸函数相对于自身切线的残差】</p></li>
+<li><p>S(q,q)：拿真实概率 q 自己给自己打分（也就是
+G(q)，曲线本身高度）</p></li>
+<li><p>S(p,q)：拿预报 p 的切线在 q 处打分（切线高度）</p></li>
+<li><p>也就是散度 = <strong>凸曲线高度 −
+切线高度，两点间的竖直距离</strong></p></li>
+<li><p>直觉：<strong>曲线和切线之间的竖直空隙，就是预报的损失 / 偏差 ——
+空隙越大，预报越差！</strong></p></li>
+<li><p>注意：G
+是熵（母函数），<strong>不是得分本身，</strong>切线才是得分！</p></li>
+</ul>
+<p><img src="figures/fig-07.png" alt="fig-07" /></p>
+</blockquote>
+<ul>
+<li><p>Brier、spherical、对数评分都是 proper 的，但 线性评分（报 0 或 1
+的期望最优）不是；</p>
+<ul>
+<li>在恰当性得分体系下，二元 Brier 对应的体系概念为：</li>
+</ul></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>Brier 实例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>母函数 <span class="math inline">\(G(p)\)</span></td>
+<td><span class="math inline">\(G(p)=p(1-p)\)</span></td>
+</tr>
+<tr>
+<td>导数 <span class="math inline">\(G&#39;(p)\)</span></td>
+<td><span class="math inline">\(1-2p\)</span></td>
+</tr>
+<tr>
+<td>预报 p 对应的切线（期望得分）</td>
+<td><span
+class="math inline">\(S(p,q)=q\,S(p,1)+(1-q)\,S(p,0)=q\cdot(-(1-p)^2)+(1-q)\cdot(-p^2)\)</span></td>
+</tr>
+<tr>
+<td>发生（<span class="math inline">\(y=1\)</span>）单点得分 <span
+class="math inline">\(S(p,1)\)</span></td>
+<td><span class="math inline">\(-(1-p)^2\)</span></td>
+</tr>
+<tr>
+<td>不发生（<span class="math inline">\(y=0\)</span>）单点得分 <span
+class="math inline">\(S(p,0)\)</span></td>
+<td><span class="math inline">\(-p^2\)</span></td>
+</tr>
+<tr>
+<td>Bregman 散度 <span class="math inline">\(d(p,q)\)</span></td>
+<td><span class="math inline">\((q-p)^2\)</span>（平方损失，Brier
+损失）</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li>严格适当性的意义在于：<strong>如果模型以"最小化期望评分"为目标训练，它的唯一不动点就是报真实概率——校准不是正则项，而是目标函数本身的性质
+—— 也就是说，把校准写进目标函数！</strong></li>
+</ul>
+<p><img src="figures/fig-08.png" alt="fig-08" /></p>
+<p>【RLCR的背景扩展】RLCR 论文在理论上将该性质转化为可训练的 RL
+奖励，并给出了两个关键定理，奠定了相应的理论基础。</p>
+<ul>
+<li><p><strong>RLCR 奖励</strong>：</p>
+<p><span
+class="math inline">\(R_{\mathrm{RLCR}}=\mathbb{1}[\text{correct}]-\lambda\,S(q,c),\qquad
+S(q,c)=(q-c)^2\)</span></p></li>
+<li><p>其中第一项保留"答对"激励（就是普通 RLVR），第二项是则是二元 Brier
+惩罚；</p></li>
+<li><p><strong>定理 1（双目标同时最优）</strong>：在 <span
+class="math inline">\(Bernoulli(p_y)\)</span>
+结果下，该奖励同时满足：</p>
+<ul>
+<li><p>(i) 校准激励——对任意 y，期望奖励在 <span
+class="math inline">\(q=p_y\)</span> 处最大；</p></li>
+<li><p>(ii) 正确性激励——在所有已校准预测中，期望奖励随 <span
+class="math inline">\(p_y\)</span> 单调递增;</p></li>
+</ul></li>
+<li><p>附录 A 进一步证明该结论对任意<strong>有界</strong> proper scoring
+rule 成立，条件是正确性系数 λ 满足<span class="math inline">\(\max_p
+[S(p,1)-S(p,0)]\le\lambda\)</span>；</p></li>
+</ul>
+<p>【RLCD训练范式把严格适当评分写入奖励的训练循环，如下示意图】</p>
+<p><img src="figures/fig-09.png" alt="fig-09" /></p>
+<hr />
+<h2
+id="33朴素方案为什么失败零训练-logits-读出不等于天然校准">3.3、朴素方案为什么失败：零训练
+logits 读出不等于天然校准</h2>
+<p>所谓的朴素方案即直接从LLM的输出头直接读出 option-token logits
+来作为概率与置信度，这种方式看似免费，但它拿到的是<strong>条件于所给选项的分数</strong>，不是校准置信度。即便是走这种路线的开源方案
+SemIf-OpenJev
+也诚实声明：<code> SemIf 返回概率 "conditional on the supplied options"，需在负载上自行校准</code>。</p>
+<p>就目前得到研究来看，可以从以下三个层面的机制分别讨论这个问题：</p>
+<ul>
+<li><p>【训练方法层面】<strong>0/1 奖励
+RL（RLVR）会把模型推向过度自信【主要论文 RLCR】</strong></p>
+<ul>
+<li><p>RLVR（0/1奖励RL）仅依据答案对错给奖励，不区分可靠答对和蒙对两种情况，容易让模型过度自信；它在域内（in-domain）降低ECE、改善校准，<strong>但域外（OOD）ECE上升，校准变差</strong>；</p></li>
+<li><p>RLCR额外加入Brier惩罚，域内准确率几乎持平（63.0%→62.1%），同时大幅优化域内、域外ECE（OOD
+ECE
+0.46→0.21），是该设置下唯一兼顾域内准确率、显著提升域外校准的方案。</p></li>
+<li><p>RLCR
+原文的对照实验（Qwen2.5-7B，HotpotQA）：RLVR域内准确率大幅提升（39.7%→63.0%），域内ECE
+0.53→0.37，OOD ECE 0.40→0.46。</p></li>
+</ul></li>
+</ul>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>训练信号</th>
+<th>in-domain Acc</th>
+<th>in-domain ECE</th>
+<th>OOD Acc</th>
+<th>OOD ECE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Base（提示输出置信度）</td>
+<td>39.7%</td>
+<td>0.53</td>
+<td>53.3%</td>
+<td>0.40</td>
+</tr>
+<tr>
+<td>RLVR（仅正确性奖励）</td>
+<td>63.0%</td>
+<td>0.37</td>
+<td>53.9%</td>
+<td><strong>0.46</strong></td>
+</tr>
+<tr>
+<td>RLCR（+Brier 惩罚）</td>
+<td>62.1%</td>
+<td><strong>0.03</strong></td>
+<td><strong>56.2%</strong></td>
+<td><strong>0.21</strong></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>注意：“0/1奖励RL会恶化校准”不能一概而论，仅在域外平均上成立。</p>
+</blockquote>
+<ul>
+<li><p>【评分规则/奖励层面】<strong>评分规则必须"有界"——log score 会诱发
+reward hacking</strong></p>
+<ul>
+<li><p>对数评分（log
+score）虽是恰当评分，但<strong>无界</strong>：当预测置信度<span
+class="math inline">\(p \to
+0\)</span>时，对错回报差趋于无穷，无法找到有限系数保证激励单调，会引发奖励投机（reward
+hacking），<strong>模型倾向故意答错、报0置信度；</strong></p></li>
+<li><p>RLCR
+论文的5臂老虎机实验佐证：基于对数评分的RLCR-Log坍缩为弃权策略，准确率为0；RLCR-Brier准确率34.4%、ECE=0.02，表现稳定;</p></li>
+<li><p><strong>结论：评分规则需要有界，这也是Laya等开源方案选用Brier、球形评分的原因；</strong></p></li>
+</ul></li>
+<li><p>【关于口头置信度的方案】<strong>verbalized confidence
+未校准（语言化置信度 ≠ 概率）</strong></p>
+<ul>
+<li><p>口头置信度是另一种朴素方案，但 Kadavath
+等（Anthropic，2022）系统测量了"模型嘴上说的确信度"与真实校准的差距：<strong>通过提示语（"True/False"）读出的
+P(True) 明显优于自由文本置信度，但依然不是校准概率；</strong></p></li>
+<li><p>实际这也是上述讨论的<strong>生成式决策"的第三层浪费的机制根源 ——
+也是 TDM "把概率当一等的输出结构"的核心动机；</strong></p></li>
+</ul></li>
+</ul>
+<hr />
+<p>论文 LLM2Jev 【2610.02076 &amp; 微软《LLM-as-Jev: LLMs Are Already
+Jev-Style Decision Models -- When and How to Fine-Tune
+Them》】通过实证进一步说明了“朴素读出为何不够”，如下为论文在4B与0.6B模型上的对比情况：</p>
+<p><img src="figures/fig-10.png" alt="fig-10" /></p>
+<ul>
+<li><p>Qwen3.5-4B（开箱冻结）：JevBench 81.4%，ECE
+0.057，大基座（≥4B）原生表现尚可；</p></li>
+<li><p>Qwen3-0.6B（开箱冻结）：JevBench 56.7%，ECE
+0.278，初始交叉熵高于均匀随机，小基座判别力不足、校准崩溃【微调后可以提升，但具有条件性】；</p></li>
+<li><p>对 4B基座 使用 95461条纯意图数据进行一轮训练后：在 JevBench
+上指标 81.4% 反而降至 76.2%，ECE由0.057升至0.116 ——
+<strong>域内拟合提升越好，分布外（OOD）校准会越差</strong></p>
+<blockquote>
+<ul>
+<li><p>训练数据的<strong>任务格式多样性</strong>与<strong>输入长度分布对齐</strong>至关重要；</p></li>
+<li><p>仅堆砌短文本推理数据会损害长上下文决策能力；</p></li>
+</ul>
+</blockquote></li>
+</ul>
+<p><strong>整体核心结论：朴素读出不可靠【够大的基座（≥4B）开箱即可用、判别力不足的小基座（0.6B）校准直接崩溃】，进行微调训练能条件性提升性能，但纯意图数据训练容易损害OOD校准！</strong></p>
+<hr />
+<h2
+id="34后处理校准温度缩放与实测效果">3.4、后处理校准：温度缩放与实测效果</h2>
+<p>另一个关键认识或教训是：<strong>"判别训练"与"校准"是两个不同的目标</strong></p>
+<ul>
+<li><p>把前者拟合得更狠不会顺带拿到后者；<strong>小基座甚至需要先补判别力，再谈校准</strong>；</p></li>
+<li><p>温度缩放是成本最低的后处理补救——把 logits 除以 T 再 softmax，通常
+T 是需要在留出集数据上按照ECE/Brier 最小化进行拟合的：</p>
+<p>$p_k=softmax(\frac{z_k}{T})_k,\ T^∗=\argmin_T NLL(留出集;T)$</p>
+<ul>
+<li><p><span class="math inline">\(z_k\)</span> 为选项原始
+logits，T&gt;1时会压平分布、T&lt;1 会锐化分布；</p></li>
+<li><p>温度只重标定置信度、不改变
+argmax，因此救不了判别力本身的缺陷；</p></li>
+</ul></li>
+</ul>
+<p>如下为4个独立的开源项目关于温度缩放的使用和定位，目前看统一的结论为：<strong>全局使用单一温度对异构负载（不同数据集/领域）是不够，必须按题型/选项数/原语分桶拟合才会有效！！</strong></p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>开源实现</th>
+<th>温度策略</th>
+<th>校准效果</th>
+<th>实际情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Nimble</td>
+<td>全局 T=2.179</td>
+<td>整体 ECE 0.128→0.066；<br>Score 题型 0.105→0.177</td>
+<td>对比式数据整编后拟合【github.com/bespokelabsai/nimble】</td>
+</tr>
+<tr>
+<td>Laya</td>
+<td><strong>按（题型×选项数）分组拟合</strong></td>
+<td>ECE 0.466→0.081</td>
+<td>分单元温度，非全局【github.com/NandhaKishorM/laya，见作者文档】</td>
+</tr>
+<tr>
+<td>SemIf</td>
+<td>每负载 T（1.23/2.50/1.71）<br></td>
+<td>WANLI ECE 0.208→0.069；其余组置信区间重叠</td>
+<td>out-of-fold【github.com/TheoLeeCJ/SemIf-OpenJev】</td>
+</tr>
+<tr>
+<td>agent-jev</td>
+<td>分原语温度</td>
+<td>Typed Decisions ECE 0.1687</td>
+<td>120 留出校准【github.com/malevrigns/agent-jev】</td>
+</tr>
+</tbody>
+</table></div>
+<ul>
+<li><p>Laya 按（题型×选项数）分组拟合温度把 ECE 从 0.466 压到
+0.081，说明校准误差的分布是结构化的——这也是官方 K≤255
+的两阶段打分（先独立打分再显式选择）背后要处理的同类问题；</p></li>
+<li><p>直观效果比较【仅Nimble在使用全局单一温度时<strong>Score 题型 ECE
+反升</strong>】：</p></li>
+</ul>
+<p><img src="figures/fig-11.png" alt="fig-11" /></p>
+<ul>
+<li>但也需要注意一点：是不是仅需要做后处理温度缩放就够了？能不能在模型的微调与训练目标里就把校准优化掉？——
+显然是可以的！</li>
+</ul>
+<hr />
+<h2 id="35校准的语义边界">3.5、校准的语义边界</h2>
+<ul>
+<li><p><strong>校准是组率（统计样本上的结果），不是单例保证</strong>：官方明示"these
+rates describe groups of predictions, not a guarantee about any single
+answer"，也就是单个决策的 0.6 概率既不保证对也不保证错；</p></li>
+<li><p><strong>概率是条件的</strong>：SemIf 明示返回概率"conditional on
+the supplied options"，须在使用负载上自行校准验证 ——
+同一问题换选项措辞，概率含义也会随之变化（选项敏感性问题见后续讨论）；</p></li>
+<li><p>评分规则 RL
+是"校准训练"的机制核心：RLCD（官方）、RLCR（学术）、Laya/OpenJev-RLCD（开源）等均基于同一数学内核实现，它们的差异仅在奖励组成、数据组织与公开程度，更具体的内容会在后续训练方法与数据部分讨论。</p></li>
+</ul>
+<hr />
+<p><a id="ch04"></a></p>
+
+</div>
+<nav class="pager"><a href="ch02.html"><span class="lbl">上一页</span>2、问题定义与基本概念</a><a class="next" href="ch04.html"><span class="lbl">下一页</span>4、官方体系与公开信息的边界</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#31校准的数学定义">3.1、校准的数学定义</a></li><li><a href="#35校准的语义边界">3.5、校准的语义边界</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

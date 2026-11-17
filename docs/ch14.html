@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14、结论与展望 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/ch14.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="14、结论与展望 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/ch14.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望" aria-current="page"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<p>本章综合前述全部证据，从技术本质、学术判断、范式谱系、生产价值四个维度给出分层结论，并标注证据强度。所有结论均基于本报告证据池，不引入额外假设。</p>
+<h2
+id="141技术本质决策读出层而非新型生成模型">14.1、技术本质：决策读出层而非新型生成模型</h2>
+<p>Jev
+类系统的本质是决策读出层产品，而非新型生成模型。其核心机制是对调用方声明的选项集执行单次前向传播，直接输出归一化概率分布，不生成决策文本。该范式具备四个核心要素：声明式原语、概率输出、并行独立求值、训练目标与生成解耦【官方、2609.23886】。</p>
+<p>“读出而非生成”
+的架构带来了数量级的成本与延迟优势，同模型对照显示读出路径比生成 JSON 快
+5.21 倍，官方 API 输入单价 0.042 美元 / 百万 token
+且输出免费【SemIf-OpenJev】。其训练目标的数学内核是严格适当评分规则，官方声称的校准概率具备明确的数学定义（组率意义、非单例保证、条件于给定选项）。但官方
+RLCD
+的具体配方与架构细节未公开，外部研究仅能从编码器层级进行黑盒逆向。</p>
+<h2 id="142核心结论">14.2、核心结论</h2>
+<ol type="1">
+<li><p><strong>评分规则强化学习可同时优化准确率与校准</strong>。以有界严格适当评分规则作为强化学习奖励，可同时提升准确率与校准度，该结论已通过
+RLCR 定理、Laya、OpenJev-RLCD、Rewarding Doubt、ConfTuner
+五项独立研究交叉验证，是本领域最坚实的机制性结论【arXiv:2507.16806、github.com/NandhaKishorM/laya、github.com/ZimmyGao/openjev-rlcd、arXiv:2503.02623、2508.18847】。</p></li>
+<li><p><strong>零训练读出准确率高但不天然校准</strong>。强基座（4B
+级）冻结后直接读出即可达到 81.4% 的准确率与 0.057 的
+ECE，但弱基座（0.6B）下性能急剧下降。零训练读出获得的高准确率不等于概率天然校准，仍需在目标负载上完成校准【arXiv:2610.02076、github.com/TheoLeeCJ/SemIf-OpenJev】。</p></li>
+<li><p><strong>朴素强化学习与校准的关系具有分布依赖性</strong>。基于 0/1
+奖励的朴素 RL 在分布内反而降低
+ECE，仅在分布外才会恶化校准；只有评分规则强化学习能在分布外同时改善准确率与校准【arXiv:2507.16806】。</p></li>
+<li><p><strong>概率输出不严格满足公理体系</strong>。互补与互斥问题的概率和不严格为
+1，该现象已被三项独立研究复现，内在机理尚未明确【arXiv:2609.33209、2609.33971、2609.37470、2609.35342】。</p></li>
+<li><p><strong>分布外校准鸿沟是根本局限</strong>。即使经过最优校准训练，分布外
+ECE 仍达 0.21–0.25，远高于分布内的
+0.03–0.10，模型可能对多个矛盾答案同时赋予高置信度。这意味着校准是严格的分布内性质，分布内的良好表现不能外推至未知任务族【arXiv:2507.16806】。</p></li>
+</ol>
+<h2 id="143技术谱系与路线演化">14.3、技术谱系与路线演化</h2>
+<p>决策模型领域是 “一个底座 + 三条支线”
+的技术汇流，而非单一发明链条：底座是 GRPO
+式可验证奖励后训练引擎；三条支线分别是严格适当评分规则的数学理论、P
+(True) 式读出范式、评分规则导向的校准训练。三者于 2026 年 9 月在 RLCD 与
+Jev 产品中首次汇合【arXiv:2402.03300、2207.05221、2507.16806】。</p>
+<p>校准训练路线内部为并行演化关系，而非线性继承：Rewarding Doubt 与 RLCR
+采用不同的评分规则与强化学习框架，且存在学术争议；ConfTuner
+采用纯监督微调方案，与两条 RL
+路线平行发展【arXiv:2503.02623、2507.16806、2508.18847】。</p>
+<p>开源生态呈现为同一思想下的不同工程折衷，包括零训练读出、全量 RLCD
+训练、两阶段工作版、闭源 API
+等形态，选型取决于保密要求、成本预算、运维能力与校准需求的权衡。公开生态中纯单一范式极少成功，普遍采用
+“读出 / 训练 + 数据工序 + 后处理校准”
+的组合方案；核心是读出范式，强化学习只是校准子问题的解法之一，修正了
+“RLCD 是核心技术” 的普遍误解。</p>
+<h2 id="144生产价值与局限">14.4、生产价值与局限</h2>
+<ul>
+<li><p>置信度级联是目前验证最充分的生产模式，通过低成本决策层承接多数流量、低置信样本升级兜底，在智能体、安全、内容审核等场景可降低约
+41% 的成本，另一项对齐检测场景的成本倍率达 63
+倍，且均保持质量不下降。温度缩放是成本最低、证据最充分的后处理校准手段，但粒度敏感，全局温度不适用于异构负载【arXiv:2609.26550、2609.23959、2609.29429、2610.01834】。</p></li>
+<li><p>校准是模型、分布、提示词的联合属性，分布偏移会导致模型
+“自信地全错”，例如英文训练的检查点在高棉文上准确率为 0 但置信度达
+0.952。因此，本地化影子评估是不可省略的落地步骤，厂商与公开基准数据不可直接采信【github.com/NandhaKishorM/laya、arXiv:2610.01834】。</p></li>
+<li><p>落地实践中，执行纪律比模型选型更决定最终效果：<strong>坚持分源报告、本地留出集定阈值、变更后重测校准</strong>三条原则，可有效规避绝大多数工程陷阱。</p></li>
+</ul>
+<h2 id="145未决问题与研究展望">14.5、未决问题与研究展望</h2>
+<p>当前领域仍存在若干核心未决问题，构成下一阶段的研究重点：</p>
+<ol type="1">
+<li><p>官方 RLCD 配方的四个自由度尚未公开，第三方完整复现缺失；</p></li>
+<li><p>高基数选项下的性能壁垒与校准退化机制尚不明确；</p></li>
+<li><p>跨语言尤其是低资源语言的校准证据不足；</p></li>
+<li><p>视觉、移动智能体等新场景的评测规模有限，适用边界待探索；</p></li>
+<li><p>概率公理违反的内在机理与修正方法有待深入研究。</p></li>
+</ol>
+<p>未来研究可围绕第三方复现、高基数优化、跨语言校准、系统 1
+决策的闭环适用场景四个方向推进，进一步夯实该范式的理论基础与落地边界。</p>
+<hr />
+<p><a id="refs"></a></p>
+
+</div>
+<nav class="pager"><a href="ch13.html"><span class="lbl">上一页</span>13、研究前沿与发展趋势</a><a class="next" href="refs.html"><span class="lbl">下一页</span>参考文献</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#142核心结论">14.2、核心结论</a></li><li><a href="#143技术谱系与路线演化">14.3、技术谱系与路线演化</a></li><li><a href="#144生产价值与局限">14.4、生产价值与局限</a></li><li><a href="#145未决问题与研究展望">14.5、未决问题与研究展望</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

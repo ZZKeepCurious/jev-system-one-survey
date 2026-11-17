@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>13、研究前沿与发展趋势 · System One 决策模型技术调研</title>
+<meta name="description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<link rel="canonical" href="https://zzkeepcurious.github.io/jev-system-one-survey/ch13.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="13、研究前沿与发展趋势 · System One 决策模型技术调研">
+<meta property="og:description" content="System One 决策模型（Jev）技术调研：形态、机制、实现谱系与选型。14 章 + 附录，52 图，115 条参考文献。">
+<meta property="og:url" content="https://zzkeepcurious.github.io/jev-system-one-survey/ch13.html">
+<meta property="og:site_name" content="System One 决策模型技术调研">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/report.css">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script async src="https://fastly.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><strong>System One 决策模型技术调研</strong><span>v1.0 · 证据核验至 2026-10-26</span></div>
+  <div class="spacer"></div>
+  <div class="search"><input id="q" type="search" placeholder="筛选章节…" autocomplete="off" aria-label="筛选章节"></div>
+</header>
+<div class="shell">
+<aside class="side">
+  <div class="side-title">章目录</div>
+  <ol id="navlist">
+      <li><a href="ch01.html" data-title="1、摘要与核心论点"><span class="num">01</span><span>1、摘要与核心论点</span></a></li>
+      <li><a href="ch02.html" data-title="2、问题定义与基本概念"><span class="num">02</span><span>2、问题定义与基本概念</span></a></li>
+      <li><a href="ch03.html" data-title="3、校准机制与数学原理：严格适当评分规则与 RLCD 家族"><span class="num">03</span><span>3、校准机制与数学原理：严格适当评分规则与 RLCD 家族</span></a></li>
+      <li><a href="ch04.html" data-title="4、官方体系与公开信息的边界"><span class="num">04</span><span>4、官方体系与公开信息的边界</span></a></li>
+      <li><a href="ch05.html" data-title="5、架构与实现形态：官方逆向与开源方案"><span class="num">05</span><span>5、架构与实现形态：官方逆向与开源方案</span></a></li>
+      <li><a href="ch06.html" data-title="6、训练方法与数据：范式分类与数据组织【参考】"><span class="num">06</span><span>6、训练方法与数据：范式分类与数据组织【参考】</span></a></li>
+      <li><a href="ch07.html" data-title="7、评测与验证：基准解剖、指标体系与评估协议"><span class="num">07</span><span>7、评测与验证：基准解剖、指标体系与评估协议</span></a></li>
+      <li><a href="ch08.html" data-title="8、应用与落地：已公开场景、两种生产模式、成本与选型"><span class="num">08</span><span>8、应用与落地：已公开场景、两种生产模式、成本与选型</span></a></li>
+      <li><a href="ch09.html" data-title="9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击"><span class="num">09</span><span>9、失败模式与安全：上下文翻转、选项语义、训练域瓶颈与输入侧攻击</span></a></li>
+      <li><a href="ch10.html" data-title="10、共识、争议与开放问题"><span class="num">10</span><span>10、共识、争议与开放问题</span></a></li>
+      <li><a href="ch11.html" data-title="11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现"><span class="num">11</span><span>11、历史谱系：从 Brier 1950 到 Jev 发布后的System 1 决策模型涌现</span></a></li>
+      <li><a href="ch12.html" data-title="12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界"><span class="num">12</span><span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</span></a></li>
+      <li><a href="ch13.html" data-title="13、研究前沿与发展趋势" aria-current="page"><span class="num">13</span><span>13、研究前沿与发展趋势</span></a></li>
+      <li><a href="ch14.html" data-title="14、结论与展望"><span class="num">14</span><span>14、结论与展望</span></a></li>
+      <li><a href="refs.html" data-title="参考文献"><span class="num">·</span><span>参考文献</span></a></li>
+      <li><a href="appendix.html" data-title="附录&amp;辅助材料"><span class="num">·</span><span>附录&amp;辅助材料</span></a></li>
+  </ol>
+</aside>
+<main class="main"><div class="prose">
+<p>本章基于 2026 年 9–10 月的 76
+项研究单元，从产出活跃度与共识程度两个维度，归纳决策模型领域的研究格局与演化方向。所有趋势判断均基于本报告精读调研的证据池，不外推至池外研究。</p>
+<h2 id="131当前活跃研究方向">13.1、当前活跃研究方向</h2>
+<p>按证据池内相关研究的产出数量与时间近度排序，当前领域六大核心活跃前沿如下表所示，覆盖技术复现、鲁棒性、落地范式等多个维度。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>研究方向</th>
+<th>核心研究范畴</th>
+<th>核心研究目标</th>
+<th>代表工作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>开源零训练读出复现</td>
+<td>围绕冻结大模型的选项 logit
+读出机制展开，涵盖去位置偏置、闭式校准头、跨语言移植等细分方向</td>
+<td>验证 “冻结基座即可作为决策模型”
+的技术可行性，持续优化读出协议的鲁棒性</td>
+<td>SemIf（2026-09）、AnyJev（2026-09-30）、LLM2Jev（2026-10-03）、openthai（2026-09）、reflex（2026-10）</td>
+</tr>
+<tr>
+<td>2</td>
+<td>失败模式与鲁棒性评测</td>
+<td>聚焦决策模型的失效场景挖掘，覆盖自然上下文翻转、选项名语义偏差、提示注入、对抗样本、顺序不变性等方向</td>
+<td>系统刻画决策模型的鲁棒性边界，明确各类扰动下的性能衰减幅度</td>
+<td>JevOut（2026-09-27）、Type-Safe Is Not
+Error-Free（2026-09-26）、Decision
+Hijacking（2026-09-26）、JevAdvBench（2026-09-25）、position-test（2026-10）</td>
+</tr>
+<tr>
+<td>3</td>
+<td>级联与选择性控制</td>
+<td>围绕置信度门控、双序平均、在线测试、错误互补性等级联核心问题展开</td>
+<td>完善置信度级联的工程范式，提升成本 - 性能比与落地可靠性</td>
+<td>JEV-as-a-Judge v3（2026-09-29）、反诈 JevLite（2026-09-17）、渗透
+harness（2026-09-23）、Just Ask Jev（2026-09-24）</td>
+</tr>
+<tr>
+<td>4</td>
+<td>跨语言与非拉丁脚本适配</td>
+<td>覆盖中文、泰语、高棉语等多语言的模型适配与端侧部署优化</td>
+<td>拓展决策模型的语言适用范围，推动非英语场景的落地复用</td>
+<td>Chinese-Jev（2026-09-29）、openthai（2026-09）、laya（多语）、laya-mlx/coreml（2026-10）</td>
+</tr>
+<tr>
+<td>5</td>
+<td>智能体决策层形态</td>
+<td>探索决策模型在智能体系统中的落地形态，涵盖评估与仿真分工、GUI
+智能体执行、安全护栏等方向</td>
+<td>验证决策模型作为智能体核心决策单元的技术价值与落地路径</td>
+<td>Code/Simulation（2026-10-02）、Jev-Mobile（2026-09-28）、agent-jev（2026-09）、COGNIT-Guard（2026-09-28）</td>
+</tr>
+<tr>
+<td>6</td>
+<td>概率公理一致性评测</td>
+<td>验证决策模型对概率公理的满足程度，覆盖互补问题概率和、跨接口一致性、层级相干性等维度</td>
+<td>明确决策模型输出的概率语义边界，为下游消费提供理论依据</td>
+<td>2609.33209（2026-09-27）、2609.33971（2026-09-27）、2609.37470（2026-09-28）</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<h2 id="132核心技术演化趋势">13.2、核心技术演化趋势</h2>
+<p>从上述活跃方向中，可提炼出三项跨领域的共性技术演化趋势，整体呈现出
+“从可行性验证到工程化落地、从准确率优先到鲁棒性优先” 的发展特征。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>演化趋势</th>
+<th>核心标志</th>
+<th>发展阶段判定</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>“开箱即决策” 从概念走向可复现基线</td>
+<td>三项独立工程方案相继验证 4B 级基座零训练准确率超 80%</td>
+<td>从可行性验证进入读出协议优化阶段</td>
+</tr>
+<tr>
+<td>2</td>
+<td>评测重心从准确率转向鲁棒性与自认知能力</td>
+<td>短期内密集出现专项失败模式评测，与 “校准非免费” 结论形成呼应</td>
+<td>准确率共识基本形成，鲁棒性成为核心研究焦点</td>
+</tr>
+<tr>
+<td>3</td>
+<td>部署形态从单一 API 向 “端侧 + 级联” 双轨分化</td>
+<td>端侧毫秒级延迟、级联降本、合规前置闸门三类路径并行验证</td>
+<td>核心价值从独立运行转向昂贵系统的低成本前置组件</td>
+</tr>
+</tbody>
+</table></div>
+<hr />
+<p><strong>“开箱即决策” 从概念主张走向可复现基线</strong></p>
+<p>研究初期，“冻结大模型读取 logits 即可作为决策模型”
+仍以理论主张为主，缺乏系统性的量化验证。随后，三项独立实现先后发布，分别采用字母
+token
+读取、选项旋转平均、数字编号三种不同工程路径【SemIf、AnyJev、LLM2Jev】，一致验证了
+4B 参数级强基座在零训练条件下即可达到 80%
+以上的决策准确率；同时明确当前瓶颈集中于小参数基座与高基数选项场景，而非读出协议本身。该方向已完成可行性验证阶段，整体进入读出协议的鲁棒性优化阶段。</p>
+<p><strong>评测重心从准确率转向鲁棒性与自认知能力</strong></p>
+<p>9
+月下旬领域内密集出现四项专项评测工作<strong><code>【JevAdvBench（输入侧对抗）arXiv:2609.31142、Type-Safe Is Not Error-Free arXiv:2609.26758、JevOut（自然上下文翻转） arXiv:2609.30243】、Decision Hijacking（注入劫持）arXiv:2609.28613】</code></strong>，全部聚焦于失败模式挖掘而非准确率提升；叠加概率公理一致性【2609.33209/2609.33971/2609.37470】、模型自认知【2610.01006】相关研究，表明社区已对现有准确率水平形成基本共识，研究重心正向操纵攻击、措辞扰动、信息缺失等场景下的鲁棒性，以及模型自我认知能力转移。这一评测侧的转向，与
+“校准并非天然可得” 的核心结论形成了双向呼应。</p>
+<p><strong>部署形态从单一 API 向 “端侧 + 级联” 双轨分化</strong></p>
+<p>三类独立证据共同指向部署形态的分化趋势：</p>
+<ul>
+<li><p>其一为端侧路线，通过针对 Apple Silicon 与 Neural Engine
+的硬件适配优化，将决策推理延迟压缩至毫秒级，实现移动端能效水平【laya-mlx、laya-coreml、Chinese-Jev
+2609.36965】；</p></li>
+<li><p>其二为级联路线，“低成本决策层 + 低置信升级人工 / 强模型”
+的范式已固化为可复现方案，在保障效果的同时显著降低调用成本【2609.26550
+JEV-as-a-Judge v3】；</p></li>
+<li><p>其三为合规路线，决策模型被用于对齐失败检测，成本仅为逐标准大模型裁判的
+1/63【2609.29429 Just Ask Jev】。</p></li>
+</ul>
+<p>三者共同表明，决策模型的核心价值并非独立提供服务，而是作为高成本系统的低成本前置闸门。</p>
+<hr />
+<h2 id="133新兴方向与弱信号">13.3、新兴方向与弱信号</h2>
+<p>以下方向仅出现初步探索性研究，证据强度较弱，仅作跟踪记录，不构成确定性结论。</p>
+<div class="tbl"><table>
+<thead>
+<tr>
+<th>序号</th>
+<th>新兴方向</th>
+<th>当前研究进展</th>
+<th>证据强度说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>视觉与多模态决策</td>
+<td>两项初步研究探索单步视觉决策任务</td>
+<td>样本规模有限，与文本决策的技术同源性尚未验证，证据等级较低</td>
+</tr>
+<tr>
+<td>2</td>
+<td>概率数值直接输出</td>
+<td>NumericJev 通过区间决策树将数值估计转化为多叉选择任务</td>
+<td>未完成系统性校准验证，通用数值输出仍为开放问题</td>
+</tr>
+<tr>
+<td>3</td>
+<td>两阶段 RLCD 复现</td>
+<td>OpenJev-RLCD 工作版本初步发布</td>
+<td>缺乏第三方独立复现，方法有效性有待进一步验证</td>
+</tr>
+<tr>
+<td>4</td>
+<td>免训练 LoRA 组合路由</td>
+<td>JevSoup 将决策模型扩展为模块化能力路由层，通过自然语言选择 LoRA
+专家并离线组合，无需训练路由器</td>
+<td>单篇自报研究，结论待验证；其等权组合优于概率加权的发现，侧面印证了概率不可逐点直接消费的核心判断</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="1342026-年-10-月研究进展更新">13.4、2026 年 10
+月研究进展更新</h2>
+<p>检索窗口扩展至 10 月 17 日后，新增 9 篇精读论文与 4
+项开源实现，进一步验证并补充了上述趋势，证据分布<strong>【应该补一个证据分布图】</strong></p>
+<p>本批次研究呈现三个核心增量特征：</p>
+<ul>
+<li><p>第一，<strong>智能体决策层成为最活跃的实证主题</strong>。9
+篇论文中有 5
+篇（JevCoder、Jev-Guard、Jev-LiteMAS、System1-Arena、JevAgentHarness）直接聚焦决策模型在智能体中的落地与评测，该方向从第六位跃升至与级联并列的第一梯队。</p></li>
+<li><p>第二，<strong>闭环评测基准密集涌现</strong>。System1-Arena 与
+AgentDecisionBench 填补了智能体闭环评测工具的空白，其中 System1-Arena
+量化了单步准确率到闭环成功率的映射关系：67.8% 的单步准确率对应
+5.7%–26.5% 的闭环成功率，直观呈现了单步性能与闭环能力的差距。</p></li>
+<li><p>第三，<strong>威胁模型从文本输入侧转向程序消费侧</strong>。Nudge
+the Judge 首次将攻击面定义为 “程序消费决策数值” 的环节，测得 81.5%
+的翻转率，是威胁模型研究的重要方向修正。</p></li>
+</ul>
+<hr />
+<p><a id="ch14"></a></p>
+
+</div>
+<nav class="pager"><a href="ch12.html"><span class="lbl">上一页</span>12、实践指南：评估协议、阈值与成本、上线清单与相邻范式边界</a><a class="next" href="ch14.html"><span class="lbl">下一页</span>14、结论与展望</a></nav>
+</main>
+<aside class="rail">
+  <div class="side-title">本页目录</div>
+<ul><li><a href="#131当前活跃研究方向">13.1、当前活跃研究方向</a></li><li><a href="#132核心技术演化趋势">13.2、核心技术演化趋势</a></li><li><a href="#133新兴方向与弱信号">13.3、新兴方向与弱信号</a></li><li><a href="#1342026-年-10-月研究进展更新">13.4、2026 年 10
+月研究进展更新</a></li></ul>
+</aside>
+</div>
+<footer class="foot">
+  <p>System One 决策模型技术调研 · v1.0 · 证据核验至 2026-10-26</p>
+  <p>研究方法、来源分层与证据标准见 <a href="appendix.html">附录 D</a>；单文件版见 <a href="jev-system-one-decisions-v1.0.md">Markdown 原文</a>；仓库与源码在 <a href="https://github.com/ZZKeepCurious/jev-system-one-survey">GitHub</a>。</p>
+  <p>本文与图表采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可，转载与摘编请注明作者 ZZKeepCurious 并附原文链接。</p>
+</footer>
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var items = [].slice.call(document.querySelectorAll('#navlist a'));
+  q.addEventListener('input', function () {
+    var v = q.value.trim().toLowerCase();
+    items.forEach(function (a) {
+      var t = (a.dataset.title || a.textContent || '').toLowerCase();
+      a.parentNode.style.display = (!v || t.indexOf(v) > -1) ? '' : 'none';
+    });
+  });
+})();
+</script>
+</body>
+</html>

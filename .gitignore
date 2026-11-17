@@ -1,0 +1,10 @@
+# 临时与系统文件
+.tmp/
+*.bak
+*.zip
+.DS_Store
+Thumbs.db
+~$*
+
+# 构建中间产物
+_build/
